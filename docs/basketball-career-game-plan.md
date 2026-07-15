@@ -31,9 +31,26 @@ Build a browser-based basketball career simulator focused on long-term career ma
 - No raw save editor.
 - No editing historical outcomes through God Mode.
 
+
+## 1A. User Experience Correction
+
+The product must not be framed as a short vertical slice. It should open like Basketball GM with a save-file dashboard, then guide the user through creating or loading a character template, configuring career settings, selecting from four recruiting offers, and entering a persistent career dashboard with left navigation and top simulation controls. The core loop is management and decision-making: training focus, requests, goals, morale, college/pro career choices, and long-term legacy tracking, not on-court control.
+
+Required first-class screens include:
+
+- Save-file dashboard backed by IndexedDB.
+- Character creator with reusable templates, allocated ratings, player similarities, and future NBA2K-style build details.
+- Settings page with seed, difficulty, autosave, and restricted God Mode.
+- Recruiting-offer selection with random high-school ranking, star level, and four offers aligned with ranking/prestige.
+- Career dashboard with a left sidebar for home, career history, training focus, decisions, leaderboards, God Mode, and season reviews.
+- Top simulation controls for one game, week, month, All-Star break, playoffs, and end of season. Every target must simulate and persist one game at a time so it can pause safely.
+- JSON import adapters that validate example data but convert it into a purpose-built solo-career format.
+
+God Mode is intentionally limited to ratings, position, college, draft information, injuries, career goals, morale, and contract fields. Static or historical records such as recruiting info, game logs, awards, transactions, and dynamic derived fields such as role, minutes, and archetype must not be directly edited.
+
 ## 2. Repository Inspection
 
-The current repository is effectively empty: no application stack, package manifest, source tree, or existing architecture was present during planning. This plan therefore recommends a greenfield implementation using the requested browser stack while keeping module boundaries explicit enough to avoid later coupling.
+The current repository now contains a Vite, React, TypeScript, Dexie, Zod, and Vitest application. The implementation should evolve from the existing save-dashboard, character-creation, settings, recruiting, and career-dashboard shell rather than a disposable vertical slice.
 
 ## 3. Recommended Technical Stack
 

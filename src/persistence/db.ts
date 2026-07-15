@@ -5,3 +5,9 @@ export class HoopsDb extends Dexie { metadata!: Table<SaveMeta,string>; snapshot
 export const db = new HoopsDb();
 export async function saveCareer(save: CareerSave) { await db.transaction('rw', db.metadata, db.snapshots, async()=>{ await db.snapshots.put(save); await db.metadata.put({id:save.id,name:save.name,updatedAt:save.updatedAt}); }); }
 export async function persistSimulationStep(save: CareerSave, log: GameLog) { await db.transaction('rw', db.metadata, db.snapshots, db.autosaves, db.gameLogs, async()=>{ await db.gameLogs.put(log); await db.snapshots.put(save); await db.autosaves.put(save); await db.metadata.put({id:save.id,name:save.name,updatedAt:save.updatedAt}); }); }
+
+export async function listSaves() { return db.metadata.orderBy('updatedAt').reverse().toArray(); }
+export async function loadCareer(id: string) { return db.snapshots.get(id); }
+export async function loadGameLogs(saveId: string) { return db.gameLogs.where('saveId').equals(saveId).reverse().sortBy('gameNumber'); }
+export async function listTemplates() { return db.templates.orderBy('createdAt').reverse().toArray(); }
+export async function saveTemplate(template: CharacterTemplate) { await db.templates.put(template); }
