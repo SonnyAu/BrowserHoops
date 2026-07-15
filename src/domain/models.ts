@@ -381,6 +381,17 @@ export interface StandingRow {
   teamName: string;
   wins: number;
   losses: number;
+  conference: string;
+}
+
+export type SeasonEventKind = 'huge_game' | 'all_star' | 'award' | 'hof' | 'news';
+
+export interface SeasonEvent {
+  id: string;
+  gameNumber: number;
+  kind: SeasonEventKind;
+  headline: string;
+  detail?: string;
 }
 
 export interface PendingDecision {
@@ -469,6 +480,8 @@ export interface CareerSave {
   nextGame: number;
   schedule: ScheduledGame[];
   standings: StandingRow[];
+  /** Newest-first season news / milestones (capped in sim). */
+  seasonEvents: SeasonEvent[];
   seasonStats: SeasonStats[];
   careerStats: SeasonStats[];
   gameLogsSummary: string[];

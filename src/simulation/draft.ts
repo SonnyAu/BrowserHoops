@@ -9,7 +9,7 @@ import {
   Position,
 } from '../domain/models';
 import { Rng } from '../domain/rng';
-import { buildProSchedule, initialStandings } from './schedule';
+import { buildProSchedule, initialProStandings } from './schedule';
 import { updateRosterStatus } from './rosterStatus';
 
 interface Prospect {
@@ -237,7 +237,8 @@ export function finishDraft(save: CareerSave): CareerSave {
       option: 'team',
     },
     schedule,
-    standings: initialStandings(schedule, team.id, teamName),
+    standings: initialProStandings(team.id),
+    seasonEvents: [],
     nextGame: 1,
     wins: 0,
     losses: 0,

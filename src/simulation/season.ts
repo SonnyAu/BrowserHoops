@@ -6,7 +6,12 @@ import {
 } from '../domain/createCareer';
 import { overall, scoutedPotential } from '../domain/derived';
 import { CareerSave } from '../domain/models';
-import { buildCollegeSchedule, buildProSchedule, initialStandings } from './schedule';
+import {
+  buildCollegeSchedule,
+  buildProSchedule,
+  initialCollegeStandings,
+  initialProStandings,
+} from './schedule';
 
 function resetSeasonFields(save: CareerSave): Pick<
   CareerSave,
@@ -15,6 +20,7 @@ function resetSeasonFields(save: CareerSave): Pick<
   | 'potAtSeasonStart'
   | 'roleAtSeasonStart'
   | 'seasonLogBuffer'
+  | 'seasonEvents'
   | 'wins'
   | 'losses'
   | 'fatigue'
@@ -26,6 +32,7 @@ function resetSeasonFields(save: CareerSave): Pick<
     potAtSeasonStart: scoutedPotential(save.player, save.hidden),
     roleAtSeasonStart: save.role,
     seasonLogBuffer: [],
+    seasonEvents: [],
     wins: 0,
     losses: 0,
     fatigue: 5,
@@ -53,7 +60,7 @@ export function startNextCollegeSeason(save: CareerSave): CareerSave {
     draftYear,
     collegeRoster,
     schedule,
-    standings: initialStandings(schedule, collegeId, college.name),
+    standings: initialCollegeStandings(collegeId),
     draftBoard: null,
     pendingDecisions: [],
     history: [
@@ -83,7 +90,7 @@ export function startNextProSeason(save: CareerSave): CareerSave {
     season: save.season + 1,
     age: save.age + 1,
     schedule,
-    standings: initialStandings(schedule, teamId, teamName),
+    standings: initialProStandings(teamId),
     draftBoard: null,
     collegeRoster: [],
     pendingDecisions: [],

@@ -14,8 +14,31 @@ import { Rng } from '../domain/rng';
 import { getEffectiveRatings } from '../domain/traits';
 import { grantSeasonAwards } from './awards';
 import { beginDraft } from './draft';
+import {
+  awardEvents,
+  eventFromHugeGame,
+  maybeAllStarEvents,
+  maybeHofEvent,
+  maybeNewsEvent,
+  pushSeasonEvents,
+} from './events';
 import { updateRosterStatus } from './rosterStatus';
-import { updateStandings } from './schedule';
+import {
+  advanceConferenceGames,
+  initialCollegeStandings,
+  initialProStandings,
+  updateStandings,
+} from './schedule';
+
+function normalizeSeasonState(save: CareerSave): CareerSave {
+  let next = save.seasonEvents ? save : { ...save, seasonEvents: [] };
+  const rows = next.standings ?? [];
+  if (!rows.length || rows.some((r) => !r.conference)) {
+    if (next.proTeamId) next = { ...next, standings: initialProStandings(next.proTeamId) };
+    else if (next.collegeId) next = { ...next, standings: initialCollegeStandings(next.collegeId) };
+  }
+  return next;
+}
 import { startNextCollegeSeason, startNextProSeason } from './season';
 import { applyTraining } from './training';
 
@@ -46,49 +69,20 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
   if (save.phase === 'seasonReview' || save.phase === 'draft') {
     throw new Error('Cannot simulate during season review or draft');
   }
-  const upcoming = save.schedule.find((g) => !g.completed);
+  const normalized = normalizeSeasonState(save);
+  const upcoming = normalized.schedule.find((g) => !g.completed);
   if (!upcoming) {
-    return finalizeSeason(save);
+    return finalizeSeason(normalized);
   }
 
-  let next = applyTraining(save, String(upcoming.gameNumber));
+  let next = applyTraining(normalized, String(upcoming.gameNumber));
   next = updateRosterStatus(next);
   const rng = new Rng(`${next.settings.seed}:${next.id}:${next.phase}:${upcoming.gameNumber}`);
   const role = assignRole(next);
   const r = getEffectiveRatings(next.player);
 
-  if (next.injury.gamesRemaining > 0) {
-    const injuredSave: CareerSave = {
-      ...next,
-      injury: {
-        ...next.injury,
-        gamesRemaining: next.injury.gamesRemaining - 1,
-        type: next.injury.gamesRemaining - 1 <= 0 ? 'Healthy' : next.injury.type,
-      },
-      nextGame: next.nextGame + 1,
-      schedule: next.schedule.map((g) =>
-        g.id === upcoming.id
-          ? { ...g, completed: true, result: 'L', teamScore: 0, opponentScore: 0 }
-          : g,
-      ),
-      history: [...next.history, `Missed game ${upcoming.gameNumber} vs ${upcoming.opponentName} (injury)`],
-      updatedAt: new Date().toISOString(),
-    };
-    const log: GameLog = emptyLog(next, upcoming, 'OUT', next.injury.type);
-    return {
-      save: { ...injuredSave, seasonLogBuffer: [...injuredSave.seasonLogBuffer, log] },
-      log,
-    };
-  }
-
-  const teamStrength =
-    overall(next.player) * 0.5 +
-    role.minutes +
-    (getCollege(next.collegeId ?? '')?.prestige ?? 72) * 0.2 -
-    next.fatigue * (0.2 - r.endu / 800) +
-    next.morale.overall * 0.05 +
-    r.spd * 0.05;
-
+  const ovr = overall(next.player);
+  const selfId = next.collegeId ?? next.proTeamId ?? 'self';
   const oppCollege = getCollege(upcoming.opponentId);
   const oppProspects =
     next.phase === 'college'
@@ -99,11 +93,26 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     next.phase === 'college'
       ? next.collegeRoster.reduce((s, m) => s + Math.max(0, m.overall - 72) * 0.2, 0)
       : 0;
+  const proPrestige = next.proTeamId ? 78 : (getCollege(next.collegeId ?? '')?.prestige ?? 72);
+  const playerOut = next.injury.gamesRemaining > 0;
+
+  const teamStrength = playerOut
+    ? 48 + teammateBoost + proPrestige * 0.15 + rng.int(-6, 6)
+    : ovr * 0.5 +
+      role.minutes +
+      proPrestige * 0.2 -
+      next.fatigue * (0.2 - r.endu / 800) +
+      next.morale.overall * 0.05 +
+      r.spd * 0.05 +
+      teammateBoost;
+
   const oppStrength =
-    (oppCollege?.prestige ?? 72) + oppProspectBoost + rng.int(-10, 10);
+    (oppCollege?.prestige ?? (next.phase === 'professional' ? 76 : 72)) +
+    oppProspectBoost +
+    rng.int(-10, 10);
   const homeBoost = upcoming.home ? 3 : 0;
   const teamScore = Math.round(
-    62 + (teamStrength + teammateBoost - 70) / 2.2 + rng.int(0, 18) + homeBoost,
+    62 + (teamStrength - 70) / 2.2 + rng.int(0, 18) + homeBoost,
   );
   const opponentScore = Math.round(60 + (oppStrength - 70) / 2.5 + rng.int(0, 18));
   const won = teamScore >= opponentScore;
@@ -113,12 +122,61 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       ? `${oppStar.name} ${Math.max(6, Math.round(8 + oppStar.overall / 6 + rng.int(-3, 8)))} pts`
       : null;
 
+  if (playerOut) {
+    let standings = updateStandings(next.standings ?? [], selfId, upcoming.opponentId, won);
+    standings = advanceConferenceGames(
+      standings,
+      next.settings.seed,
+      upcoming.gameNumber,
+      [selfId, upcoming.opponentId],
+      next.phase,
+    );
+    const log: GameLog = {
+      ...emptyLog(next, upcoming, 'OUT', next.injury.type),
+      result: won ? 'W' : 'L',
+      teamScore,
+      opponentScore,
+    };
+    let injuredSave: CareerSave = {
+      ...next,
+      injury: {
+        ...next.injury,
+        gamesRemaining: next.injury.gamesRemaining - 1,
+        type: next.injury.gamesRemaining - 1 <= 0 ? 'Healthy' : next.injury.type,
+      },
+      nextGame: next.nextGame + 1,
+      wins: next.wins + (won ? 1 : 0),
+      losses: next.losses + (won ? 0 : 1),
+      schedule: next.schedule.map((g) =>
+        g.id === upcoming.id
+          ? { ...g, completed: true, result: log.result, teamScore, opponentScore }
+          : g,
+      ),
+      standings,
+      seasonLogBuffer: [...next.seasonLogBuffer, log],
+      history: [
+        ...next.history,
+        `Missed game ${upcoming.gameNumber} vs ${upcoming.opponentName} (injury) — team ${log.result} ${teamScore}-${opponentScore}`,
+      ],
+      updatedAt: new Date().toISOString(),
+    };
+    injuredSave = pushSeasonEvents(injuredSave, [
+      ...eventFromHugeGame(injuredSave, log, oppStarLine),
+      ...maybeNewsEvent(injuredSave, upcoming.gameNumber, next.settings.seed),
+    ]);
+    return { save: injuredSave, log };
+  }
+
   const minutes = Math.max(
     4,
     Math.round(role.minutes * (1 - next.fatigue / 220) + rng.int(-3, 3)),
   );
-  const usage = role.usage * (0.9 + r.drb / 500);
-  const fga = Math.max(1, Math.round(minutes * usage * 0.55 + rng.int(0, 4)));
+  const usage = Math.min(
+    0.42,
+    role.usage * (0.9 + r.drb / 500) * (0.88 + ovr / 250),
+  );
+  const fgaRate = 0.95 + ovr / 250;
+  const fga = Math.max(1, Math.round(minutes * usage * fgaRate + rng.int(0, 5)));
   const rimShare = (r.ins + r.dnk) / 200;
   const midShare = r.fg / 120;
   const threeShare = r.tp / 140;
@@ -133,18 +191,18 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     Math.min(midA, Math.round(midA * midPct)) +
     Math.min(tpa, Math.round(tpa * tpPct));
   const tpm = Math.min(tpa, Math.round(tpa * tpPct));
-  const fta = Math.round(minutes * 0.18 + r.dnk / 40 + rng.int(0, 3));
+  const fta = Math.round(minutes * 0.22 + r.dnk / 35 + rng.int(0, 4));
   const ftm = Math.min(fta, Math.round(fta * (0.62 + r.ft / 280)));
   const points = (fgm - tpm) * 2 + tpm * 3 + ftm;
   const rebounds = Math.max(
     0,
     Math.round(
-      (minutes / 32) * (r.reb / 12 + r.hgt / 40 + r.jmp / 50 + r.stre / 60) + rng.int(-1, 4),
+      (minutes / 28) * (r.reb / 9 + r.hgt / 36 + r.jmp / 45 + r.stre / 55) + rng.int(-1, 4),
     ),
   );
   const assists = Math.max(
     0,
-    Math.round((minutes / 32) * (r.pss / 12 + r.oiq / 40) + rng.int(-1, 4)),
+    Math.round((minutes / 28) * (r.pss / 9 + r.oiq / 35) + rng.int(-1, 4)),
   );
   const steals = Math.max(0, Math.round((r.diq / 45 + r.spd / 55) * rng.next() * 2.2));
   const blocks = Math.max(
@@ -223,11 +281,13 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       ? { ...g, completed: true, result: log.result, teamScore, opponentScore }
       : g,
   );
-  const standings = updateStandings(
-    next.standings,
-    next.collegeId ?? next.proTeamId ?? 'self',
-    upcoming.opponentId,
-    won,
+  let standings = updateStandings(next.standings ?? [], selfId, upcoming.opponentId, won);
+  standings = advanceConferenceGames(
+    standings,
+    next.settings.seed,
+    upcoming.gameNumber,
+    [selfId, upcoming.opponentId],
+    next.phase,
   );
 
   const pending = [...next.pendingDecisions];
@@ -293,6 +353,12 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     updatedAt: log.createdAt,
   };
 
+  next = pushSeasonEvents(next, [
+    ...eventFromHugeGame(next, log, oppStarLine),
+    ...maybeAllStarEvents(next, upcoming.gameNumber),
+    ...maybeHofEvent(next, upcoming.gameNumber, next.settings.seed),
+    ...maybeNewsEvent(next, upcoming.gameNumber, next.settings.seed),
+  ]);
   next = updateRosterStatus(next);
   return { save: next, log };
 }
@@ -426,12 +492,15 @@ function finalizeSeason(save: CareerSave): { save: CareerSave; log: GameLog } {
         ? { ...g, completed: true }
         : g,
   );
-  let withAwards: CareerSave = {
-    ...save,
-    awards,
-    goals,
-    history: [...save.history, ...awardHistory],
-  };
+  let withAwards: CareerSave = pushSeasonEvents(
+    {
+      ...save,
+      awards,
+      goals,
+      history: [...save.history, ...awardHistory],
+    },
+    awardEvents(save, newAwards),
+  );
   const stats = accumulateSeasonStats(withAwards, withAwards.seasonLogBuffer);
   stats.awards = newAwards.map((a) => a.type);
   const review = buildSeasonReview(withAwards, stats);

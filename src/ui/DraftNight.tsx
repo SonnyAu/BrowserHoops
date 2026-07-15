@@ -13,6 +13,7 @@ export function DraftNight({
   const board = career.draftBoard;
   const [paused, setPaused] = useState(false);
   const [holdOnUser, setHoldOnUser] = useState(false);
+  const [roundTab, setRoundTab] = useState<1 | 2>(1);
   const careerRef = useRef(career);
   const advancing = useRef(false);
   careerRef.current = career;
@@ -68,6 +69,7 @@ export function DraftNight({
   const current = board.picks[board.currentIndex];
   const lastRevealed = board.picks.slice(0, board.currentIndex).at(-1);
   const userPick = board.picks.find((p) => p.isUser);
+  const userHold = holdOnUser && !!lastRevealed?.isUser;
 
   return (
     <div className="draft-stage">
@@ -115,8 +117,8 @@ export function DraftNight({
         </div>
       </header>
 
-      <div className="draft-callout">
-        {holdOnUser && lastRevealed?.isUser ? (
+      <div className={`draft-callout${userHold ? '' : ' compact'}`}>
+        {userHold && lastRevealed ? (
           <>
             <p className="draft-callout-label">The selection is in</p>
             <h2>
@@ -145,20 +147,38 @@ export function DraftNight({
             </p>
             <h2 style={{ color: current?.teamColors[0] }}>{current?.teamName}</h2>
             {lastRevealed ? (
-              <p style={{ color: '#9aa8b8' }}>
+              <p style={{ color: '#9aa8b8', margin: 0 }}>
                 Last: {lastRevealed.teamAbbrev} — {lastRevealed.prospectName}
                 {lastRevealed.isUser ? ' ★' : ''}
               </p>
             ) : (
-              <p style={{ color: '#9aa8b8' }}>Commissioner opens the draft…</p>
+              <p style={{ color: '#9aa8b8', margin: 0 }}>Commissioner opens the draft…</p>
             )}
           </>
         )}
       </div>
 
-      <div className="draft-boards">
-        {[1, 2].map((round) => (
-          <section key={round} className="draft-round">
+      <div className="round-tabs">
+        <button
+          className={`btn ${roundTab === 1 ? 'primary' : ''}`}
+          onClick={() => setRoundTab(1)}
+        >
+          Round 1
+        </button>
+        <button
+          className={`btn ${roundTab === 2 ? 'primary' : ''}`}
+          onClick={() => setRoundTab(2)}
+        >
+          Round 2
+        </button>
+      </div>
+
+      <div className="draft-boards round-tabbed">
+        {([1, 2] as const).map((round) => (
+          <section
+            key={round}
+            className={`draft-round${roundTab === round ? ' active' : ''}`}
+          >
             <h3>Round {round}</h3>
             <ol>
               {board.picks

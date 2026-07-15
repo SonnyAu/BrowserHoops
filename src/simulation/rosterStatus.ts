@@ -48,16 +48,24 @@ export function updateRosterStatus(save: CareerSave): CareerSave {
   const trustBoost = (save.coachTrust - 60) / 12;
   const comp = competitionPenalty(save);
 
+  const stars = save.recruiting.stars;
+  // Underdogs who produce get an extra readiness bump (earn minutes).
+  const underdogProduce =
+    stars <= 2 && ppg >= 11 ? Math.min(6, (ppg - 10) * 0.8) : stars <= 3 && ppg >= 14 ? 3 : 0;
+
   const info = roleFromContext({
-    ovr: ovr + formBoost + trustBoost - comp * 0.35,
+    ovr: ovr + formBoost + trustBoost - comp * 0.35 + underdogProduce,
     prestige,
-    stars: save.recruiting.stars,
+    stars,
     rank: save.recruiting.nationalRank,
     positionNeed: 50 + save.coachTrust / 4,
   });
 
   // Blend toward target so status moves gradually
-  const targetMin = status === 'resting' ? Math.min(12, info.minutes) : info.minutes;
+  let targetMin = status === 'resting' ? Math.min(12, info.minutes) : info.minutes;
+  if (stars <= 2 && ppg >= 12) {
+    targetMin = Math.max(targetMin, Math.min(32, Math.round(18 + ppg * 0.7)));
+  }
   const minutes = Math.round(save.minutes * 0.55 + targetMin * 0.45);
   const role = info.role as RoleLabel;
 
@@ -66,6 +74,6 @@ export function updateRosterStatus(save: CareerSave): CareerSave {
     rosterStatus: status,
     role,
     minutes: Math.max(4, Math.min(36, minutes)),
-    usage: info.usage,
+    usage: Math.min(0.4, info.usage + (stars <= 2 && ppg >= 14 ? 0.02 : 0)),
   };
 }

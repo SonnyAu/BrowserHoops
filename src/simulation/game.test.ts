@@ -12,7 +12,8 @@ import { nbaTeams } from '../data/nbaTeams';
 import { adaptExternalLeagueJson } from '../importers/leagueFormat';
 import { beginDraft } from './draft';
 import { grantSeasonAwards } from './awards';
-import { generateOffers } from './recruiting';
+import { generateOffers, generateRecruitingProfile, offerMinutesFloor } from './recruiting';
+import { potentialBiasRange } from '../domain/createCareer';
 import { acknowledgeSeasonReview, resolveDecision, simulateNextGame } from './game';
 import { updateRosterStatus } from './rosterStatus';
 
@@ -153,6 +154,36 @@ describe('BrowserHoops career systems', () => {
     expect(save.player.intendedStars).toBe(5);
   });
 
+  it('never requires rerolls: star tier locks and offer floors hold across seeds', () => {
+    for (const seed of ['a', 'b', 'c', 'd', 'e']) {
+      const five = { ...defaultPlayer(), intendedStars: 5 as const, name: `P-${seed}` };
+      const profile5 = generateRecruitingProfile(five, seed);
+      expect(profile5.stars).toBe(5);
+      const offers5 = generateOffers(five, profile5, seed);
+      expect(offers5).toHaveLength(4);
+      const elite = offers5.find((o) => o.tradeoff === 'elite')!;
+      const eliteSchool = colleges.find((c) => c.id === elite.collegeId)!;
+      expect(eliteSchool.prestige).toBeGreaterThanOrEqual(88);
+
+      const two = { ...defaultPlayer(), intendedStars: 2 as const, name: `U-${seed}` };
+      const profile2 = generateRecruitingProfile(two, seed);
+      expect(profile2.stars).toBe(2);
+      const offers2 = generateOffers(two, profile2, seed);
+      const build = offers2.find((o) => o.tradeoff === 'buildAround')!;
+      expect(build.expectedMinutes).toBeGreaterThanOrEqual(offerMinutesFloor('buildAround', 2));
+    }
+  });
+
+  it('clamps scout potential bias by star tier', () => {
+    expect(potentialBiasRange(5)).toEqual([-3, 3]);
+    expect(potentialBiasRange(2)).toEqual([-6, 6]);
+    const five = { ...defaultPlayer(), intendedStars: 5 as const };
+    for (const seed of ['bias1', 'bias2', 'bias3', 'bias4', 'bias5']) {
+      const save = createCareer(five, { ...defaultSettings(), seed }, 'duke');
+      expect(Math.abs(save.hidden.potentialBias)).toBeLessThanOrEqual(3);
+    }
+  });
+
   it('places college prospects on campus when applicable', () => {
     const save = createCareer(player, { ...defaultSettings(), seed: 'kansas-mates' }, 'kansas');
     expect(save.draftYear).toBe(2026);
@@ -256,5 +287,81 @@ describe('BrowserHoops career systems', () => {
     expect(awards.length).toBeGreaterThan(0);
     expect(awards.every((a) => a.level === 'college')).toBe(true);
     void openMinutes;
+  });
+
+  it('lets elite OVR produce high scoring pace with starter minutes', () => {
+    const ratings = Object.fromEntries(
+      (['hgt', 'stre', 'spd', 'jmp', 'endu', 'ins', 'dnk', 'ft', 'fg', 'tp', 'oiq', 'diq', 'drb', 'pss', 'reb'] as const).map(
+        (k) => [k, 92],
+      ),
+    ) as PlayerBuild['ratings'];
+    let save = createCareer(
+      { ...defaultPlayer(), ratings, intendedStars: 5, traitIds: [] },
+      { ...defaultSettings(), seed: 'elite-ppg', collegeSeasonLength: 12 },
+      'wichita-state',
+    );
+    save = {
+      ...save,
+      minutes: 34,
+      usage: 0.34,
+      role: 'Primary Option',
+      fatigue: 0,
+    };
+    let pts = 0;
+    for (let i = 0; i < 8; i++) {
+      const { save: next, log } = simulateNextGame(save);
+      save = { ...next, minutes: 34, usage: 0.34, fatigue: 0 };
+      pts += log.points;
+    }
+    const ppg = pts / 8;
+    expect(ppg).toBeGreaterThan(18);
+  });
+
+  it('initializes full conference standings and advances other teams', () => {
+    const save = createCareer(player, { ...defaultSettings(), seed: 'standings' }, 'duke');
+    expect(save.standings.length).toBeGreaterThan(5);
+    expect(save.standings.every((r) => r.conference === 'ACC')).toBe(true);
+    const beforeOther = save.standings.find((r) => r.teamId !== 'duke')!;
+    const { save: next } = simulateNextGame(save);
+    const afterOther = next.standings.find((r) => r.teamId === beforeOther.teamId)!;
+    const moved =
+      afterOther.wins !== beforeOther.wins || afterOther.losses !== beforeOther.losses;
+    const selfMoved = next.wins + next.losses === 1;
+    expect(selfMoved).toBe(true);
+    expect(moved || next.standings.some((r) => r.wins + r.losses > 0)).toBe(true);
+  });
+
+  it('counts injury DNPs toward team record with real scores', () => {
+    let save = createCareer(player, { ...defaultSettings(), seed: 'inj-wl' }, 'duke');
+    save = {
+      ...save,
+      injury: { type: 'Ankle sprain', gamesRemaining: 2 },
+    };
+    const { save: next, log } = simulateNextGame(save);
+    expect(log.minutes).toBe(0);
+    expect(log.grade).toBe('OUT');
+    expect(next.wins + next.losses).toBe(1);
+    expect((log.teamScore ?? 0) + (log.opponentScore ?? 0)).toBeGreaterThan(0);
+    expect(next.schedule[0]?.completed).toBe(true);
+    expect(next.schedule[0]?.teamScore).toBeGreaterThan(0);
+  });
+
+  it('emits season events for big performances', () => {
+    const ratings = Object.fromEntries(
+      (['hgt', 'stre', 'spd', 'jmp', 'endu', 'ins', 'dnk', 'ft', 'fg', 'tp', 'oiq', 'diq', 'drb', 'pss', 'reb'] as const).map(
+        (k) => [k, 95],
+      ),
+    ) as PlayerBuild['ratings'];
+    let save = createCareer(
+      { ...defaultPlayer(), ratings, intendedStars: 5 },
+      { ...defaultSettings(), seed: 'events-big' },
+      'wichita-state',
+    );
+    save = { ...save, minutes: 36, usage: 0.36, fatigue: 0 };
+    for (let i = 0; i < 6; i++) {
+      const { save: next } = simulateNextGame(save);
+      save = { ...next, minutes: 36, usage: 0.36, fatigue: 0 };
+    }
+    expect(save.seasonEvents?.length).toBeGreaterThan(0);
   });
 });

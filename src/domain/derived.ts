@@ -70,7 +70,9 @@ export function scoutedPotential(
   const o = overall(p);
   const truth = hidden?.truePotential ?? computeTruePotential(p);
   const bias = hidden?.potentialBias ?? 0;
-  return Math.min(99, Math.max(o, truth + bias));
+  // Bias is flavor — keep scouted POT near true potential so create never invites rerolls.
+  const scouted = truth + bias;
+  return Math.min(99, Math.max(o, Math.max(truth - 6, Math.min(truth + 6, scouted))));
 }
 
 export function potential(p: PlayerBuild, truePotential?: number): number {
@@ -182,42 +184,73 @@ export function roleFromContext(args: {
   let usage = 0.12;
   if (readiness > 92 && prestige < 88) {
     role = 'Program Star';
-    minutes = 34;
-    usage = 0.3;
+    minutes = 36;
+    usage = 0.36;
   } else if (readiness > 88) {
     role = 'Primary Option';
-    minutes = 32;
-    usage = 0.28;
+    minutes = 34;
+    usage = 0.34;
   } else if (readiness > 84) {
     role = 'Featured Starter';
-    minutes = 30;
-    usage = 0.24;
+    minutes = 32;
+    usage = 0.28;
   } else if (readiness > 78) {
     role = 'Starter';
-    minutes = 27;
-    usage = 0.2;
+    minutes = 28;
+    usage = 0.24;
   } else if (readiness > 72) {
     role = 'Spot Starter';
-    minutes = 22;
-    usage = 0.17;
+    minutes = 24;
+    usage = 0.2;
   } else if (readiness > 66) {
     role = 'Sixth Man';
     minutes = 20;
-    usage = 0.16;
+    usage = 0.18;
   } else if (readiness > 60) {
     role = 'Rotation Player';
     minutes = 16;
-    usage = 0.13;
+    usage = 0.14;
   } else if (readiness > 52) {
     role = 'Developmental Reserve';
     minutes = 10;
     usage = 0.1;
   }
+  // Elite raw talent pushes ceiling even at blue-bloods (still cut below).
+  if (ovr >= 92 && minutes < 34) {
+    minutes = Math.max(minutes, 34);
+    usage = Math.max(usage, 0.32);
+  } else if (ovr >= 88 && minutes < 30) {
+    minutes = Math.max(minutes, 30);
+    usage = Math.max(usage, 0.28);
+  }
+  // Blue-bloods cut minutes; underdogs (1–2★) take a softer hit so they can earn a role.
   if (prestige >= 90 && minutes > 22) {
-    minutes -= 6;
-    usage -= 0.04;
+    const cut = stars <= 2 ? 3 : 6;
+    minutes -= cut;
+    usage -= stars <= 2 ? 0.02 : 0.04;
     if (role === 'Program Star') role = 'Featured Starter';
     else if (role === 'Primary Option') role = 'Starter';
   }
-  return { role, minutes: Math.max(4, Math.round(minutes)), usage: Math.max(0.08, usage) };
+  return { role, minutes: Math.max(4, Math.round(minutes)), usage: Math.max(0.08, Math.min(0.4, usage)) };
+}
+
+/** Short Home/review hint so low-star runs feel intentional, not bricked. */
+export function underdogBreakoutNote(args: {
+  stars: number;
+  minutes: number;
+  recentPpg: number;
+  trainingFocus: string;
+}): string | null {
+  const { stars, minutes, recentPpg, trainingFocus } = args;
+  if (stars > 3) return null;
+  if (stars <= 2 && minutes < 22) {
+    return 'Underdog path: pick a build-around school and produce — minutes climb with form. No reroll needed.';
+  }
+  if (stars <= 3 && recentPpg >= 12 && minutes < 28) {
+    return `Breakout window: ${recentPpg.toFixed(1)} PPG is earning trust. Stay on ${trainingFocus} training; OVR gains show in season review.`;
+  }
+  if (stars <= 2) {
+    return 'Underdog campaign: slower start, real ceiling if you stick the season.';
+  }
+  return null;
 }

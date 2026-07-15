@@ -1,5 +1,6 @@
-import { AttrKey, PlayerBuild, Ratings, StarTier, spendableAttrKeys } from './models';
-import { getTrait, heightToHgt } from './traits';
+import { AttrKey, PlayerBuild, Position, Ratings, StarTier, spendableAttrKeys } from './models';
+import { adjustRating, canIncrease, remainingPoints } from './points';
+import { heightToHgt } from './traits';
 
 export interface StarPreset {
   stars: StarTier;
@@ -26,6 +27,38 @@ const base = (n: number): Omit<Ratings, 'hgt'> => ({
   pss: n,
   reb: n,
 });
+
+/** Honest difficulty / fantasy dial — not a lottery. */
+export const STAR_TIER_CONTRACT: Record<
+  StarTier,
+  { label: string; pitch: string; earlyMinutes: [number, number] }
+> = {
+  1: {
+    label: 'Underdog',
+    pitch: 'Slow-burn campaign. Build-around minutes, earn your role — no reroll needed.',
+    earlyMinutes: [22, 30],
+  },
+  2: {
+    label: 'Underdog+',
+    pitch: 'Regional prospect path. Real minutes if you pick the right school.',
+    earlyMinutes: [20, 28],
+  },
+  3: {
+    label: 'Standard',
+    pitch: 'Balanced campaign. Mix of opportunity and competition.',
+    earlyMinutes: [16, 26],
+  },
+  4: {
+    label: 'Blue-blood track',
+    pitch: 'High-major offers and exposure; early minutes tighter at elites.',
+    earlyMinutes: [12, 24],
+  },
+  5: {
+    label: 'Lottery track',
+    pitch: "McDonald's-tier path. Max exposure, max competition — still your choice, not luck.",
+    earlyMinutes: [10, 22],
+  },
+};
 
 export const STAR_PRESETS: Record<StarTier, StarPreset> = {
   1: {
@@ -70,6 +103,73 @@ export const STAR_PRESETS: Record<StarTier, StarPreset> = {
   },
 };
 
+/** Position-first spend order, then remaining attrs. */
+function positionPriorities(position: Position): AttrKey[] {
+  const primary: Record<Position, AttrKey[]> = {
+    PG: ['pss', 'drb', 'oiq', 'tp', 'spd', 'ft', 'fg', 'endu', 'diq', 'jmp', 'stre', 'ins', 'dnk', 'reb'],
+    SG: ['tp', 'fg', 'spd', 'dnk', 'oiq', 'ft', 'drb', 'diq', 'jmp', 'endu', 'ins', 'pss', 'stre', 'reb'],
+    SF: ['spd', 'tp', 'dnk', 'diq', 'fg', 'jmp', 'oiq', 'stre', 'endu', 'drb', 'ins', 'ft', 'pss', 'reb'],
+    PF: ['reb', 'stre', 'ins', 'dnk', 'diq', 'jmp', 'endu', 'oiq', 'fg', 'tp', 'ft', 'spd', 'drb', 'pss'],
+    C: ['reb', 'stre', 'ins', 'dnk', 'diq', 'hgt', 'jmp', 'endu', 'oiq', 'ft', 'fg', 'tp', 'spd', 'drb', 'pss'],
+  };
+  const ordered = primary[position].filter((k) => k !== 'hgt');
+  const seen = new Set(ordered);
+  for (const k of spendableAttrKeys) {
+    if (!seen.has(k)) ordered.push(k);
+  }
+  return ordered;
+}
+
+/** Drop lowest-priority attributes until the build fits the star point pool. */
+function trimToBudget(player: PlayerBuild): PlayerBuild {
+  let next = player;
+  const priorities = positionPriorities(next.position).slice().reverse();
+  let guard = 0;
+  while (remainingPoints(next) < 0 && guard++ < 8000) {
+    let cut = false;
+    for (const key of priorities) {
+      const floor = STAR_PRESETS[next.intendedStars].floor;
+      if (next.ratings[key] > floor) {
+        next = adjustRating(next, key, -1);
+        cut = true;
+        break;
+      }
+    }
+    if (!cut) {
+      // Still over budget (e.g. traits) — drop traits until it fits
+      if (next.traitIds.length > 0) {
+        next = { ...next, traitIds: next.traitIds.slice(0, -1) };
+        continue;
+      }
+      break;
+    }
+  }
+  return next;
+}
+
+/** Spend remaining star-tier points into a ready position-aware build. */
+export function autoSpendStarBudget(player: PlayerBuild): PlayerBuild {
+  let next = player;
+  const priorities = positionPriorities(next.position);
+  let cursor = 0;
+  let guard = 0;
+
+  while (remainingPoints(next) > 0 && guard++ < 8000) {
+    let bumped = false;
+    for (let n = 0; n < priorities.length; n++) {
+      const key = priorities[(cursor + n) % priorities.length];
+      if (canIncrease(next, key)) {
+        next = adjustRating(next, key, 1);
+        cursor = (cursor + n + 1) % priorities.length;
+        bumped = true;
+        break;
+      }
+    }
+    if (!bumped) break;
+  }
+  return next;
+}
+
 export function applyStarPreset(player: PlayerBuild, stars: StarTier): PlayerBuild {
   const preset = STAR_PRESETS[stars];
   const ratings: Ratings = {
@@ -99,15 +199,14 @@ export function applyStarPreset(player: PlayerBuild, stars: StarTier): PlayerBui
   for (const k of spendableAttrKeys) {
     ratings[k] = Math.min(preset.softCap, Math.max(preset.floor, ratings[k]));
   }
-  return {
+  const baselinePlayer: PlayerBuild = {
     ...player,
     intendedStars: stars,
-    traitIds: player.traitIds.filter((id) => {
-      const t = getTrait(id);
-      return !!t && stars >= t.minStars;
-    }),
+    // Fresh tier pick gets a clean auto-build; traits can be re-selected after.
+    traitIds: [],
     ratings,
   };
+  return autoSpendStarBudget(trimToBudget(baselinePlayer));
 }
 
 export function clampToStarSoftCap(ratings: Ratings, stars: StarTier): Ratings {

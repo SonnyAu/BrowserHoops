@@ -1,7 +1,7 @@
 import { colleges, getCollege } from '../data/colleges';
 import { getDraftClass } from '../data/draftProspects';
-import { nbaTeams } from '../data/nbaTeams';
-import { ScheduledGame, StandingRow } from '../domain/models';
+import { getProTeam, nbaTeams } from '../data/nbaTeams';
+import { CareerPhase, ScheduledGame, StandingRow } from '../domain/models';
 import { Rng } from '../domain/rng';
 
 export function buildCollegeSchedule(
@@ -15,7 +15,6 @@ export function buildCollegeSchedule(
   const confMates = colleges.filter((c) => c.conference === self.conference && c.id !== collegeId);
   const others = colleges.filter((c) => c.id !== collegeId && c.conference !== self.conference);
 
-  // Bias non-conference toward schools hosting top prospects in this draft class
   const prospectSchoolIds = new Set(
     getDraftClass(draftYear)
       .filter((p) => p.collegeId && p.collegeId !== collegeId)
@@ -65,11 +64,52 @@ export function buildProSchedule(teamId: string, length: number, seed: string): 
   return games;
 }
 
+export function listCollegeConferences(): string[] {
+  return [...new Set(colleges.map((c) => c.conference))].sort();
+}
+
+export function listProConferences(): string[] {
+  return ['East', 'West'];
+}
+
+export function initialCollegeStandings(collegeId: string): StandingRow[] {
+  const self = getCollege(collegeId);
+  if (!self) return [];
+  return colleges
+    .filter((c) => c.conference === self.conference)
+    .map((c) => ({
+      teamId: c.id,
+      teamName: c.name,
+      wins: 0,
+      losses: 0,
+      conference: c.conference,
+    }));
+}
+
+export function initialProStandings(teamId: string): StandingRow[] {
+  const self = getProTeam(teamId);
+  if (!self) return [];
+  return nbaTeams
+    .filter((t) => t.conference === self.conference)
+    .map((t) => ({
+      teamId: t.id,
+      teamName: `${t.region} ${t.name}`,
+      wins: 0,
+      losses: 0,
+      conference: t.conference,
+    }));
+}
+
+/** @deprecated use initialCollegeStandings / initialProStandings */
 export function initialStandings(
   schedule: ScheduledGame[],
   selfId: string,
   selfName: string,
 ): StandingRow[] {
+  const college = getCollege(selfId);
+  if (college) return initialCollegeStandings(selfId);
+  const pro = getProTeam(selfId);
+  if (pro) return initialProStandings(selfId);
   const names = new Map<string, string>();
   names.set(selfId, selfName);
   for (const g of schedule) names.set(g.opponentId, g.opponentName);
@@ -78,6 +118,7 @@ export function initialStandings(
     teamName,
     wins: 0,
     losses: 0,
+    conference: 'Unknown',
   }));
 }
 
@@ -100,4 +141,97 @@ export function updateStandings(
     }
     return row;
   });
+}
+
+function teamStrength(teamId: string, phase: CareerPhase): number {
+  if (phase === 'professional' || phase === 'draft') {
+    const t = getProTeam(teamId);
+    return t ? 75 + (t.tid % 7) : 72;
+  }
+  return getCollege(teamId)?.prestige ?? 70;
+}
+
+/** Advance other conference games so the table moves each sim day. */
+export function advanceConferenceGames(
+  standings: StandingRow[],
+  seed: string,
+  gameNumber: number,
+  excludeIds: string[],
+  phase: CareerPhase,
+): StandingRow[] {
+  const rng = new Rng(`${seed}:conf:${gameNumber}`);
+  const exclude = new Set(excludeIds);
+  const byConf = new Map<string, StandingRow[]>();
+  for (const row of standings) {
+    const list = byConf.get(row.conference) ?? [];
+    list.push(row);
+    byConf.set(row.conference, list);
+  }
+
+  let next = standings.map((r) => ({ ...r }));
+  const index = new Map(next.map((r, i) => [r.teamId, i]));
+
+  for (const [, rows] of byConf) {
+    const pool = rows.filter((r) => !exclude.has(r.teamId));
+    if (pool.length < 2) continue;
+    const shuffled = [...pool].sort(() => rng.next() - 0.5);
+    const pairs = Math.min(3, Math.floor(shuffled.length / 2));
+    for (let p = 0; p < pairs; p++) {
+      const a = shuffled[p * 2];
+      const b = shuffled[p * 2 + 1];
+      if (!a || !b) break;
+      const sa = teamStrength(a.teamId, phase) + rng.int(-8, 8);
+      const sb = teamStrength(b.teamId, phase) + rng.int(-8, 8);
+      const aWon = sa >= sb;
+      const ai = index.get(a.teamId)!;
+      const bi = index.get(b.teamId)!;
+      if (aWon) {
+        next[ai] = { ...next[ai], wins: next[ai].wins + 1 };
+        next[bi] = { ...next[bi], losses: next[bi].losses + 1 };
+      } else {
+        next[ai] = { ...next[ai], losses: next[ai].losses + 1 };
+        next[bi] = { ...next[bi], wins: next[bi].wins + 1 };
+      }
+    }
+  }
+  return next;
+}
+
+/** Lazily add rows for another conference when the user switches the viewer. */
+export function ensureConferenceInStandings(
+  standings: StandingRow[],
+  conference: string,
+  phase: CareerPhase,
+  seed: string,
+  gamesPlayed: number,
+): StandingRow[] {
+  if (standings.some((r) => r.conference === conference)) return standings;
+  let fresh: StandingRow[];
+  if (phase === 'professional' || phase === 'draft') {
+    fresh = nbaTeams
+      .filter((t) => t.conference === conference)
+      .map((t) => ({
+        teamId: t.id,
+        teamName: `${t.region} ${t.name}`,
+        wins: 0,
+        losses: 0,
+        conference: t.conference,
+      }));
+  } else {
+    fresh = colleges
+      .filter((c) => c.conference === conference)
+      .map((c) => ({
+        teamId: c.id,
+        teamName: c.name,
+        wins: 0,
+        losses: 0,
+        conference: c.conference,
+      }));
+  }
+  // Catch them up roughly to games played.
+  let merged = [...standings, ...fresh];
+  for (let g = 1; g <= gamesPlayed; g++) {
+    merged = advanceConferenceGames(merged, `${seed}:lazy:${conference}`, g, [], phase);
+  }
+  return merged;
 }

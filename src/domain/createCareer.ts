@@ -1,7 +1,7 @@
 import { colleges, getCollege } from '../data/colleges';
 import { activeCollegeProspects, prospectsAtCollege } from '../data/draftProspects';
 import { generateOffers, generateRecruitingProfile } from '../simulation/recruiting';
-import { buildCollegeSchedule, initialStandings } from '../simulation/schedule';
+import { buildCollegeSchedule, initialCollegeStandings } from '../simulation/schedule';
 import {
   computeTruePotential,
   overall,
@@ -23,15 +23,24 @@ export function draftYearForCollegeSeason(season: number): number {
   return LEAGUE_START_SEASON + (season - 1);
 }
 
+/** Scout bias by tier — flavor only, never save-killing. */
+export function potentialBiasRange(stars: number): [number, number] {
+  if (stars >= 5) return [-3, 3];
+  if (stars >= 4) return [-4, 4];
+  if (stars >= 3) return [-5, 5];
+  return [-6, 6];
+}
+
 export function createHiddenDevelopment(player: PlayerBuild, seed: string): HiddenDevelopment {
   const rng = new Rng(seed + ':hidden:' + player.name);
   const truePotential = computeTruePotential(player, {
     age: 18,
     stars: player.intendedStars,
   });
+  const [biasLo, biasHi] = potentialBiasRange(player.intendedStars);
   return {
     truePotential,
-    potentialBias: rng.int(-8, 8),
+    potentialBias: rng.int(biasLo, biasHi),
     peakAgeMin: 24 + rng.int(0, 3),
     peakAgeMax: 28 + rng.int(0, 4),
     volatility: rng.int(20, 70),
@@ -104,7 +113,7 @@ export function createCareer(
     settings.seed,
     draftYear,
   );
-  const standings = initialStandings(schedule, chosen, college.name);
+  const standings = initialCollegeStandings(chosen);
   const collegeRoster = buildCollegeRoster(chosen, draftYear);
   const role = offer.expectedRole;
 
@@ -124,6 +133,7 @@ export function createCareer(
     nextGame: 1,
     schedule,
     standings,
+    seasonEvents: [],
     seasonStats: [],
     careerStats: [],
     gameLogsSummary: [],
