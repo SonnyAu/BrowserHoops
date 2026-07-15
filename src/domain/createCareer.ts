@@ -1,0 +1,3 @@
+import { CareerSave, CareerSettings, PlayerBuild } from './models';
+import { generateOffers, generateRecruitingProfile } from '../simulation/recruiting';
+export function createCareer(player: PlayerBuild, settings: CareerSettings, collegeId?: string): CareerSave { const recruiting=generateRecruitingProfile(player, settings.seed); const offers=generateOffers(player,recruiting,settings.seed); const now=new Date().toISOString(); return {id:crypto.randomUUID(), name:`${player.name} Career`, player, settings, recruiting, offers, collegeId:collegeId ?? offers[0].collegeId, season:1, nextGame:1, createdAt:now, updatedAt:now, history:[`Committed to ${collegeId ?? offers[0].collegeId}`]}; }
