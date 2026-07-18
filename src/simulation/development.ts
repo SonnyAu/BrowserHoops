@@ -304,10 +304,9 @@ export function accrueXpAfterGame(
 export function applyOffseasonDevelopment(save: CareerSave): CareerSave {
   let next = ensureLeagueRoster(save);
   const rng = new Rng(`${next.settings.seed}:offseason:${next.season}:${next.id}`);
-  const logs: string[] = [];
   const focus = FOCUS_MAP[next.trainingFocus] ?? spendableAttrKeys;
 
-  // User
+  // User — personal developmentLog is user-only (profile / season review).
   const userDev: DevelopablePlayer = {
     id: 'user',
     name: next.player.name,
@@ -329,9 +328,8 @@ export function applyOffseasonDevelopment(save: CareerSave): CareerSave {
     rng,
     focusAttrs: focus,
   });
-  logs.push(userResult.summary);
 
-  // College mates
+  // College mates (grown in place; not mixed into the user's development log)
   const collegeRoster = (next.collegeRoster ?? []).map((m) => {
     const d = developPlayer(
       {
@@ -355,7 +353,6 @@ export function applyOffseasonDevelopment(save: CareerSave): CareerSave {
         rng,
       },
     );
-    if (Math.abs(d.player.overall - m.overall) >= 2) logs.push(d.summary);
     return {
       ...m,
       ...d.player,
@@ -372,11 +369,9 @@ export function applyOffseasonDevelopment(save: CareerSave): CareerSave {
       regressionRate: next.settings.regressionRate,
       rng,
     });
-    if (Math.abs(d.player.overall - before.overall) >= 3) logs.push(d.summary);
     return fromDevelopableToLeague(p, d.player);
   });
 
-  const notable = logs.slice(0, 12);
   return {
     ...next,
     player: { ...next.player, ratings: userResult.player.ratings },
@@ -388,7 +383,7 @@ export function applyOffseasonDevelopment(save: CareerSave): CareerSave {
       ...next.hidden,
       // peak ages stay; true potential unchanged
     },
-    developmentLog: [...notable, ...(next.developmentLog ?? [])].slice(0, 40),
+    developmentLog: [userResult.summary, ...(next.developmentLog ?? [])].slice(0, 40),
     history: [...next.history, `Offseason development: ${userResult.summary}`],
   };
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCollege } from '../data/colleges';
 import { overall, scoutedPotential } from '../domain/derived';
+import { resolveCollegeIdFromPlayer } from '../domain/collegeLookup';
 import { jerseyForTeam } from '../domain/jersey';
 import {
   CareerSave,
@@ -18,7 +19,7 @@ import {
 } from '../persistence/db';
 import { jerseyStopsFromLines } from '../simulation/seasonArchive';
 import { TeamLink, resolveTeam, teamIdFromTid } from './EntityLinks';
-import { JerseyHistory } from './JerseyHistory';
+import { JerseyHistory, JerseyStop } from './JerseyHistory';
 import { PlayerStatsTable } from './PlayerStatsTable';
 
 type ResolvedPlayer = {
@@ -30,6 +31,8 @@ type ResolvedPlayer = {
   pot: number;
   ratings: Ratings;
   teamId: string | null;
+  /** Alma mater college id when known (NBA pack / draft). */
+  collegeId: string | null;
   contractLabel: string;
   jerseyNumber: number;
   jerseyByTeamId?: Record<string, number>;
@@ -48,6 +51,7 @@ function resolvePlayer(career: CareerSave, playerId: string): ResolvedPlayer | n
       pot: scoutedPotential(career.player, career.hidden),
       ratings: career.player.ratings,
       teamId,
+      collegeId: career.collegeId,
       contractLabel: career.contract
         ? `$${career.contract.amount}k · exp ${career.contract.exp} (${career.contract.type})`
         : 'No contract',
@@ -70,6 +74,7 @@ function resolvePlayer(career: CareerSave, playerId: string): ResolvedPlayer | n
       pot: mate.truePotential,
       ratings: mate.ratings,
       teamId: career.collegeId,
+      collegeId: career.collegeId,
       contractLabel: 'College',
       jerseyNumber: jerseyForTeam(mate.id, career.collegeId ?? 'college'),
       isUser: false,
@@ -88,6 +93,7 @@ function fromLeaguePlayer(lp: LeaguePlayer): ResolvedPlayer {
     pot: lp.potential,
     ratings: lp.ratings,
     teamId: teamIdFromTid(lp.tid),
+    collegeId: resolveCollegeIdFromPlayer(lp),
     contractLabel:
       lp.tid === 'FA'
         ? 'Free agent'
@@ -126,12 +132,12 @@ export function PlayerPage({ career }: { career: CareerSave }) {
   );
   const proLines = useMemo(() => lines.filter((l) => l.level === 'pro'), [lines]);
 
-  const jerseyStops = useMemo(() => {
+  const jerseyStops = useMemo((): JerseyStop[] => {
     if (!player) return [];
     const stops = jerseyStopsFromLines(lines, player.teamId);
-    // Ensure college commitment shows for user even before archive
-    if (player.isUser && career.collegeId && !stops.some((s) => s.teamId === career.collegeId)) {
-      stops.unshift({ teamId: career.collegeId, level: 'college' });
+    const collegeId = player.collegeId ?? (player.isUser ? career.collegeId : null);
+    if (collegeId && !stops.some((s) => s.level === 'college' && s.teamId === collegeId)) {
+      stops.unshift({ teamId: collegeId, level: 'college' });
     }
     if (player.teamId && !stops.some((s) => s.teamId === player.teamId)) {
       stops.push({
@@ -141,6 +147,7 @@ export function PlayerPage({ career }: { career: CareerSave }) {
     }
     return stops.map((s) => ({
       teamId: s.teamId,
+      level: s.level,
       number: jerseyForTeam(
         player.id,
         s.teamId,
@@ -240,18 +247,24 @@ export function PlayerPage({ career }: { career: CareerSave }) {
                 ))}
             </ul>
           ) : null}
-          {career.developmentLog?.length ? (
-            <>
-              <h3 className="card-title" style={{ marginTop: 12 }}>
-                Development
-              </h3>
-              <ul className="tx-list">
-                {career.developmentLog.slice(0, 12).map((line, i) => (
-                  <li key={i}>{line}</li>
-                ))}
-              </ul>
-            </>
-          ) : null}
+          {(() => {
+            const myDev = (career.developmentLog ?? []).filter((line) =>
+              line.includes(career.player.name),
+            );
+            if (!myDev.length) return null;
+            return (
+              <>
+                <h3 className="card-title" style={{ marginTop: 12 }}>
+                  Development
+                </h3>
+                <ul className="tx-list">
+                  {myDev.slice(0, 12).map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </>
+            );
+          })()}
         </section>
       ) : null}
 

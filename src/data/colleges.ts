@@ -63,9 +63,9 @@ export const colleges: College[] = [
     "region": "Plains",
     "conference": "Big 12",
     "colors": [
-      "#0051BA",
       "#E8000D",
-      "#111111"
+      "#FFFFFF",
+      "#0051BA"
     ],
     "prestige": 94,
     "preseasonRank": 3,
@@ -577,8 +577,8 @@ export const colleges: College[] = [
     "conference": "Big Ten",
     "colors": [
       "#BB0000",
-      "#666666",
-      "#111111"
+      "#B1B3B3",
+      "#FFFFFF"
     ],
     "prestige": 84,
     "preseasonRank": 21,
@@ -1063,8 +1063,8 @@ export const colleges: College[] = [
     "conference": "SEC",
     "colors": [
       "#BA0C2F",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 74,
     "preseasonRank": 45,
@@ -1090,8 +1090,8 @@ export const colleges: College[] = [
     "conference": "SEC",
     "colors": [
       "#73000A",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 73,
     "preseasonRank": 47,
@@ -1306,8 +1306,8 @@ export const colleges: College[] = [
     "conference": "ACC",
     "colors": [
       "#AD0000",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 82,
     "preseasonRank": 34,
@@ -1684,8 +1684,8 @@ export const colleges: College[] = [
     "conference": "Big 12",
     "colors": [
       "#CC0000",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 80,
     "preseasonRank": 30,
@@ -1765,8 +1765,8 @@ export const colleges: College[] = [
     "conference": "Big 12",
     "colors": [
       "#E00122",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 77,
     "preseasonRank": 38,
@@ -2197,8 +2197,8 @@ export const colleges: College[] = [
     "conference": "MWC",
     "colors": [
       "#A6192E",
-      "#000000",
-      "#111111"
+      "#FFFFFF",
+      "#000000"
     ],
     "prestige": 84,
     "preseasonRank": 19,

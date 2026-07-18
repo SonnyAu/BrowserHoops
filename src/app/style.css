@@ -1216,8 +1216,31 @@ table.data th {
 .jersey-history {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 14px;
   margin-top: 12px;
+}
+.jersey-history-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.jersey-history-group + .jersey-history-group {
+  padding-left: 14px;
+  margin-left: 2px;
+  border-left: 1px solid var(--border);
+}
+.jersey-history-label {
+  margin: 0;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.jersey-history-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .jersey-tile { text-decoration: none; }
 .jersey-tile-face {

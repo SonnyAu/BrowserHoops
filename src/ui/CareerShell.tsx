@@ -957,16 +957,22 @@ function ReviewView({
           <p className="muted">{latest.statsLine}</p>
           <p className="muted">Role: {latest.roleChange}</p>
           {latest.awards.length ? <p>Awards: {latest.awards.join(', ')}</p> : null}
-          {(career.developmentLog?.length ?? 0) > 0 ? (
-            <div style={{ marginTop: 12 }}>
-              <h3 className="card-title">Offseason development</h3>
-              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
-                {career.developmentLog.slice(0, 8).map((line, i) => (
-                  <li key={`${line}-${i}`}>{line}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          {(() => {
+            const myDev = (career.developmentLog ?? []).filter((line) =>
+              line.includes(career.player.name),
+            );
+            if (!myDev.length) return null;
+            return (
+              <div style={{ marginTop: 12 }}>
+                <h3 className="card-title">Offseason development</h3>
+                <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
+                  {myDev.slice(0, 8).map((line, i) => (
+                    <li key={`${line}-${i}`}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })()}
         </section>
         <section className="panel panel-pad pane-scroll">
           <h2 className="card-title">Season history</h2>

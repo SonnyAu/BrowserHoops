@@ -91,6 +91,9 @@ describe('unified offseason development', () => {
       nbaAfter.overall !== nbaBefore;
     expect(moved).toBe(true);
     expect(after.developmentLog.length).toBeGreaterThan(0);
+    // Personal log is the user only — not teammates or NBA pack notables.
+    expect(after.developmentLog.every((line) => line.includes(save.player.name))).toBe(true);
+    expect(after.developmentLog.some((line) => line.includes(mateAfter.name))).toBe(false);
   });
 
   it('ages the NBA pack during a college season finalize', () => {
