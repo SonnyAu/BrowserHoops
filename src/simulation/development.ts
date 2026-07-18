@@ -170,9 +170,7 @@ export function developPlayer(
 
   let ratings: Ratings = { ...player.ratings };
   const focus = ctx.focusAttrs?.length ? ctx.focusAttrs : [...spendableAttrKeys];
-  const weak = [...spendableAttrKeys]
-    .filter((k) => k !== 'hgt')
-    .sort((a, b) => ratings[a] - ratings[b]);
+  const weak = [...spendableAttrKeys].sort((a, b) => ratings[a] - ratings[b]);
   const spendOrder = [...new Set([...focus.filter((k) => k !== 'hgt'), ...weak])];
 
   let grown = 0;
