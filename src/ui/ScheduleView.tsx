@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { CareerSave, LeagueGameRecord } from '../domain/models';
 import { loadLeagueGame, loadLeagueGamesForDay, loadLeagueGamesForSeason } from '../persistence/db';
 import { BoxScoreView } from './BoxScoreView';
@@ -14,10 +13,7 @@ export function ScheduleView({ career }: { career: CareerSave }) {
   const [selected, setSelected] = useState<LeagueGameRecord | null>(null);
   const [seasonFilter, setSeasonFilter] = useState(career.season);
 
-  const userGames = useMemo(
-    () => career.schedule.filter((g) => (g as { season?: number }).season == null || true),
-    [career.schedule],
-  );
+  const userGames = career.schedule;
 
   useEffect(() => {
     let cancelled = false;
@@ -51,14 +47,7 @@ export function ScheduleView({ career }: { career: CareerSave }) {
     <div className="workspace-h schedule-view">
       <div className="stack pane-scroll" style={{ flex: 1.2, minWidth: 0 }}>
         <section className="panel panel-pad">
-          <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-            <h2 className="card-title" style={{ margin: 0 }}>
-              Your schedule
-            </h2>
-            <Link className="btn" to={`/career/${career.id}/bracket`}>
-              View bracket
-            </Link>
-          </div>
+          <h2 className="card-title">Your schedule</h2>
           <p className="muted" style={{ fontSize: 13, marginTop: 4 }}>
             Season {career.season} · Stage: {career.seasonStage ?? 'regular'}
           </p>

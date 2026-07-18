@@ -345,8 +345,8 @@ export function CharacterCreate() {
                 return (
                   <div className="rating-row" key={key}>
                     <span>{ATTR_LABELS[key]}</span>
-                    <div style={{ height: 8, background: '#eef2f6', borderRadius: 4, overflow: 'hidden' }}>
-                      <div style={{ width: `${effective}%`, height: '100%', background: 'var(--accent)' }} />
+                    <div className="meter">
+                      <div className="meter-fill" style={{ width: `${effective}%` }} />
                     </div>
                     <strong className="mono">
                       {effective}

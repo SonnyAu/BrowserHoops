@@ -96,14 +96,15 @@ export function SaveDashboard() {
     <div className="dashboard">
       <div className="dashboard-header">
         <div>
-          <div className="brand-mark">Browser Hoops</div>
-          <h1>Career saves</h1>
-          <p className="muted" style={{ margin: '6px 0 0' }}>
-            Basketball GM–style solo MyCareer. Manage one player from recruiting through retirement.
+          <div className="brand-mark">Solo MyCareer · HS → College → NBA</div>
+          <h1>Browser Hoops</h1>
+          <p className="dashboard-tagline">
+            One player, one story — from recruiting boards to draft night to the last dance.
+            Pick a career below or lace up a new one.
           </p>
         </div>
         <div className="row">
-          <label className="btn">
+          <label className="btn ghost">
             Import save
             <input
               type="file"
@@ -112,7 +113,7 @@ export function SaveDashboard() {
               onChange={(e) => e.target.files?.[0] && onImport(e.target.files[0])}
             />
           </label>
-          <label className="btn">
+          <label className="btn ghost">
             Validate league JSON
             <input
               type="file"
@@ -122,50 +123,48 @@ export function SaveDashboard() {
             />
           </label>
           <Link className="btn primary" to="/new/create">
-            Create new career
+            + New career
           </Link>
         </div>
       </div>
 
-      <div className="panel">
-        {saves.length === 0 ? (
-          <div className="empty">No saves in IndexedDB yet. Create a career to get started.</div>
-        ) : (
-          <table className="save-table">
-            <thead>
-              <tr>
-                <th>Career</th>
-                <th>Phase</th>
-                <th>Updated</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {saves.map((s) => (
-                <tr key={s.id}>
-                  <td>
-                    <button className="btn ghost" disabled={busy} onClick={() => open(s.id)}>
-                      <strong>{s.name}</strong>
-                      {s.customized ? <span className="tag warn" style={{ marginLeft: 8 }}>Customized</span> : null}
-                    </button>
-                  </td>
-                  <td className="muted">{s.phase ?? '—'}</td>
-                  <td className="muted mono">{new Date(s.updatedAt).toLocaleString()}</td>
-                  <td>
-                    <div className="row">
-                      <button className="btn" onClick={() => open(s.id)}>Continue</button>
-                      <button className="btn" onClick={() => onRename(s.id)}>Rename</button>
-                      <button className="btn" onClick={() => onDuplicate(s.id)}>Duplicate</button>
-                      <button className="btn" onClick={() => onExport(s.id)}>Export</button>
-                      <button className="btn danger" onClick={() => onDelete(s.id)}>Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {saves.length === 0 ? (
+        <div className="panel">
+          <div className="empty">
+            <p style={{ fontSize: 40, margin: '0 0 8px' }}>🏀</p>
+            <p style={{ margin: '0 0 12px' }}>
+              No careers yet. Every legend starts as an unranked kid in a driveway.
+            </p>
+            <Link className="btn primary" to="/new/create">
+              Create your player
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="save-grid">
+          {saves.map((s) => (
+            <div className="save-card" key={s.id}>
+              <button className="save-card-name" disabled={busy} onClick={() => open(s.id)}>
+                {s.name}
+              </button>
+              <div className="save-card-meta">
+                <span className="tag">{s.phase ?? 'new'}</span>
+                {s.customized ? <span className="tag warn">Customized</span> : null}
+                <span className="mono">{new Date(s.updatedAt).toLocaleString()}</span>
+              </div>
+              <div className="save-card-actions">
+                <button className="btn primary" disabled={busy} onClick={() => open(s.id)}>
+                  Continue
+                </button>
+                <button className="btn" onClick={() => onRename(s.id)}>Rename</button>
+                <button className="btn" onClick={() => onDuplicate(s.id)}>Duplicate</button>
+                <button className="btn" onClick={() => onExport(s.id)}>Export</button>
+                <button className="btn danger" onClick={() => onDelete(s.id)}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

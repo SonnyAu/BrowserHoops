@@ -46,7 +46,7 @@ export function NbaBracket({
             {bracket.status === 'projected' ? 'Projected' : 'Live'} · Season {bracket.season}
           </p>
           <h1>Playoffs</h1>
-          <p className="muted" style={{ color: '#b8c0cc', margin: 0 }}>
+          <p className="muted" style={{ margin: 0 }}>
             Best-of-seven · Main stage above · Play-In below
           </p>
         </div>

@@ -52,7 +52,7 @@ export function MadnessBracket({
           {bracket.championName ? (
             <p className="madness-champ">Champion: {bracket.championName}</p>
           ) : (
-            <p className="muted" style={{ color: '#c5d4e8' }}>
+            <p className="muted">
               68 teams · First Four · Road to the Final Four
             </p>
           )}

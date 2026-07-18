@@ -41,21 +41,56 @@ import { PlayerLink, TeamLink, teamIdFromTid } from './EntityLinks';
 import { PlayerPage } from './PlayerPage';
 import { ScheduleView } from './ScheduleView';
 import { TeamPage } from './TeamPage';
-import { simTargetsForCareer, useSimController } from './useSimController';
+import { SimTarget, simTargetsForCareer, useSimController } from './useSimController';
 
-const NAV = [
-  { to: 'home', label: 'Home' },
-  { to: 'schedule', label: 'Schedule' },
-  { to: 'bracket', label: 'Bracket' },
-  { to: 'training', label: 'Training' },
-  { to: 'decisions', label: 'Decisions' },
-  { to: 'history', label: 'Career history' },
-  { to: 'leaderboards', label: 'Leaderboards' },
-  { to: 'review', label: 'Season review' },
-  { to: 'draft', label: 'Draft night' },
-  { to: 'godmode', label: 'God Mode' },
-  { to: 'legacy', label: 'Legacy' },
-] as const;
+const NAV_SECTIONS: { label: string; items: { to: string; label: string }[] }[] = [
+  {
+    label: 'This season',
+    items: [
+      { to: 'home', label: 'Home' },
+      { to: 'schedule', label: 'Schedule' },
+      { to: 'bracket', label: 'Postseason' },
+      { to: 'training', label: 'Training' },
+      { to: 'decisions', label: 'Decisions' },
+    ],
+  },
+  {
+    label: 'The story',
+    items: [
+      { to: 'history', label: 'Career history' },
+      { to: 'leaderboards', label: 'Leaderboards' },
+      { to: 'review', label: 'Season review' },
+      { to: 'legacy', label: 'Legacy' },
+    ],
+  },
+  {
+    label: 'Special',
+    items: [
+      { to: 'draft', label: 'Draft night' },
+      { to: 'godmode', label: 'God Mode' },
+    ],
+  },
+];
+
+const PHASE_LABEL: Record<string, string> = {
+  recruiting: 'Recruiting',
+  college: 'College',
+  seasonReview: 'Season review',
+  draft: 'Draft',
+  professional: 'Pro',
+  retired: 'Retired',
+};
+
+const SIM_LABELS: Record<SimTarget, string> = {
+  'one game': '1 Game',
+  week: 'Week',
+  month: 'Month',
+  'all-star break': 'All-Star',
+  'trade deadline': 'Deadline',
+  playoffs: 'Playoffs',
+  tournament: 'Tournament',
+  season: 'Season',
+};
 
 export function CareerShell() {
   const { saveId } = useParams();
@@ -132,6 +167,7 @@ export function CareerShell() {
             </PlayerLink>
           </strong>
           <span>
+            #{career.player.jerseyNumber} ·{' '}
             {(career.proTeamId || career.collegeId) ? (
               <TeamLink
                 saveId={career.id}
@@ -141,18 +177,46 @@ export function CareerShell() {
               </TeamLink>
             ) : (
               teamName
-            )}{' '}
-            · {career.phase} · S{career.season}
+            )}
+          </span>
+          <span>
+            {PHASE_LABEL[career.phase] ?? career.phase} · Season {career.season}
           </span>
           <span>
             {overall(career.player)} OVR · {career.role}
           </span>
         </div>
-        {NAV.map((item) => {
-          if (item.to === 'godmode' && !career.settings.godMode) return null;
-          if (item.to === 'draft' && career.phase !== 'draft' && !career.draftBoard) return null;
+        {NAV_SECTIONS.map((section) => {
+          const items = section.items.filter((item) => {
+            if (item.to === 'godmode' && !career.settings.godMode) return false;
+            if (item.to === 'draft' && career.phase !== 'draft' && !career.draftBoard) return false;
+            if (item.to === 'legacy' && !career.retired) return false;
+            if (
+              item.to === 'review' &&
+              career.seasonReviews.length === 0 &&
+              career.phase !== 'seasonReview'
+            ) {
+              return false;
+            }
+            return true;
+          });
+          if (!items.length) return null;
           return (
-            <NavLink key={item.to} to={`/career/${career.id}/${item.to}`} label={item.label} />
+            <div key={section.label} className="nav-group">
+              <div className="nav-section">{section.label}</div>
+              {items.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={`/career/${career.id}/${item.to}`}
+                  label={item.label}
+                  badge={
+                    item.to === 'decisions' && career.pendingDecisions.length
+                      ? career.pendingDecisions.length
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
           );
         })}
         <div className="sidebar-foot">
@@ -162,10 +226,10 @@ export function CareerShell() {
 
       <div className="career-main">
         <div className="simbar">
-          <span className="label">Sim</span>
+          <span className="label">Sim to</span>
           {simTargets.map((t) => (
             <button key={t} disabled={isSim || simBlocked} onClick={() => sim(t)}>
-              {t}
+              {SIM_LABELS[t] ?? t}
             </button>
           ))}
           <button className="pause" disabled={!isSim} onClick={pause}>
@@ -301,12 +365,13 @@ export function CareerShell() {
   );
 }
 
-function NavLink({ to, label }: { to: string; label: string }) {
+function NavLink({ to, label, badge }: { to: string; label: string; badge?: number }) {
   const { pathname } = useLocation();
   const active = pathname.endsWith('/' + to.split('/').pop());
   return (
     <Link className={`nav-btn ${active ? 'active' : ''}`} to={to}>
       {label}
+      {badge ? <span className="nav-badge">{badge}</span> : null}
     </Link>
   );
 }
@@ -614,19 +679,7 @@ function HomeView({
           </div>
         </section>
         <section className="panel panel-pad">
-          <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-            <h2 className="card-title" style={{ margin: 0 }}>
-              Recent games
-            </h2>
-            <div className="row" style={{ gap: 6 }}>
-              <Link className="btn" to={`/career/${career.id}/schedule`}>
-                Full schedule
-              </Link>
-              <Link className="btn" to={`/career/${career.id}/bracket`}>
-                View bracket
-              </Link>
-            </div>
-          </div>
+          <h2 className="card-title">Recent games</h2>
           {recent.length === 0 ? (
             <p className="muted">No games yet. Use the sim bar to advance.</p>
           ) : (
@@ -828,7 +881,7 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
           <table className="data">
             <thead>
               <tr>
-                <th>S</th><th>G</th><th>Opp</th><th>Result</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>MIN</th><th>Grade</th><th></th>
+                <th>S</th><th>G</th><th>Opp</th><th>Result</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>MIN</th><th>Grade</th>
               </tr>
             </thead>
             <tbody>
@@ -845,13 +898,6 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
                   <td>{l.blocks}</td>
                   <td>{l.minutes}</td>
                   <td>{l.grade}</td>
-                  <td>
-                    {l.leagueGameId ? (
-                      <Link className="btn" style={{ fontSize: 11, padding: '2px 6px' }} to={`/career/${career.id}/schedule`}>
-                        Box
-                      </Link>
-                    ) : null}
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -934,13 +980,7 @@ function ReviewView({
   return (
     <div className="stack">
       <div className="workspace-h cols-2">
-        <section
-          className="panel panel-pad pane-scroll"
-          style={{
-            border: needsAck ? '2px solid var(--accent)' : undefined,
-            background: needsAck ? '#f0f6ff' : undefined,
-          }}
-        >
+        <section className={`panel panel-pad pane-scroll${needsAck ? ' is-callout' : ''}`}>
           <h2 className="card-title">Season {latest.season}</h2>
           <h3 style={{ margin: '0 0 6px', fontSize: 16 }}>
             {latest.teamName} · {latest.record}

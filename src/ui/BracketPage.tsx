@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { CareerSave } from '../domain/models';
 import { bracketForDisplay } from '../simulation/bracketProjection';
 import { pendingUserMadnessGame } from '../simulation/marchMadness';
@@ -56,17 +55,14 @@ export function BracketPage({ career }: { career: CareerSave }) {
   if (!bracket) {
     return (
       <section className="panel panel-pad">
-        <h2 className="card-title">Bracket</h2>
+        <h2 className="card-title">Postseason</h2>
         <p className="muted">Standings are not ready yet. Sim a few games to project the field.</p>
-        <Link className="btn" to={`/career/${career.id}/schedule`}>
-          Schedule
-        </Link>
       </section>
     );
   }
 
   return (
-    <div className="stack" style={{ height: '100%', minHeight: 0 }}>
+    <div className="stack">
       <div className="row" style={{ gap: 8, flexWrap: 'wrap' }}>
         <span className="tag">
           {career.seasonStage === 'regular' || !career.seasonStage
@@ -76,9 +72,6 @@ export function BracketPage({ career }: { career: CareerSave }) {
               : 'Live bracket'}
         </span>
         {userStatus ? <span className="tag">{userStatus}</span> : null}
-        <Link className="btn" to={`/career/${career.id}/schedule`}>
-          Schedule & box scores
-        </Link>
       </div>
       {bracket.kind === 'marchMadness' ? (
         <MadnessBracket saveId={career.id} bracket={bracket} userTeamId={userTeamId} />

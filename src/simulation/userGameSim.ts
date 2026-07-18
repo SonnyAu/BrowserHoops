@@ -100,7 +100,8 @@ export function buildUserLeagueGame(
   stage: SeasonStage,
   playoffMeta?: LeagueGamePlayoffMeta,
 ): LeagueGameRecord {
-  const selfId = save.collegeId ?? save.proTeamId ?? 'self';
+  // Pro team first — collegeId persists after the draft as the alma mater.
+  const selfId = save.proTeamId ?? save.collegeId ?? 'self';
   const selfName =
     save.proTeamId && getProTeam(save.proTeamId)
       ? `${getProTeam(save.proTeamId)!.region} ${getProTeam(save.proTeamId)!.name}`
@@ -157,7 +158,8 @@ export function simulateUserScheduledGame(
   const r = getEffectiveRatings(next.player);
 
   const ovr = overall(next.player);
-  const selfId = next.collegeId ?? next.proTeamId ?? 'self';
+  // Pro team first — collegeId persists after the draft as the alma mater.
+  const selfId = next.proTeamId ?? next.collegeId ?? 'self';
   const oppCollege = getCollege(upcoming.opponentId);
   const oppPro = getProTeam(upcoming.opponentId);
   const oppProspects =

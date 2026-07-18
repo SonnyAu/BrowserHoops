@@ -78,7 +78,7 @@ export function DraftNight({
         <div>
           <p className="draft-kicker">NBA Draft · Live board</p>
           <h1>Draft Night</h1>
-          <p className="muted" style={{ color: '#9aa8b8' }}>
+          <p className="muted">
             {userPick
               ? `${career.player.name} selected at pick ${userPick.pick}`
               : userStillAvailable
@@ -131,7 +131,7 @@ export function DraftNight({
               {ordinal(lastRevealed.pick)} pick, the {lastRevealed.teamName} select…
             </h2>
             <p className="draft-name user">{lastRevealed.prospectName}</p>
-            <p style={{ color: '#9aa8b8' }}>
+            <p className="muted">
               {lastRevealed.position} · {lastRevealed.teamAbbrev}
             </p>
             <button
@@ -152,12 +152,12 @@ export function DraftNight({
             </p>
             <h2 style={{ color: current?.teamColors[0] }}>{current?.teamName}</h2>
             {lastRevealed ? (
-              <p style={{ color: '#9aa8b8', margin: 0 }}>
+              <p className="muted" style={{ margin: 0 }}>
                 Last: {lastRevealed.teamAbbrev} — {lastRevealed.prospectName}
                 {lastRevealed.isUser ? ' ★' : ''}
               </p>
             ) : (
-              <p style={{ color: '#9aa8b8', margin: 0 }}>Commissioner opens the draft…</p>
+              <p className="muted" style={{ margin: 0 }}>Commissioner opens the draft…</p>
             )}
           </>
         )}
@@ -209,10 +209,10 @@ export function DraftNight({
                         <>
                           {p.prospectName}
                           {p.isUser ? ' ★' : ''}
-                          <span style={{ color: '#9aa8b8' }}> · {p.position}</span>
+                          <span className="muted"> · {p.position}</span>
                         </>
                       ) : (
-                        <span style={{ color: '#6b7a8a' }}>TBD</span>
+                        <span className="muted">TBD</span>
                       )}
                     </span>
                   </li>

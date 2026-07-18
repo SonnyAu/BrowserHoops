@@ -64,6 +64,25 @@ function normalizeSeasonState(save: CareerSave): CareerSave {
       };
     }
   }
+  // Repair saves hurt by the old selfId bug: mid-regular-season, the user's
+  // team row must carry the user's real record, not an NPC-simmed one.
+  if (
+    next.phase === 'professional' &&
+    next.proTeamId &&
+    (next.seasonStage ?? 'regular') === 'regular'
+  ) {
+    const row = next.standings.find((r) => r.teamId === next.proTeamId);
+    if (row && (row.wins !== next.wins || row.losses !== next.losses)) {
+      next = {
+        ...next,
+        standings: next.standings.map((r) =>
+          r.teamId === next.proTeamId
+            ? { ...r, wins: next.wins, losses: next.losses }
+            : r,
+        ),
+      };
+    }
+  }
   return next;
 }
 
@@ -265,7 +284,7 @@ export function accumulateSeasonStats(save: CareerSave, logs: GameLog[]): Season
   return {
     season: save.season,
     level: save.proTeamId ? 'pro' : 'college',
-    teamId: save.collegeId ?? save.proTeamId ?? 'unknown',
+    teamId: save.proTeamId ?? save.collegeId ?? 'unknown',
     teamName,
     gp: real.length,
     gs: real.filter((l) => l.minutes >= 20).length,
