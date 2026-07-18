@@ -148,11 +148,23 @@ export interface HiddenDevelopment {
 
 export type RosterStatus = 'active' | 'injured' | 'resting' | 'suspended';
 
-export interface CollegeRosterMate {
+/** Shared development state for user, teammates, and NBA pack players. */
+export interface DevelopablePlayer {
   id: string;
   name: string;
   position: Position;
+  ratings: Ratings;
   overall: number;
+  age: number;
+  truePotential: number;
+  seasonXp: number;
+  workEthic: number;
+  volatility: number;
+  peakAgeMin: number;
+  peakAgeMax: number;
+}
+
+export interface CollegeRosterMate extends DevelopablePlayer {
   draftYear: number;
 }
 
@@ -245,6 +257,13 @@ export interface LeaguePlayer {
   draftRound: number;
   draftPick: number;
   draftTid: number;
+  /** Mutable development fields (filled when cloned onto a career save). */
+  age?: number;
+  seasonXp?: number;
+  workEthic?: number;
+  volatility?: number;
+  peakAgeMin?: number;
+  peakAgeMax?: number;
 }
 
 /** Pre-draft college prospect from league pack. */
@@ -526,6 +545,12 @@ export interface CareerSave {
   wins: number;
   losses: number;
   seasonLogBuffer: GameLog[];
+  /** User season XP bank (mirrors development; ratings update in offseason). */
+  seasonXp: number;
+  /** Short offseason development headlines. */
+  developmentLog: string[];
+  /** Full mutable NBA pack — develops every season including college years. */
+  leagueRoster: LeaguePlayer[];
 }
 
 export type CareerSaveSnapshot = Omit<CareerSave, 'godModeBackup'>;

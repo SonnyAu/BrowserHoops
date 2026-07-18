@@ -10,11 +10,16 @@ function recentPpg(save: CareerSave): number {
   return logs.reduce((s, l) => s + l.points, 0) / logs.length;
 }
 
+function leaguePool(save: CareerSave) {
+  return save.leagueRoster?.length ? save.leagueRoster : nbaPlayers;
+}
+
 function competitionPenalty(save: CareerSave): number {
   const ovr = overall(save.player);
   if (save.proTeamId) {
-    const mates = nbaPlayers.filter(
-      (p) => p.tid === getProTeam(save.proTeamId!)?.tid && p.position === save.player.position,
+    const tid = getProTeam(save.proTeamId!)?.tid;
+    const mates = leaguePool(save).filter(
+      (p) => p.tid === tid && p.position === save.player.position,
     );
     const better = mates.filter((p) => p.overall > ovr + 2).length;
     return better * 3;

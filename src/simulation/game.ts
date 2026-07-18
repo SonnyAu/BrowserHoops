@@ -13,6 +13,11 @@ import {
 import { Rng } from '../domain/rng';
 import { getEffectiveRatings } from '../domain/traits';
 import { grantSeasonAwards } from './awards';
+import {
+  accrueXpAfterGame,
+  applyOffseasonDevelopment,
+  ensureLeagueRoster,
+} from './development';
 import { beginDraft } from './draft';
 import {
   awardEvents,
@@ -29,9 +34,14 @@ import {
   initialProStandings,
   updateStandings,
 } from './schedule';
+import { startNextCollegeSeason, startNextProSeason } from './season';
+import { applyTraining, trainingXpMult } from './training';
 
 function normalizeSeasonState(save: CareerSave): CareerSave {
   let next = save.seasonEvents ? save : { ...save, seasonEvents: [] };
+  if (next.seasonXp == null) next = { ...next, seasonXp: 0 };
+  if (!next.developmentLog) next = { ...next, developmentLog: [] };
+  next = ensureLeagueRoster(next);
   const rows = next.standings ?? [];
   if (!rows.length || rows.some((r) => !r.conference)) {
     if (next.proTeamId) next = { ...next, standings: initialProStandings(next.proTeamId) };
@@ -39,8 +49,6 @@ function normalizeSeasonState(save: CareerSave): CareerSave {
   }
   return next;
 }
-import { startNextCollegeSeason, startNextProSeason } from './season';
-import { applyTraining } from './training';
 
 export function assignRole(save: CareerSave) {
   return {
@@ -75,8 +83,10 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     return finalizeSeason(normalized);
   }
 
-  let next = applyTraining(normalized, String(upcoming.gameNumber));
+  let next = ensureLeagueRoster(normalized);
+  next = applyTraining(next, String(upcoming.gameNumber));
   next = updateRosterStatus(next);
+  const trainMult = trainingXpMult(next);
   const rng = new Rng(`${next.settings.seed}:${next.id}:${next.phase}:${upcoming.gameNumber}`);
   const role = assignRole(next);
   const r = getEffectiveRatings(next.player);
@@ -164,6 +174,13 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       ...eventFromHugeGame(injuredSave, log, oppStarLine),
       ...maybeNewsEvent(injuredSave, upcoming.gameNumber, next.settings.seed),
     ]);
+    injuredSave = accrueXpAfterGame(injuredSave, {
+      userMinutes: 0,
+      userUsage: 0,
+      userPerformance: 0.55,
+      teamWon: won,
+      trainingMult: trainMult * 0.35,
+    });
     return { save: injuredSave, log };
   }
 
@@ -359,6 +376,14 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     ...maybeHofEvent(next, upcoming.gameNumber, next.settings.seed),
     ...maybeNewsEvent(next, upcoming.gameNumber, next.settings.seed),
   ]);
+  const userPerf = Math.min(1.5, Math.max(0.5, points / Math.max(8, minutes * 0.5)));
+  next = accrueXpAfterGame(next, {
+    userMinutes: minutes,
+    userUsage: usage,
+    userPerformance: userPerf,
+    teamWon: won,
+    trainingMult: trainMult,
+  });
   next = updateRosterStatus(next);
   return { save: next, log };
 }
@@ -501,6 +526,8 @@ function finalizeSeason(save: CareerSave): { save: CareerSave; log: GameLog } {
     },
     awardEvents(save, newAwards),
   );
+  // Offseason development for user + teammates + full NBA pack (ratings jump here).
+  withAwards = applyOffseasonDevelopment(withAwards);
   const stats = accumulateSeasonStats(withAwards, withAwards.seasonLogBuffer);
   stats.awards = newAwards.map((a) => a.type);
   const review = buildSeasonReview(withAwards, stats);

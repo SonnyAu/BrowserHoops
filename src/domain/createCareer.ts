@@ -1,10 +1,12 @@
 import { colleges, getCollege } from '../data/colleges';
 import { activeCollegeProspects, prospectsAtCollege } from '../data/draftProspects';
+import { cloneLeagueRoster, defaultDevMeta } from '../simulation/development';
 import { generateOffers, generateRecruitingProfile } from '../simulation/recruiting';
 import { buildCollegeSchedule, initialCollegeStandings } from '../simulation/schedule';
 import {
   computeTruePotential,
   overall,
+  overallFromRatings,
   roleFromContext,
   scoutedPotential,
 } from './derived';
@@ -59,7 +61,6 @@ export function buildCollegeRoster(
   draftYear: number,
 ): CollegeRosterMate[] {
   const atSchool = prospectsAtCollege(collegeId).filter((p) => p.draftYear >= draftYear);
-  // Also match by college name if id lookup thin
   const college = getCollege(collegeId);
   const byName = college
     ? activeCollegeProspects(draftYear).filter(
@@ -70,11 +71,23 @@ export function buildCollegeRoster(
     : [];
   const map = new Map<string, CollegeRosterMate>();
   for (const p of [...atSchool, ...byName]) {
+    const ratings = { ...p.ratings };
+    const truePot = p.truePotential ?? p.potential ?? p.overall + 6;
+    const meta = defaultDevMeta(p.overall, truePot);
+    const age = Math.max(18, 18 + (draftYear - p.draftYear) + 1);
     map.set(p.id, {
       id: p.id,
       name: p.name,
       position: p.position,
-      overall: p.overall,
+      ratings,
+      overall: overallFromRatings(ratings, p.position),
+      age,
+      truePotential: truePot,
+      seasonXp: 0,
+      workEthic: meta.workEthic,
+      volatility: meta.volatility,
+      peakAgeMin: meta.peakAgeMin,
+      peakAgeMax: meta.peakAgeMax,
       draftYear: p.draftYear,
     });
   }
@@ -187,5 +200,8 @@ export function createCareer(
     wins: 0,
     losses: 0,
     seasonLogBuffer: [],
+    seasonXp: 0,
+    developmentLog: [],
+    leagueRoster: cloneLeagueRoster(LEAGUE_START_SEASON),
   };
 }

@@ -386,9 +386,12 @@ function HomeView({
         </div>
         <div className="stat"><b>{career.wins}-{career.losses}</b><span>Team record</span></div>
         <div className="stat"><b>{role.minutes}</b><span>Minutes</span></div>
-        <div className="stat"><b>{career.rosterStatus}</b><span>Status</span></div>
+        <div className="stat"><b>{Math.round(career.seasonXp ?? 0)}</b><span>Season XP</span></div>
         <div className="stat"><b>{Math.round(career.draftStock)}</b><span>Draft stock</span></div>
       </div>
+      <p className="muted" style={{ margin: 0, fontSize: 12 }}>
+        Ratings stay flat in-season. Season XP for you, teammates, and the league converts in the offseason.
+      </p>
 
       {breakout ? (
         <p className="tag good" style={{ margin: 0 }}>
@@ -604,7 +607,8 @@ function TrainingView({
     <section className="panel panel-pad">
       <h2 className="card-title">Training focus</h2>
       <p className="muted">
-        Progress is gradual and uncertain. Intense work raises fatigue and injury risk.
+        Training banks Season XP (now {Math.round(career.seasonXp ?? 0)}). Attribute overalls update in the
+        offseason from XP, age, and performance — not game-to-game. Intense work raises fatigue and XP gain.
       </p>
       <div className="row" style={{ marginBottom: 12 }}>
         {focuses.map((f) => (
@@ -740,7 +744,8 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
 
 function LeaderboardsView({ career, logs }: { career: CareerSave; logs: GameLog[] }) {
   const careerPts = logs.reduce((s, l) => s + l.points, 0);
-  const leagueLeaders = [...nbaPlayers]
+  const pool = career.leagueRoster?.length ? career.leagueRoster : nbaPlayers;
+  const leagueLeaders = [...pool]
     .sort((a, b) => b.overall - a.overall)
     .slice(0, 15);
 
@@ -819,6 +824,16 @@ function ReviewView({
           <p className="muted">{latest.statsLine}</p>
           <p className="muted">Role: {latest.roleChange}</p>
           {latest.awards.length ? <p>Awards: {latest.awards.join(', ')}</p> : null}
+          {(career.developmentLog?.length ?? 0) > 0 ? (
+            <div style={{ marginTop: 12 }}>
+              <h3 className="card-title">Offseason development</h3>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
+                {career.developmentLog.slice(0, 8).map((line, i) => (
+                  <li key={`${line}-${i}`}>{line}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </section>
         <section className="panel panel-pad pane-scroll">
           <h2 className="card-title">Season history</h2>

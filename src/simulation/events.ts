@@ -2,6 +2,10 @@ import { nbaPlayers } from '../data/nbaPlayers';
 import { CareerSave, GameLog, SeasonEvent } from '../domain/models';
 import { Rng } from '../domain/rng';
 
+function leaguePool(save: CareerSave) {
+  return save.leagueRoster?.length ? save.leagueRoster : nbaPlayers;
+}
+
 const MAX_EVENTS = 80;
 
 export function pushSeasonEvents(save: CareerSave, events: SeasonEvent[]): CareerSave {
@@ -95,7 +99,7 @@ export function maybeAllStarEvents(save: CareerSave, gameNumber: number): Season
       detail: `${ppg.toFixed(1)} PPG · ${mpg.toFixed(1)} MPG`,
     });
   } else {
-    const stars = [...nbaPlayers].sort((a, b) => b.overall - a.overall).slice(0, 3);
+    const stars = [...leaguePool(save)].sort((a, b) => b.overall - a.overall).slice(0, 3);
     out.push({
       id: crypto.randomUUID(),
       gameNumber,
@@ -112,7 +116,7 @@ export function maybeHofEvent(save: CareerSave, gameNumber: number, seed: string
   if (gameNumber < 50 || gameNumber % 17 !== 0) return [];
   const rng = new Rng(`${seed}:hof:${save.season}:${gameNumber}`);
   if (rng.next() > 0.35) return [];
-  const veterans = nbaPlayers.filter((p) => p.overall >= 80).slice(0, 40);
+  const veterans = leaguePool(save).filter((p) => p.overall >= 80).slice(0, 40);
   if (!veterans.length) return [];
   const pick = rng.pick(veterans);
   return [

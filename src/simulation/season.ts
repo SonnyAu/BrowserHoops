@@ -6,6 +6,7 @@ import {
 } from '../domain/createCareer';
 import { overall, scoutedPotential } from '../domain/derived';
 import { CareerSave } from '../domain/models';
+import { clearAllSeasonXp, mergeCollegeRoster } from './development';
 import {
   buildCollegeSchedule,
   buildProSchedule,
@@ -21,6 +22,7 @@ function resetSeasonFields(save: CareerSave): Pick<
   | 'roleAtSeasonStart'
   | 'seasonLogBuffer'
   | 'seasonEvents'
+  | 'seasonXp'
   | 'wins'
   | 'losses'
   | 'fatigue'
@@ -33,6 +35,7 @@ function resetSeasonFields(save: CareerSave): Pick<
     roleAtSeasonStart: save.role,
     seasonLogBuffer: [],
     seasonEvents: [],
+    seasonXp: 0,
     wins: 0,
     losses: 0,
     fatigue: 5,
@@ -51,12 +54,13 @@ export function startNextCollegeSeason(save: CareerSave): CareerSave {
     `${save.settings.seed}:y${nextSeason}`,
     draftYear,
   );
-  const collegeRoster = buildCollegeRoster(collegeId, draftYear);
-  return {
+  const fresh = buildCollegeRoster(collegeId, draftYear);
+  const collegeRoster = mergeCollegeRoster(save.collegeRoster ?? [], fresh, draftYear);
+  // Age already applied in offseason development — do not age again.
+  let next: CareerSave = {
     ...save,
     phase: 'college',
     season: nextSeason,
-    age: save.age + 1,
     draftYear,
     collegeRoster,
     schedule,
@@ -73,6 +77,7 @@ export function startNextCollegeSeason(save: CareerSave): CareerSave {
     updatedAt: new Date().toISOString(),
     ...resetSeasonFields(save),
   };
+  return clearAllSeasonXp(next);
 }
 
 export function startNextProSeason(save: CareerSave): CareerSave {
@@ -84,11 +89,11 @@ export function startNextProSeason(save: CareerSave): CareerSave {
     `${save.settings.seed}:pro${save.season + 1}`,
   );
   const teamName = `${team.region} ${team.name}`;
-  return {
+  // Age already applied in offseason development.
+  let next: CareerSave = {
     ...save,
     phase: 'professional',
     season: save.season + 1,
-    age: save.age + 1,
     schedule,
     standings: initialProStandings(teamId),
     draftBoard: null,
@@ -98,4 +103,5 @@ export function startNextProSeason(save: CareerSave): CareerSave {
     updatedAt: new Date().toISOString(),
     ...resetSeasonFields(save),
   };
+  return clearAllSeasonXp(next);
 }
