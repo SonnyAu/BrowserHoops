@@ -27,6 +27,8 @@ function resetSeasonFields(save: CareerSave): Pick<
   | 'losses'
   | 'fatigue'
   | 'nextGame'
+  | 'seasonStage'
+  | 'bracket'
 > {
   return {
     ratingsAtSeasonStart: { ...save.player.ratings },
@@ -40,6 +42,8 @@ function resetSeasonFields(save: CareerSave): Pick<
     losses: 0,
     fatigue: 5,
     nextGame: 1,
+    seasonStage: 'regular',
+    bracket: null,
   };
 }
 

@@ -60,6 +60,7 @@ export const defaultSettings = (): CareerSettings => ({
   contractDifficulty: 1,
   collegeSeasonLength: 32,
   proSeasonLength: 82,
+  boxScoreRetentionYears: 3,
   playIn: true,
   salaryCap: true,
   draftRules: 'twoRound',

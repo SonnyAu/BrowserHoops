@@ -35,11 +35,15 @@ import {
   listCollegeConferences,
   listProConferences,
 } from '../simulation/schedule';
+import { BracketPage } from './BracketPage';
 import { DraftNight } from './DraftNight';
+import { ScheduleView } from './ScheduleView';
 import { simTargetsForCareer, useSimController } from './useSimController';
 
 const NAV = [
   { to: 'home', label: 'Home' },
+  { to: 'schedule', label: 'Schedule' },
+  { to: 'bracket', label: 'Bracket' },
   { to: 'training', label: 'Training' },
   { to: 'decisions', label: 'Decisions' },
   { to: 'history', label: 'Career history' },
@@ -107,7 +111,9 @@ export function CareerShell() {
   if (!career) return <div className="dashboard">Loading career…</div>;
 
   const role = assignRole(career);
-  const nextGame = career.schedule.find((g) => !g.completed);
+  const nextGame = career.schedule.find(
+    (g) => !g.completed && (g.stage ?? 'regular') === 'regular',
+  );
   const simTargets = simTargetsForCareer(career);
   const simBlocked =
     career.retired ||
@@ -156,9 +162,11 @@ export function CareerShell() {
               ? ' · Season review'
               : career.phase === 'draft'
                 ? ' · Draft night'
-                : nextGame
-                  ? ` · Next: ${nextGame.opponentName}`
-                  : ' · Season break'}
+                : career.seasonStage && career.seasonStage !== 'regular'
+                  ? ` · ${career.seasonStage}${career.bracket?.championName ? ` · ${career.bracket.championName}` : ''}`
+                  : nextGame
+                    ? ` · Next: ${nextGame.opponentName}`
+                    : ' · Season break'}
             {isSim ? ' · Simulating…' : ''}
           </span>
         </div>
@@ -218,6 +226,8 @@ export function CareerShell() {
                 />
               }
             />
+            <Route path="schedule" element={<ScheduleView career={career} />} />
+            <Route path="bracket" element={<BracketPage career={career} />} />
             <Route path="history" element={<HistoryView career={career} logs={logs} />} />
             <Route path="leaderboards" element={<LeaderboardsView career={career} logs={logs} />} />
             <Route
@@ -545,7 +555,19 @@ function HomeView({
           </div>
         </section>
         <section className="panel panel-pad">
-          <h2 className="card-title">Recent games</h2>
+          <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+            <h2 className="card-title" style={{ margin: 0 }}>
+              Recent games
+            </h2>
+            <div className="row" style={{ gap: 6 }}>
+              <Link className="btn" to={`/career/${career.id}/schedule`}>
+                Full schedule
+              </Link>
+              <Link className="btn" to={`/career/${career.id}/bracket`}>
+                View bracket
+              </Link>
+            </div>
+          </div>
           {recent.length === 0 ? (
             <p className="muted">No games yet. Use the sim bar to advance.</p>
           ) : (
@@ -691,6 +713,14 @@ function DecisionsView({
 }
 
 function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) {
+  const seasons = useMemo(() => {
+    const set = new Set(logs.map((l) => l.season));
+    set.add(career.season);
+    return [...set].sort((a, b) => b - a);
+  }, [logs, career.season]);
+  const [season, setSeason] = useState<number | 'all'>('all');
+  const filtered = season === 'all' ? logs : logs.filter((l) => l.season === season);
+
   return (
     <div className="stack">
       <section className="panel panel-pad">
@@ -710,19 +740,43 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
         ))}
       </section>
       <section className="panel panel-pad">
-        <h2 className="card-title">Game log</h2>
+        <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+          <h2 className="card-title" style={{ margin: 0 }}>
+            Game log
+          </h2>
+          <label className="field" style={{ margin: 0, minWidth: 120 }}>
+            Season
+            <select
+              value={season}
+              onChange={(e) =>
+                setSeason(e.target.value === 'all' ? 'all' : Number(e.target.value))
+              }
+            >
+              <option value="all">All</option>
+              {seasons.map((s) => (
+                <option key={s} value={s}>
+                  S{s}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <p className="muted" style={{ fontSize: 12 }}>
+          League-wide boxes: open Schedule. Retention: {career.settings.boxScoreRetentionYears ?? 3}{' '}
+          years.
+        </p>
         <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>
-                <th>S</th><th>G</th><th>Opp</th><th>Result</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>MIN</th><th>Grade</th>
+                <th>S</th><th>G</th><th>Opp</th><th>Result</th><th>PTS</th><th>REB</th><th>AST</th><th>STL</th><th>BLK</th><th>MIN</th><th>Grade</th><th></th>
               </tr>
             </thead>
             <tbody>
-              {logs.map((l) => (
+              {filtered.map((l) => (
                 <tr key={l.id}>
                   <td>{l.season}</td>
-                  <td>{l.gameNumber}</td>
+                  <td>{l.gameNumber}{l.playoffs ? ' P' : ''}</td>
                   <td>{l.opponent}</td>
                   <td>{l.result} {l.teamScore}-{l.opponentScore}</td>
                   <td>{l.points}</td>
@@ -732,6 +786,13 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
                   <td>{l.blocks}</td>
                   <td>{l.minutes}</td>
                   <td>{l.grade}</td>
+                  <td>
+                    {l.leagueGameId ? (
+                      <Link className="btn" style={{ fontSize: 11, padding: '2px 6px' }} to={`/career/${career.id}/schedule`}>
+                        Box
+                      </Link>
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>

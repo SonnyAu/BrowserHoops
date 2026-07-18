@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { CareerSave, GameLog } from '../domain/models';
-import { persistSimulationStep } from '../persistence/db';
+import { persistSimulationStep, pruneLeagueGames } from '../persistence/db';
 import { simulateNextGame } from '../simulation/game';
 
 export type SimTarget =
@@ -38,19 +38,26 @@ export function simTargetsForCareer(career: CareerSave): SimTarget[] {
 
 type SimPlan =
   | { mode: 'batch'; count: number }
-  | { mode: 'until'; completedGames: number };
+  | { mode: 'until'; completedGames: number }
+  | { mode: 'untilPlayoffs' }
+  | { mode: 'untilSeasonEnd' };
 
-function completedCount(save: CareerSave): number {
-  return save.schedule.filter((g) => g.completed).length;
+function regularCompleted(save: CareerSave): number {
+  return save.schedule.filter((g) => g.completed && (g.stage ?? 'regular') === 'regular').length;
+}
+
+function regularLength(save: CareerSave): number {
+  const isPro = save.phase === 'professional';
+  return Math.max(
+    save.schedule.filter((g) => (g.stage ?? 'regular') === 'regular').length,
+    isPro ? save.settings.proSeasonLength : save.settings.collegeSeasonLength,
+    1,
+  );
 }
 
 function planSim(career: CareerSave, target: SimTarget): SimPlan {
   const isPro = career.phase === 'professional';
-  const seasonLen = Math.max(
-    career.schedule.length,
-    isPro ? career.settings.proSeasonLength : career.settings.collegeSeasonLength,
-    1,
-  );
+  const seasonLen = regularLength(career);
 
   switch (target) {
     case 'one game':
@@ -64,16 +71,15 @@ function planSim(career: CareerSave, target: SimTarget): SimPlan {
     case 'trade deadline':
       return { mode: 'until', completedGames: Math.min(55, Math.floor(seasonLen * 0.67)) };
     case 'playoffs':
-      // College: near end of regular season; NBA: late regular season.
-      return {
-        mode: 'until',
-        completedGames: isPro
-          ? Math.min(70, Math.floor(seasonLen * 0.85))
-          : Math.max(1, seasonLen - 3),
-      };
+      return { mode: 'untilPlayoffs' };
     case 'season':
-      return { mode: 'batch', count: 999 };
+      return { mode: 'untilSeasonEnd' };
   }
+}
+
+function inPostseason(save: CareerSave): boolean {
+  const stage = save.seasonStage ?? 'regular';
+  return stage === 'playIn' || stage === 'playoffs' || stage === 'tournament' || stage === 'complete';
 }
 
 export function useSimController(
@@ -103,7 +109,10 @@ export function useSimController(
     }
 
     const plan = planSim(career, target);
-    if (plan.mode === 'until' && completedCount(career) >= plan.completedGames) {
+    if (plan.mode === 'until' && regularCompleted(career) >= plan.completedGames) {
+      return;
+    }
+    if (plan.mode === 'untilPlayoffs' && inPostseason(career)) {
       return;
     }
 
@@ -114,26 +123,25 @@ export function useSimController(
 
     while (!pauseRef.current) {
       if (plan.mode === 'batch' && steps >= plan.count) break;
-      if (plan.mode === 'until' && completedCount(next) >= plan.completedGames) break;
-
-      const remaining = next.schedule.filter((g) => !g.completed).length;
-      if (remaining === 0) {
-        const result = simulateNextGame(next);
-        await persistSimulationStep(result.save, result.log);
-        next = result.save;
-        setCareer(next);
-        setLogs((l) => [result.log, ...l]);
-        break;
-      }
+      if (plan.mode === 'until' && regularCompleted(next) >= plan.completedGames) break;
+      if (plan.mode === 'untilPlayoffs' && inPostseason(next)) break;
+      if (plan.mode === 'untilSeasonEnd' && next.phase === 'seasonReview') break;
 
       const result = simulateNextGame(next);
-      await persistSimulationStep(result.save, result.log);
+      await persistSimulationStep(result.save, result.log, result.leagueGames);
       next = result.save;
       setCareer(next);
-      setLogs((l) => [result.log, ...l]);
+      if (result.log.minutes > 0 || result.log.opponent === 'Season Complete' || result.log.playoffs) {
+        setLogs((l) => [result.log, ...l]);
+      }
       steps += 1;
 
-      if (next.phase === 'seasonReview' || next.phase === 'draft') break;
+      if (next.phase === 'seasonReview') {
+        const years = next.settings.boxScoreRetentionYears ?? 3;
+        await pruneLeagueGames(next.id, next.season, years);
+        break;
+      }
+      if (next.phase === 'draft') break;
       if (next.pendingDecisions.some((d) => d.interrupt)) break;
       await new Promise((r) => setTimeout(r, 40));
     }

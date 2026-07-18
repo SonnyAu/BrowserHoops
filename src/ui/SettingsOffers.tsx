@@ -137,7 +137,24 @@ export function SettingsOffers() {
                       onChange={(e) => setSettings({ ...settings, proSeasonLength: Number(e.target.value) })}
                     />
                   </label>
+                  <label className="field">Box score retention (years)
+                    <input
+                      type="number"
+                      min={1}
+                      max={10}
+                      value={settings.boxScoreRetentionYears ?? 3}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          boxScoreRetentionYears: Math.max(1, Math.min(10, Number(e.target.value) || 3)),
+                        })
+                      }
+                    />
+                  </label>
                 </div>
+                <p className="muted" style={{ fontSize: 12, margin: 0 }}>
+                  League-wide box scores are kept for this many seasons. Locked after you start the career.
+                </p>
                 <label className="field">Autosave
                   <select
                     value={settings.autosaveFrequency}

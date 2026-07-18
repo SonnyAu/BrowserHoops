@@ -4,8 +4,10 @@ import { getProTeam } from '../data/nbaTeams';
 import { draftYearForCollegeSeason } from '../domain/createCareer';
 import { formatDelta, overall, scoutedPotential } from '../domain/derived';
 import {
+  BoxLine,
   CareerSave,
   GameLog,
+  LeagueGameRecord,
   PendingDecision,
   SeasonReview,
   SeasonStats,
@@ -27,9 +29,12 @@ import {
   maybeNewsEvent,
   pushSeasonEvents,
 } from './events';
+import { ensureNationalStandings, simulateLeagueDay } from './leagueSeason';
+import { startCollegeTournament, isMadnessComplete } from './marchMadness';
+import { startNbaPostseason, isNbaPlayoffsComplete } from './nbaPlayoffs';
+import { simulatePostseasonStep } from './postseason';
 import { updateRosterStatus } from './rosterStatus';
 import {
-  advanceConferenceGames,
   initialCollegeStandings,
   initialProStandings,
   updateStandings,
@@ -37,17 +42,101 @@ import {
 import { startNextCollegeSeason, startNextProSeason } from './season';
 import { applyTraining, trainingXpMult } from './training';
 
+export type SimStepResult = {
+  save: CareerSave;
+  log: GameLog;
+  leagueGames: LeagueGameRecord[];
+};
+
 function normalizeSeasonState(save: CareerSave): CareerSave {
   let next = save.seasonEvents ? save : { ...save, seasonEvents: [] };
   if (next.seasonXp == null) next = { ...next, seasonXp: 0 };
   if (!next.developmentLog) next = { ...next, developmentLog: [] };
+  if (!next.seasonStage) next = { ...next, seasonStage: 'regular' };
+  if (next.bracket === undefined) next = { ...next, bracket: null };
+  if (next.settings.boxScoreRetentionYears == null) {
+    next = {
+      ...next,
+      settings: { ...next.settings, boxScoreRetentionYears: 3 },
+    };
+  }
   next = ensureLeagueRoster(next);
   const rows = next.standings ?? [];
-  if (!rows.length || rows.some((r) => !r.conference)) {
-    if (next.proTeamId) next = { ...next, standings: initialProStandings(next.proTeamId) };
-    else if (next.collegeId) next = { ...next, standings: initialCollegeStandings(next.collegeId) };
+  const needNational =
+    !rows.length ||
+    rows.some((r) => !r.conference) ||
+    (next.phase === 'college' && rows.length < 50) ||
+    ((next.phase === 'professional' || !!next.proTeamId) && rows.length < 30);
+  if (needNational) {
+    if (next.proTeamId || next.phase === 'professional') {
+      next = { ...next, standings: ensureNationalStandings({ ...next, standings: rows.length ? rows : initialProStandings() }) };
+    } else if (next.collegeId) {
+      next = {
+        ...next,
+        standings: ensureNationalStandings({
+          ...next,
+          standings: rows.length ? rows : initialCollegeStandings(),
+        }),
+      };
+    }
   }
   return next;
+}
+
+function userLeagueGame(
+  save: CareerSave,
+  upcoming: { gameNumber: number; opponentId: string; opponentName: string; home: boolean },
+  teamScore: number,
+  opponentScore: number,
+  userLine: BoxLine | null,
+): LeagueGameRecord {
+  const selfId = save.collegeId ?? save.proTeamId ?? 'self';
+  const selfName =
+    save.proTeamId && getProTeam(save.proTeamId)
+      ? `${getProTeam(save.proTeamId)!.region} ${getProTeam(save.proTeamId)!.name}`
+      : getCollege(save.collegeId ?? '')?.name ?? 'Team';
+  const homeTeamId = upcoming.home ? selfId : upcoming.opponentId;
+  const awayTeamId = upcoming.home ? upcoming.opponentId : selfId;
+  const homeTeamName = upcoming.home ? selfName : upcoming.opponentName;
+  const awayTeamName = upcoming.home ? upcoming.opponentName : selfName;
+  const homeScore = upcoming.home ? teamScore : opponentScore;
+  const awayScore = upcoming.home ? opponentScore : teamScore;
+  const level = save.phase === 'professional' || save.proTeamId ? 'pro' : 'college';
+  const players: BoxLine[] = userLine ? [userLine] : [];
+  return {
+    id: `lg-${save.id}-s${save.season}-d${upcoming.gameNumber}-user-${selfId}`,
+    saveId: save.id,
+    season: save.season,
+    level,
+    stage: 'regular',
+    day: upcoming.gameNumber,
+    homeTeamId,
+    homeTeamName,
+    awayTeamId,
+    awayTeamName,
+    homeScore,
+    awayScore,
+    players,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function applyLeagueDay(
+  save: CareerSave,
+  day: number,
+  excludeIds: string[],
+  userGame: LeagueGameRecord,
+): { save: CareerSave; leagueGames: LeagueGameRecord[] } {
+  const { standings, games } = simulateLeagueDay({
+    save,
+    day,
+    excludeIds,
+    stage: 'regular',
+  });
+  return {
+    save: { ...save, standings },
+    leagueGames: [userGame, ...games],
+  };
 }
 
 export function assignRole(save: CareerSave) {
@@ -72,15 +161,15 @@ function gradeFromBox(pts: number, min: number, plusMinus: number): string {
   return 'D';
 }
 
-export function simulateNextGame(save: CareerSave): { save: CareerSave; log: GameLog } {
+export function simulateNextGame(save: CareerSave): SimStepResult {
   if (save.retired) throw new Error('Career is retired');
   if (save.phase === 'seasonReview' || save.phase === 'draft') {
     throw new Error('Cannot simulate during season review or draft');
   }
   const normalized = normalizeSeasonState(save);
-  const upcoming = normalized.schedule.find((g) => !g.completed);
+  const upcoming = normalized.schedule.find((g) => !g.completed && (g.stage ?? 'regular') === 'regular');
   if (!upcoming) {
-    return finalizeSeason(normalized);
+    return advancePastRegularSeason(normalized);
   }
 
   let next = ensureLeagueRoster(normalized);
@@ -134,19 +223,15 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
 
   if (playerOut) {
     let standings = updateStandings(next.standings ?? [], selfId, upcoming.opponentId, won);
-    standings = advanceConferenceGames(
-      standings,
-      next.settings.seed,
-      upcoming.gameNumber,
-      [selfId, upcoming.opponentId],
-      next.phase,
-    );
     const log: GameLog = {
       ...emptyLog(next, upcoming, 'OUT', next.injury.type),
       result: won ? 'W' : 'L',
       teamScore,
       opponentScore,
+      playoffs: false,
     };
+    const ug = userLeagueGame(next, upcoming, teamScore, opponentScore, null);
+    log.leagueGameId = ug.id;
     let injuredSave: CareerSave = {
       ...next,
       injury: {
@@ -159,7 +244,7 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       losses: next.losses + (won ? 0 : 1),
       schedule: next.schedule.map((g) =>
         g.id === upcoming.id
-          ? { ...g, completed: true, result: log.result, teamScore, opponentScore }
+          ? { ...g, completed: true, result: log.result, teamScore, opponentScore, leagueGameId: ug.id }
           : g,
       ),
       standings,
@@ -170,6 +255,8 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       ],
       updatedAt: new Date().toISOString(),
     };
+    const dayResult = applyLeagueDay(injuredSave, upcoming.gameNumber, [selfId, upcoming.opponentId], ug);
+    injuredSave = dayResult.save;
     injuredSave = pushSeasonEvents(injuredSave, [
       ...eventFromHugeGame(injuredSave, log, oppStarLine),
       ...maybeNewsEvent(injuredSave, upcoming.gameNumber, next.settings.seed),
@@ -181,7 +268,7 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
       teamWon: won,
       trainingMult: trainMult * 0.35,
     });
-    return { save: injuredSave, log };
+    return { save: injuredSave, log, leagueGames: dayResult.leagueGames };
   }
 
   const minutes = Math.max(
@@ -291,21 +378,44 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     grade: gradeFromBox(points, minutes, plusMinus),
     injuryUpdate,
     createdAt: new Date().toISOString(),
+    playoffs: false,
   };
+
+  const userLine: BoxLine = {
+    playerId: 'user',
+    playerName: next.player.name,
+    teamId: selfId,
+    minutes,
+    points,
+    rebounds,
+    assists,
+    steals,
+    blocks,
+    turnovers,
+    fgm,
+    fga,
+    tpm,
+    tpa,
+    ftm,
+    fta,
+    isUser: true,
+  };
+  const ug = userLeagueGame(next, upcoming, teamScore, opponentScore, userLine);
+  log.leagueGameId = ug.id;
 
   const schedule = next.schedule.map((g) =>
     g.id === upcoming.id
-      ? { ...g, completed: true, result: log.result, teamScore, opponentScore }
+      ? {
+          ...g,
+          completed: true,
+          result: log.result,
+          teamScore,
+          opponentScore,
+          leagueGameId: ug.id,
+        }
       : g,
   );
   let standings = updateStandings(next.standings ?? [], selfId, upcoming.opponentId, won);
-  standings = advanceConferenceGames(
-    standings,
-    next.settings.seed,
-    upcoming.gameNumber,
-    [selfId, upcoming.opponentId],
-    next.phase,
-  );
 
   const pending = [...next.pendingDecisions];
   if (next.settings.interruptOnInjury && injuryUpdate && !pending.some((d) => d.type === 'injury')) {
@@ -370,6 +480,9 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     updatedAt: log.createdAt,
   };
 
+  const dayResult = applyLeagueDay(next, upcoming.gameNumber, [selfId, upcoming.opponentId], ug);
+  next = dayResult.save;
+
   next = pushSeasonEvents(next, [
     ...eventFromHugeGame(next, log, oppStarLine),
     ...maybeAllStarEvents(next, upcoming.gameNumber),
@@ -385,7 +498,27 @@ export function simulateNextGame(save: CareerSave): { save: CareerSave; log: Gam
     trainingMult: trainMult,
   });
   next = updateRosterStatus(next);
-  return { save: next, log };
+  return { save: next, log, leagueGames: dayResult.leagueGames };
+}
+
+function advancePastRegularSeason(save: CareerSave): SimStepResult {
+  const stage = save.seasonStage ?? 'regular';
+  if (stage === 'regular') {
+    const started =
+      save.phase === 'professional' || save.proTeamId
+        ? startNbaPostseason(save)
+        : startCollegeTournament(save);
+    return simulatePostseasonStep(started);
+  }
+  const bracket = save.bracket;
+  const done =
+    !bracket ||
+    stage === 'complete' ||
+    (bracket.kind === 'marchMadness' ? isMadnessComplete(bracket) : isNbaPlayoffsComplete(bracket));
+  if (done) {
+    return finalizeSeason({ ...save, seasonStage: 'complete' });
+  }
+  return simulatePostseasonStep(save);
 }
 
 export function simulateCollegeGame(save: CareerSave) {
@@ -461,16 +594,17 @@ export function accumulateSeasonStats(save: CareerSave, logs: GameLog[]): Season
     tpa: sum('tpa'),
     ft: sum('ftm'),
     fta: sum('fta'),
-    playoffs: false,
+    playoffs: real.some((l) => l.playoffs),
     awards: [],
   };
   void played;
 }
 
-function finalizeSeason(save: CareerSave): { save: CareerSave; log: GameLog } {
+function finalizeSeason(save: CareerSave): SimStepResult {
   if (save.phase === 'seasonReview') {
     return {
       save,
+      leagueGames: [],
       log: {
         id: `season-wait-${save.id}-${save.season}`,
         saveId: save.id,
@@ -566,16 +700,21 @@ function finalizeSeason(save: CareerSave): { save: CareerSave; log: GameLog } {
 
   return {
     log: marker,
+    leagueGames: [],
     save: {
       ...withAwards,
       phase: 'seasonReview',
+      seasonStage: 'complete',
       seasonStats: [...withAwards.seasonStats, stats],
       careerStats: [...withAwards.careerStats, stats],
       seasonReviews: [...withAwards.seasonReviews, review],
       pendingDecisions: [],
       history: [
         ...withAwards.history,
-        `Season ${withAwards.season} complete: ${withAwards.wins}-${withAwards.losses}`,
+        `Season ${withAwards.season} complete: ${withAwards.wins}-${withAwards.losses}` +
+          (withAwards.bracket?.championName
+            ? ` · Champ: ${withAwards.bracket.championName}`
+            : ''),
       ],
       updatedAt: marker.createdAt,
     },

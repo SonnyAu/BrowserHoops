@@ -146,6 +146,8 @@ export function createCareer(
     nextGame: 1,
     schedule,
     standings,
+    seasonStage: 'regular',
+    bracket: null,
     seasonEvents: [],
     seasonStats: [],
     careerStats: [],

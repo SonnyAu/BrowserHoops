@@ -102,13 +102,9 @@ describe('unified offseason development', () => {
     const ageBefore = save.leagueRoster[5]?.age ?? 0;
     expect(sampleId).toBeTruthy();
 
-    // Burn schedule then finalize
-    for (let i = 0; i < 20; i++) {
+    // Burn schedule + March Madness then finalize
+    for (let i = 0; i < 250; i++) {
       if (save.phase === 'seasonReview') break;
-      const { save: next } = simulateNextGame(save);
-      save = next;
-    }
-    if (save.phase !== 'seasonReview') {
       const { save: next } = simulateNextGame(save);
       save = next;
     }

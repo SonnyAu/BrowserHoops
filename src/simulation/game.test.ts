@@ -197,7 +197,11 @@ describe('BrowserHoops career systems', () => {
     save = beginDraft(save);
     expect(save.phase).toBe('draft');
     expect(save.draftBoard?.picks).toHaveLength(60);
-    const names = new Set(save.draftBoard!.picks.filter((p) => !p.isUser).map((p) => p.prospectName));
+    expect(save.draftBoard?.picks.every((p) => p.prospectName === 'TBD')).toBe(true);
+    expect(save.draftBoard?.pool?.length).toBeGreaterThan(60);
+    const names = new Set(
+      save.draftBoard!.pool.filter((p) => !p.isUser).map((p) => p.name),
+    );
     const nbaNames = new Set(nbaPlayers.map((p) => p.name));
     let overlap = 0;
     for (const n of names) if (nbaNames.has(n)) overlap++;
@@ -212,7 +216,7 @@ describe('BrowserHoops career systems', () => {
       'duke',
     );
     save.id = 'draft-flow';
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 200; i++) {
       const step = simulateNextGame(save);
       save = step.save;
       if (save.phase === 'seasonReview') break;
@@ -317,12 +321,14 @@ describe('BrowserHoops career systems', () => {
     expect(ppg).toBeGreaterThan(18);
   });
 
-  it('initializes full conference standings and advances other teams', () => {
+  it('initializes national standings and advances other teams', () => {
     const save = createCareer(player, { ...defaultSettings(), seed: 'standings' }, 'duke');
-    expect(save.standings.length).toBeGreaterThan(5);
-    expect(save.standings.every((r) => r.conference === 'ACC')).toBe(true);
+    expect(save.standings.length).toBeGreaterThan(100);
+    expect(save.standings.some((r) => r.conference === 'ACC')).toBe(true);
+    expect(save.standings.some((r) => r.conference === 'Big Ten')).toBe(true);
     const beforeOther = save.standings.find((r) => r.teamId !== 'duke')!;
-    const { save: next } = simulateNextGame(save);
+    const { save: next, leagueGames } = simulateNextGame(save);
+    expect(leagueGames.length).toBeGreaterThan(20);
     const afterOther = next.standings.find((r) => r.teamId === beforeOther.teamId)!;
     const moved =
       afterOther.wins !== beforeOther.wins || afterOther.losses !== beforeOther.losses;

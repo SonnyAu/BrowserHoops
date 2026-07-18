@@ -13,6 +13,7 @@ import {
   listSaves,
   loadCareer,
   loadGameLogs,
+  loadLeagueGames,
   renameCareer,
   SaveMeta,
 } from '../persistence/db';
@@ -57,7 +58,8 @@ export function SaveDashboard() {
     const save = await loadCareer(id);
     if (!save) return;
     const logs = await loadGameLogs(id);
-    downloadText(`${save.name.replace(/\s+/g, '_')}.json`, exportSaveJson(save, logs));
+    const leagueGames = await loadLeagueGames(id);
+    downloadText(`${save.name.replace(/\s+/g, '_')}.json`, exportSaveJson(save, logs, leagueGames));
   }
 
   async function onImport(file: File) {

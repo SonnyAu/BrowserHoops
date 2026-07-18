@@ -184,6 +184,8 @@ export interface CareerSettings {
   contractDifficulty: number;
   collegeSeasonLength: number;
   proSeasonLength: number;
+  /** Years of league box scores to keep (set only at new-game). */
+  boxScoreRetentionYears: number;
   playIn: boolean;
   salaryCap: boolean;
   draftRules: 'standard' | 'twoRound';
@@ -333,6 +335,17 @@ export interface DraftInformation {
   undrafted: boolean;
 }
 
+export interface DraftPoolProspect {
+  id: string;
+  name: string;
+  position: Position;
+  overall: number;
+  potential: number;
+  /** BPA base score used with need when selecting. */
+  value: number;
+  isUser: boolean;
+}
+
 export interface DraftBoardPick {
   pick: number;
   round: number;
@@ -340,6 +353,7 @@ export interface DraftBoardPick {
   teamAbbrev: string;
   teamName: string;
   teamColors: [string, string, string?];
+  /** Empty / TBD until the team on the clock selects. */
   prospectId: string;
   prospectName: string;
   position: Position;
@@ -347,12 +361,19 @@ export interface DraftBoardPick {
   revealed: boolean;
 }
 
+export type DraftPositionCounts = Record<Position, number>;
+
 export interface DraftBoardState {
   picks: DraftBoardPick[];
   currentIndex: number;
+  /** Set when the user is selected; null while still available. */
   userPick: number | null;
   finished: boolean;
   undrafted: boolean;
+  pool: DraftPoolProspect[];
+  remainingIds: string[];
+  /** Running position depth per team (updated as picks land). */
+  teamNeeds: Record<string, DraftPositionCounts>;
 }
 
 export interface CareerGoal {
@@ -385,6 +406,8 @@ export interface SeasonStats {
   awards: string[];
 }
 
+export type SeasonStage = 'regular' | 'playIn' | 'playoffs' | 'tournament' | 'complete';
+
 export interface ScheduledGame {
   id: string;
   gameNumber: number;
@@ -395,6 +418,118 @@ export interface ScheduledGame {
   result?: 'W' | 'L';
   teamScore?: number;
   opponentScore?: number;
+  stage?: SeasonStage;
+  seriesId?: string;
+  round?: string;
+  gameInSeries?: number;
+  leagueGameId?: string;
+}
+
+export interface BoxLine {
+  playerId: string;
+  playerName: string;
+  teamId: string;
+  minutes: number;
+  points: number;
+  rebounds: number;
+  assists: number;
+  steals: number;
+  blocks: number;
+  turnovers: number;
+  fgm: number;
+  fga: number;
+  tpm: number;
+  tpa: number;
+  ftm: number;
+  fta: number;
+  isUser?: boolean;
+}
+
+export interface LeagueGamePlayoffMeta {
+  region?: string;
+  round?: string;
+  seriesId?: string;
+  gameInSeries?: number;
+  homeSeed?: number;
+  awaySeed?: number;
+}
+
+export interface LeagueGameRecord {
+  id: string;
+  saveId: string;
+  season: number;
+  level: 'college' | 'pro';
+  stage: SeasonStage;
+  day: number;
+  homeTeamId: string;
+  homeTeamName: string;
+  awayTeamId: string;
+  awayTeamName: string;
+  homeScore: number;
+  awayScore: number;
+  playoffMeta?: LeagueGamePlayoffMeta;
+  players: BoxLine[];
+  createdAt: string;
+}
+
+export type MadnessRegion = 'East' | 'West' | 'South' | 'Midwest';
+
+export interface BracketSlot {
+  teamId: string | null;
+  teamName: string;
+  seed: number | null;
+  conference?: string;
+}
+
+export interface BracketMatchup {
+  id: string;
+  round: string;
+  region?: MadnessRegion | 'FinalFour' | 'Championship' | 'FirstFour' | 'PlayIn';
+  slotA: BracketSlot;
+  slotB: BracketSlot;
+  winnerId?: string;
+  homeScore?: number;
+  awayScore?: number;
+  leagueGameId?: string;
+  completed: boolean;
+}
+
+export interface NbaSeriesGame {
+  gameInSeries: number;
+  homeTeamId: string;
+  winnerId?: string;
+  homeScore?: number;
+  awayScore?: number;
+  leagueGameId?: string;
+}
+
+export interface NbaSeriesState {
+  id: string;
+  round: string;
+  conference: 'East' | 'West' | 'Finals';
+  teamAId: string;
+  teamAName: string;
+  teamASeed: number;
+  teamBId: string;
+  teamBName: string;
+  teamBSeed: number;
+  winsA: number;
+  winsB: number;
+  games: NbaSeriesGame[];
+  winnerId?: string;
+  completed: boolean;
+}
+
+export interface BracketState {
+  kind: 'marchMadness' | 'nbaPlayoffs';
+  status: 'projected' | 'active' | 'complete';
+  season: number;
+  firstFour?: BracketMatchup[];
+  rounds?: BracketMatchup[];
+  playIn?: BracketMatchup[];
+  series?: NbaSeriesState[];
+  championId?: string;
+  championName?: string;
 }
 
 export interface StandingRow {
@@ -462,6 +597,8 @@ export interface GameLog {
   grade: string;
   injuryUpdate?: string;
   createdAt: string;
+  playoffs?: boolean;
+  leagueGameId?: string;
 }
 
 export interface SeasonReview {
@@ -501,6 +638,10 @@ export interface CareerSave {
   nextGame: number;
   schedule: ScheduledGame[];
   standings: StandingRow[];
+  /** regular → postseason stages → complete before season review. */
+  seasonStage: SeasonStage;
+  /** Live / locked playoff bracket for the current season. */
+  bracket: BracketState | null;
   /** Newest-first season news / milestones (capped in sim). */
   seasonEvents: SeasonEvent[];
   seasonStats: SeasonStats[];
@@ -607,6 +748,7 @@ export const LOCKED_AFTER_CREATE: (keyof CareerSettings)[] = [
   'seed',
   'collegeSeasonLength',
   'proSeasonLength',
+  'boxScoreRetentionYears',
   'playIn',
   'salaryCap',
   'draftRules',

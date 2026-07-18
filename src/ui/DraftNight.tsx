@@ -68,7 +68,8 @@ export function DraftNight({
 
   const current = board.picks[board.currentIndex];
   const lastRevealed = board.picks.slice(0, board.currentIndex).at(-1);
-  const userPick = board.picks.find((p) => p.isUser);
+  const userPick = board.picks.find((p) => p.isUser && p.revealed);
+  const userStillAvailable = (board.remainingIds ?? []).includes('user') && board.userPick == null;
   const userHold = holdOnUser && !!lastRevealed?.isUser;
 
   return (
@@ -78,9 +79,13 @@ export function DraftNight({
           <p className="draft-kicker">NBA Draft · Live board</p>
           <h1>Draft Night</h1>
           <p className="muted" style={{ color: '#9aa8b8' }}>
-            {board.undrafted
-              ? `${career.player.name} is projected undrafted`
-              : `${career.player.name} projected at pick ${board.userPick}`}
+            {userPick
+              ? `${career.player.name} selected at pick ${userPick.pick}`
+              : userStillAvailable
+                ? `${career.player.name} still on the board — teams draft BPA + roster need`
+                : board.undrafted
+                  ? `${career.player.name} went undrafted`
+                  : 'Live board — teams drafting BPA + roster need'}
           </p>
         </div>
         <div className="row">
@@ -95,7 +100,7 @@ export function DraftNight({
           </button>
           <button
             className="btn"
-            disabled={board.undrafted || !userPick || userPick.revealed}
+            disabled={!userStillAvailable}
             onClick={async () => {
               setPaused(true);
               const next = skipDraftToUser(careerRef.current);
@@ -200,14 +205,14 @@ export function DraftNight({
                       {p.teamAbbrev}
                     </span>
                     <span className="prospect">
-                      {p.revealed ? (
+                      {p.revealed && p.prospectId ? (
                         <>
                           {p.prospectName}
                           {p.isUser ? ' ★' : ''}
                           <span style={{ color: '#9aa8b8' }}> · {p.position}</span>
                         </>
                       ) : (
-                        <span style={{ color: '#6b7a8a' }}>—</span>
+                        <span style={{ color: '#6b7a8a' }}>TBD</span>
                       )}
                     </span>
                   </li>

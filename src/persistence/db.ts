@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import { CareerSave, CharacterTemplate, GameLog } from '../domain/models';
+import { CareerSave, CharacterTemplate, GameLog, LeagueGameRecord } from '../domain/models';
 
 export interface SaveMeta {
   id: string;
@@ -15,6 +15,7 @@ export class HoopsDb extends Dexie {
   autosaves!: Table<CareerSave, string>;
   templates!: Table<CharacterTemplate, string>;
   gameLogs!: Table<GameLog, string>;
+  leagueGames!: Table<LeagueGameRecord, string>;
   recovery!: Table<CareerSave, string>;
 
   constructor() {
@@ -25,6 +26,15 @@ export class HoopsDb extends Dexie {
       autosaves: 'id, updatedAt',
       templates: 'id, createdAt',
       gameLogs: 'id, saveId, gameNumber',
+      recovery: 'id, updatedAt',
+    });
+    this.version(2).stores({
+      metadata: 'id, updatedAt',
+      snapshots: 'id, updatedAt',
+      autosaves: 'id, updatedAt',
+      templates: 'id, createdAt',
+      gameLogs: 'id, saveId, gameNumber',
+      leagueGames: 'id, saveId, season, day, [saveId+season], [saveId+day]',
       recovery: 'id, updatedAt',
     });
   }
@@ -49,16 +59,19 @@ export async function saveCareer(save: CareerSave) {
   });
 }
 
-export async function persistSimulationStep(save: CareerSave, log: GameLog) {
+export async function persistSimulationStep(
+  save: CareerSave,
+  log: GameLog,
+  leagueGames: LeagueGameRecord[] = [],
+) {
   await db.transaction(
     'rw',
-    db.metadata,
-    db.snapshots,
-    db.autosaves,
-    db.gameLogs,
-    db.recovery,
+    [db.metadata, db.snapshots, db.autosaves, db.gameLogs, db.leagueGames, db.recovery],
     async () => {
       await db.gameLogs.put(log);
+      if (leagueGames.length) {
+        await db.leagueGames.bulkPut(leagueGames);
+      }
       await db.snapshots.put(save);
       await db.autosaves.put(save);
       await db.recovery.put(save);
@@ -78,17 +91,14 @@ export async function loadCareer(id: string) {
 export async function deleteCareer(id: string) {
   await db.transaction(
     'rw',
-    db.metadata,
-    db.snapshots,
-    db.autosaves,
-    db.gameLogs,
-    db.recovery,
+    [db.metadata, db.snapshots, db.autosaves, db.gameLogs, db.leagueGames, db.recovery],
     async () => {
       await db.metadata.delete(id);
       await db.snapshots.delete(id);
       await db.autosaves.delete(id);
       await db.recovery.delete(id);
       await db.gameLogs.where('saveId').equals(id).delete();
+      await db.leagueGames.where('saveId').equals(id).delete();
     },
   );
 }
@@ -115,11 +125,44 @@ export async function duplicateCareer(id: string) {
   for (const log of logs) {
     await db.gameLogs.put({ ...log, id: crypto.randomUUID(), saveId: copy.id });
   }
+  const league = await loadLeagueGames(id);
+  for (const g of league) {
+    await db.leagueGames.put({ ...g, id: crypto.randomUUID(), saveId: copy.id });
+  }
   return copy;
 }
 
 export async function loadGameLogs(saveId: string) {
   return db.gameLogs.where('saveId').equals(saveId).reverse().sortBy('gameNumber');
+}
+
+export async function loadLeagueGames(saveId: string) {
+  return db.leagueGames.where('saveId').equals(saveId).toArray();
+}
+
+export async function loadLeagueGamesForDay(saveId: string, day: number) {
+  return db.leagueGames.where('[saveId+day]').equals([saveId, day]).toArray();
+}
+
+export async function loadLeagueGame(id: string) {
+  return db.leagueGames.get(id);
+}
+
+export async function loadLeagueGamesForSeason(saveId: string, season: number) {
+  return db.leagueGames.where('[saveId+season]').equals([saveId, season]).toArray();
+}
+
+/** Keep seasons >= currentSeason - retentionYears + 1 */
+export async function pruneLeagueGames(
+  saveId: string,
+  currentSeason: number,
+  retentionYears: number,
+) {
+  const keepFrom = Math.max(1, currentSeason - Math.max(1, retentionYears) + 1);
+  const all = await db.leagueGames.where('saveId').equals(saveId).toArray();
+  const stale = all.filter((g) => g.season < keepFrom).map((g) => g.id);
+  if (stale.length) await db.leagueGames.bulkDelete(stale);
+  return stale.length;
 }
 
 export async function listTemplates() {
@@ -154,13 +197,14 @@ export async function duplicateTemplate(id: string) {
   return copy;
 }
 
-export function exportSaveJson(save: CareerSave, logs: GameLog[]) {
+export function exportSaveJson(save: CareerSave, logs: GameLog[], leagueGames: LeagueGameRecord[] = []) {
   return JSON.stringify(
     {
       format: 'BrowserHoopsSave',
-      version: 1,
+      version: 2,
       save,
       logs,
+      leagueGames,
     },
     null,
     2,
@@ -190,6 +234,11 @@ export async function importSaveJson(raw: string) {
   if (Array.isArray(data.logs)) {
     for (const log of data.logs) {
       await db.gameLogs.put({ ...log, id: crypto.randomUUID(), saveId: save.id });
+    }
+  }
+  if (Array.isArray(data.leagueGames)) {
+    for (const g of data.leagueGames) {
+      await db.leagueGames.put({ ...g, id: crypto.randomUUID(), saveId: save.id });
     }
   }
   return save;

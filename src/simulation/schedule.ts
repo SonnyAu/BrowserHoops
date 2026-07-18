@@ -72,32 +72,26 @@ export function listProConferences(): string[] {
   return ['East', 'West'];
 }
 
-export function initialCollegeStandings(collegeId: string): StandingRow[] {
-  const self = getCollege(collegeId);
-  if (!self) return [];
-  return colleges
-    .filter((c) => c.conference === self.conference)
-    .map((c) => ({
-      teamId: c.id,
-      teamName: c.name,
-      wins: 0,
-      losses: 0,
-      conference: c.conference,
-    }));
+/** Full national college standings (all conferences). */
+export function initialCollegeStandings(_collegeId?: string): StandingRow[] {
+  return colleges.map((c) => ({
+    teamId: c.id,
+    teamName: c.name,
+    wins: 0,
+    losses: 0,
+    conference: c.conference,
+  }));
 }
 
-export function initialProStandings(teamId: string): StandingRow[] {
-  const self = getProTeam(teamId);
-  if (!self) return [];
-  return nbaTeams
-    .filter((t) => t.conference === self.conference)
-    .map((t) => ({
-      teamId: t.id,
-      teamName: `${t.region} ${t.name}`,
-      wins: 0,
-      losses: 0,
-      conference: t.conference,
-    }));
+/** Full NBA standings (East + West). */
+export function initialProStandings(_teamId?: string): StandingRow[] {
+  return nbaTeams.map((t) => ({
+    teamId: t.id,
+    teamName: `${t.region} ${t.name}`,
+    wins: 0,
+    losses: 0,
+    conference: t.conference,
+  }));
 }
 
 /** @deprecated use initialCollegeStandings / initialProStandings */
