@@ -48,17 +48,30 @@ describe('dynamic BPA + need draft', () => {
     expect(mk()).toEqual(mk());
   });
 
-  it('team with no PGs prefers a slightly worse PG over a better SF', () => {
+  it('team with no PGs prefers a near-tie PG over an equal SF', () => {
+    // Same BPA (~1 OVR window): need is allowed to break the tie.
     const pool = [
-      prospect('sf-star', 'SF', 82),
-      prospect('pg-need', 'PG', 79),
-      prospect('c-ok', 'C', 78),
+      prospect('sf-star', 'SF', 79, 84),
+      prospect('pg-need', 'PG', 79, 84),
+      prospect('c-ok', 'C', 77, 82),
     ];
     const remaining = pool.map((p) => p.id);
     const teamNeeds = { 'team-a': counts({ PG: 0, SG: 2, SF: 3, PF: 2, C: 2 }) };
     const rng = new Rng('need-pg');
     const pick = selectProspect('team-a', remaining, pool, teamNeeds, rng, 5);
     expect(pick.id).toBe('pg-need');
+  });
+
+  it('clear BPA leader beats empty-position need', () => {
+    const pool = [
+      prospect('sf-elite', 'SF', 68, 80),
+      prospect('pg-need', 'PG', 60, 68),
+      prospect('c-ok', 'C', 58, 66),
+    ];
+    const remaining = pool.map((p) => p.id);
+    const teamNeeds = { 'team-a': counts({ PG: 0, SG: 2, SF: 3, PF: 2, C: 2 }) };
+    const pick = selectProspect('team-a', remaining, pool, teamNeeds, new Rng('elite-bpa'), 3);
+    expect(pick.id).toBe('sf-elite');
   });
 
   it('after filling PG depth, need score drops for another PG', () => {
@@ -82,6 +95,41 @@ describe('dynamic BPA + need draft', () => {
     teamNeeds['team-a'].PG = 3;
     const second = selectProspect('team-a', remaining, pool, teamNeeds, new Rng('n2'), 31);
     expect(second.id).toBe('sf1');
+  });
+
+  it('2026 stars AJ Dybantsa and Cameron Boozer land in the top 12', () => {
+    const seeds = ['star-a', 'star-b', 'star-c', 'star-d', 'star-e', 'star-f', 'star-g', 'star-h'];
+    const dybantsaPicks: number[] = [];
+    const boozerPicks: number[] = [];
+
+    for (const seed of seeds) {
+      let save = createCareer(
+        defaultPlayer(),
+        { ...defaultSettings(), seed },
+        'duke',
+      );
+      save.id = `stars-${seed}`;
+      save = beginDraft(save);
+      save = skipDraftToEnd(save);
+      const picks = save.draftBoard!.picks;
+      const dy = picks.find((p) => p.prospectName === 'AJ Dybantsa');
+      const bz = picks.find((p) => p.prospectName === 'Cameron Boozer');
+      expect(dy).toBeTruthy();
+      expect(bz).toBeTruthy();
+      dybantsaPicks.push(dy!.pick);
+      boozerPicks.push(bz!.pick);
+    }
+
+    const median = (xs: number[]) => {
+      const s = [...xs].sort((a, b) => a - b);
+      const mid = Math.floor(s.length / 2);
+      return s.length % 2 ? s[mid]! : (s[mid - 1]! + s[mid]!) / 2;
+    };
+
+    expect(Math.max(...dybantsaPicks)).toBeLessThanOrEqual(12);
+    expect(Math.max(...boozerPicks)).toBeLessThanOrEqual(12);
+    expect(median(dybantsaPicks)).toBeLessThanOrEqual(10);
+    expect(median(boozerPicks)).toBeLessThanOrEqual(10);
   });
 
   it('live board assigns prospects only when advancing', () => {

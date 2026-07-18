@@ -67,26 +67,34 @@ export function buildDraftOrder(leagueRoster: LeaguePlayer[], rng: Rng): typeof 
   return scored.map((s) => s.team);
 }
 
+/** Need is a tiebreaker among similar talent — keep bonuses modest. */
 export function needScore(position: Position, counts: DraftPositionCounts): number {
   const n = counts[position] ?? 0;
   let primary = 0;
-  if (n <= 1) primary = 12;
-  else if (n === 2) primary = 5;
+  if (n <= 1) primary = 5;
+  else if (n === 2) primary = 2.5;
   else if (n === 3) primary = 0;
-  else primary = -4;
+  else primary = -2;
 
   let adj = 0;
   for (const a of ADJACENT[position]) {
     const an = counts[a] ?? 0;
-    if (an <= 1) adj += 6;
-    else if (an === 2) adj += 2.5;
-    else if (an >= 4) adj -= 2;
+    if (an <= 1) adj += 3;
+    else if (an === 2) adj += 1.25;
+    else if (an >= 4) adj -= 1;
   }
   return primary + adj * 0.5;
 }
 
 export function bpaScore(p: DraftPoolProspect): number {
-  return p.overall * 0.55 + p.potential * 0.45;
+  return p.overall * 0.45 + p.potential * 0.55;
+}
+
+const CONTENDER_WINDOW = 5;
+const NEED_CAP = 6;
+
+function clampNeed(need: number): number {
+  return Math.max(-NEED_CAP, Math.min(NEED_CAP, need));
 }
 
 export function selectProspect(
@@ -99,15 +107,23 @@ export function selectProspect(
 ): DraftPoolProspect {
   const byId = new Map(pool.map((p) => [p.id, p]));
   const counts = teamNeeds[teamId] ?? emptyCounts();
-  const needWeight = pickNumber <= 30 ? 1 : 1.35;
-  let best: DraftPoolProspect | null = null;
-  let bestScore = -Infinity;
+  const needWeight = pickNumber <= 30 ? 1 : 1.2;
 
+  const scored: { p: DraftPoolProspect; bpa: number }[] = [];
   for (const id of remainingIds) {
     const p = byId.get(id);
     if (!p) continue;
-    const bpa = p.isUser ? p.value : bpaScore(p);
-    const need = needScore(p.position, counts) * needWeight;
+    scored.push({ p, bpa: p.isUser ? p.value : bpaScore(p) });
+  }
+
+  const topBpa = scored.reduce((m, s) => Math.max(m, s.bpa), -Infinity);
+  let best: DraftPoolProspect | null = null;
+  let bestScore = -Infinity;
+
+  for (const { p, bpa } of scored) {
+    const gap = topBpa - bpa;
+    const rawNeed = gap > CONTENDER_WINDOW ? 0 : needScore(p.position, counts) * needWeight;
+    const need = clampNeed(rawNeed);
     const score = bpa + need + rng.int(-2, 2);
     if (score > bestScore) {
       bestScore = score;
