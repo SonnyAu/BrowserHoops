@@ -1,4 +1,11 @@
-import { AttrKey, PlayerBuild, Position, Ratings, StarTier, spendableAttrKeys } from './models';
+import {
+  PlayerBuild,
+  Position,
+  Ratings,
+  SpendableAttrKey,
+  StarTier,
+  spendableAttrKeys,
+} from './models';
 import { adjustRating, canIncrease, remainingPoints } from './points';
 import { heightToHgt } from './traits';
 
@@ -104,15 +111,15 @@ export const STAR_PRESETS: Record<StarTier, StarPreset> = {
 };
 
 /** Position-first spend order, then remaining attrs. */
-function positionPriorities(position: Position): AttrKey[] {
-  const primary: Record<Position, AttrKey[]> = {
+function positionPriorities(position: Position): SpendableAttrKey[] {
+  const primary: Record<Position, SpendableAttrKey[]> = {
     PG: ['pss', 'drb', 'oiq', 'tp', 'spd', 'ft', 'fg', 'endu', 'diq', 'jmp', 'stre', 'ins', 'dnk', 'reb'],
     SG: ['tp', 'fg', 'spd', 'dnk', 'oiq', 'ft', 'drb', 'diq', 'jmp', 'endu', 'ins', 'pss', 'stre', 'reb'],
     SF: ['spd', 'tp', 'dnk', 'diq', 'fg', 'jmp', 'oiq', 'stre', 'endu', 'drb', 'ins', 'ft', 'pss', 'reb'],
     PF: ['reb', 'stre', 'ins', 'dnk', 'diq', 'jmp', 'endu', 'oiq', 'fg', 'tp', 'ft', 'spd', 'drb', 'pss'],
-    C: ['reb', 'stre', 'ins', 'dnk', 'diq', 'hgt', 'jmp', 'endu', 'oiq', 'ft', 'fg', 'tp', 'spd', 'drb', 'pss'],
+    C: ['reb', 'stre', 'ins', 'dnk', 'diq', 'jmp', 'endu', 'oiq', 'ft', 'fg', 'tp', 'spd', 'drb', 'pss'],
   };
-  const ordered = primary[position].filter((k) => k !== 'hgt');
+  const ordered = [...primary[position]];
   const seen = new Set(ordered);
   for (const k of spendableAttrKeys) {
     if (!seen.has(k)) ordered.push(k);
@@ -213,7 +220,7 @@ export function clampToStarSoftCap(ratings: Ratings, stars: StarTier): Ratings {
   const soft = STAR_PRESETS[stars].softCap;
   const next = { ...ratings };
   for (const k of spendableAttrKeys) {
-    next[k as AttrKey] = Math.min(soft, next[k as AttrKey]);
+    next[k] = Math.min(soft, next[k]);
   }
   return next;
 }

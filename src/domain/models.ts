@@ -21,7 +21,9 @@ export type AttrKey =
   | 'reb';
 
 /** Spendable attributes (height is derived from inches). */
-export const spendableAttrKeys: AttrKey[] = [
+export type SpendableAttrKey = Exclude<AttrKey, 'hgt'>;
+
+export const spendableAttrKeys: SpendableAttrKey[] = [
   'stre',
   'spd',
   'jmp',
