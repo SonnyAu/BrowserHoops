@@ -18,10 +18,16 @@ import {
   CharacterTemplate,
   Personality,
   Position,
-  StarTier,
+  ProspectPathId,
 } from '../domain/models';
 import { adjustRating, canIncrease, pointPool, remainingPoints } from '../domain/points';
-import { applyStarPreset, STAR_TIER_CONTRACT } from '../domain/starPresets';
+import {
+  PROSPECT_PATH_IDS,
+  getProspectPath,
+  pathFromStars,
+  resolvePlayerPath,
+} from '../domain/prospectPaths';
+import { applyProspectPath } from '../domain/starPresets';
 import { TRAITS, canSelectTrait, getEffectiveRatings, getTrait, syncHeightRating } from '../domain/traits';
 import {
   deleteTemplate,
@@ -54,7 +60,12 @@ export function CharacterCreate() {
   const [attrTab, setAttrTab] = useState(ATTR_GROUPS[0].id);
   const eff = getEffectiveRatings(player);
   const ovr = overall(player);
-  const truePot = computeTruePotential(player, { age: 18, stars: player.intendedStars });
+  const path = resolvePlayerPath(player);
+  const truePot = computeTruePotential(player, {
+    age: 18,
+    stars: player.intendedStars,
+    potBonus: path.potBonus,
+  });
   const pot = scoutedPotential(player, { truePotential: truePot, potentialBias: 0 });
   const potRange = estimatedPotentialRange(player);
   const arch = archetype(player);
@@ -62,14 +73,15 @@ export function CharacterCreate() {
   const sims = playerSimilarities(player);
   const left = remainingPoints(player);
   const pool = pointPool(player);
-  const { intendedStars, position, heightInches } = player;
+  const pathId = player.prospectPath ?? pathFromStars(player.intendedStars);
+  const { position, heightInches } = player;
   const baseline = useMemo(
     () =>
-      applyStarPreset(
-        { ...defaultPlayer(), position, heightInches, intendedStars, traitIds: [] },
-        intendedStars,
+      applyProspectPath(
+        { ...defaultPlayer(), position, heightInches, traitIds: [] },
+        pathId,
       ).ratings,
-    [intendedStars, position, heightInches],
+    [pathId, position, heightInches],
   );
   const baselineOvr = overall({ ...player, ratings: baseline, traitIds: [] });
   const activeGroup = ATTR_GROUPS.find((g) => g.id === attrTab) ?? ATTR_GROUPS[0];
@@ -81,8 +93,8 @@ export function CharacterCreate() {
     refresh();
   }, []);
 
-  function setStars(stars: StarTier) {
-    setPlayer(applyStarPreset(player, stars));
+  function setProspectPath(id: ProspectPathId) {
+    setPlayer(applyProspectPath(player, id));
   }
 
   function toggleTrait(id: string) {
@@ -120,33 +132,47 @@ export function CharacterCreate() {
         <div className="workspace-h cols-3">
           <div className="stack pane-scroll">
             <section className="panel panel-pad">
-              <h2 className="card-title">Recruiting tier</h2>
+              <h2 className="card-title">Prospect path</h2>
               <p className="muted" style={{ fontSize: 13, marginTop: 0 }}>
-                You choose your path — stars are a difficulty dial, not a loot roll. No save rerolls required.
+                Named career dial calibrated to BBGM-style starting OVRs. Stars still drive recruiting; path sets the ceiling story.
               </p>
-              <div className="row">
-                {([1, 2, 3, 4, 5] as StarTier[]).map((s) => (
-                  <button
-                    key={s}
-                    className={`btn ${player.intendedStars === s ? 'primary' : ''}`}
-                    onClick={() => setStars(s)}
-                    title={STAR_TIER_CONTRACT[s].pitch}
-                  >
-                    {s}★
-                  </button>
-                ))}
+              <div className="prospect-path-list">
+                {PROSPECT_PATH_IDS.map((id) => {
+                  const def = getProspectPath(id);
+                  const selected = pathId === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`prospect-path-row ${selected ? 'is-selected' : ''}`}
+                      onClick={() => setProspectPath(id)}
+                      title={def.pitch}
+                    >
+                      <span className="prospect-path-stars">{def.stars}★</span>
+                      <span className="prospect-path-body">
+                        <strong>{def.label}</strong>
+                        <span className="muted">{def.examples}</span>
+                      </span>
+                      <span className="prospect-path-ovr">~{def.targetOvr} OVR</span>
+                    </button>
+                  );
+                })}
               </div>
               {(() => {
-                const contract = STAR_TIER_CONTRACT[player.intendedStars];
-                const [lo, hi] = contract.earlyMinutes;
+                const [lo, hi] = path.earlyMinutes;
                 return (
                   <>
                     <p style={{ fontSize: 14, margin: '10px 0 4px' }}>
-                      <strong>{player.intendedStars}★ · {contract.label}</strong>
-                      <span className="muted"> · early minutes ~{lo}–{hi}</span>
+                      <strong>
+                        {path.stars}★ · {path.label}
+                      </strong>
+                      <span className="muted">
+                        {' '}
+                        · target ~{path.targetOvr} · live {ovr} · early minutes ~{lo}–{hi}
+                      </span>
                     </p>
                     <p className="muted" style={{ fontSize: 13, marginBottom: 0 }}>
-                      {contract.pitch} Budget {pool} pts · {left} left. Attributes auto-set; fine-tune if you want.
+                      {path.pitch} Budget {pool} pts · {left} left. Attributes auto-set; fine-tune if you want.
                     </p>
                   </>
                 );
@@ -175,7 +201,14 @@ export function CharacterCreate() {
                 <label className="field">Primary
                   <select
                     value={player.position}
-                    onChange={(e) => setPlayer(applyStarPreset({ ...player, position: e.target.value as Position }, player.intendedStars))}
+                    onChange={(e) =>
+                      setPlayer(
+                        applyProspectPath(
+                          { ...player, position: e.target.value as Position },
+                          pathId,
+                        ),
+                      )
+                    }
                   >
                     {POSITIONS.map((p) => <option key={p}>{p}</option>)}
                   </select>
@@ -358,7 +391,7 @@ export function CharacterCreate() {
                 </span>
               </p>
               <div className="stat-strip" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-                <div className="stat"><b>{player.intendedStars}★</b><span>Stars</span></div>
+                <div className="stat"><b>{player.intendedStars}★</b><span>{path.label}</span></div>
                 <div className="stat"><b>{left}</b><span>Pts left</span></div>
                 <div className="stat"><b>{player.traitIds.length}/2</b><span>Traits</span></div>
               </div>
@@ -402,7 +435,18 @@ export function CharacterCreate() {
               ) : (
                 templates.map((t) => (
                   <div key={t.id} className="row" style={{ marginBottom: 8, justifyContent: 'space-between' }}>
-                    <button className="btn ghost" onClick={() => setPlayer(t.player)}>
+                    <button
+                      className="btn ghost"
+                      onClick={() => {
+                        const migrated = t.player.prospectPath
+                          ? t.player
+                          : {
+                              ...t.player,
+                              prospectPath: pathFromStars(t.player.intendedStars),
+                            };
+                        setPlayer(migrated);
+                      }}
+                    >
                       <strong>{t.name}</strong>
                       <span className="muted" style={{ marginLeft: 8 }}>{overall(t.player)} OVR</span>
                     </button>

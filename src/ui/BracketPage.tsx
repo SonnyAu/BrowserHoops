@@ -81,9 +81,14 @@ export function BracketPage({ career }: { career: CareerSave }) {
         </Link>
       </div>
       {bracket.kind === 'marchMadness' ? (
-        <MadnessBracket bracket={bracket} userTeamId={userTeamId} />
+        <MadnessBracket saveId={career.id} bracket={bracket} userTeamId={userTeamId} />
       ) : (
-        <NbaBracket bracket={bracket} userTeamId={userTeamId} />
+        <NbaBracket
+          saveId={career.id}
+          bracket={bracket}
+          userTeamId={userTeamId}
+          standings={career.standings}
+        />
       )}
     </div>
   );

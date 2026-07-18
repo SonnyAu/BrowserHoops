@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createCareer } from '../domain/createCareer';
 import { defaultPlayer, defaultSettings } from '../domain/defaults';
 import { overall } from '../domain/derived';
+import { applyProspectPath } from '../domain/starPresets';
 import { applyOffseasonDevelopment, SEASON_XP_SOFT_CAP } from './development';
 import { simulateNextGame } from './game';
 
@@ -40,7 +41,7 @@ describe('unified offseason development', () => {
 
   it('applies the same offseason pipeline to user, teammate, and NBA pack', () => {
     let save = createCareer(
-      { ...defaultPlayer(), intendedStars: 4 },
+      applyProspectPath(defaultPlayer(), 'blueBlood'),
       { ...defaultSettings(), seed: 'offseason-all', collegeSeasonLength: 6 },
       'duke',
     );

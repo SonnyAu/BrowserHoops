@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CareerSave, LeagueGameRecord } from '../domain/models';
 import { loadLeagueGame, loadLeagueGamesForDay, loadLeagueGamesForSeason } from '../persistence/db';
 import { BoxScoreView } from './BoxScoreView';
+import { TeamLink } from './EntityLinks';
 
 export function ScheduleView({ career }: { career: CareerSave }) {
   const [day, setDay] = useState(() => {
@@ -82,7 +83,11 @@ export function ScheduleView({ career }: { career: CareerSave }) {
                     style={{ cursor: 'pointer' }}
                   >
                     <td>{g.gameNumber}</td>
-                    <td>{g.opponentName}</td>
+                    <td>
+                      <TeamLink saveId={career.id} teamId={g.opponentId}>
+                        {g.opponentName}
+                      </TeamLink>
+                    </td>
                     <td>{g.home ? 'Home' : 'Away'}</td>
                     <td>
                       {g.completed
@@ -115,7 +120,11 @@ export function ScheduleView({ career }: { career: CareerSave }) {
 
       <div className="stack pane-scroll" style={{ flex: 1, minWidth: 0 }}>
         {selected ? (
-          <BoxScoreView game={selected} onClose={() => setSelected(null)} />
+          <BoxScoreView
+            saveId={career.id}
+            game={selected}
+            onClose={() => setSelected(null)}
+          />
         ) : (
           <section className="panel panel-pad">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
@@ -169,11 +178,17 @@ export function ScheduleView({ career }: { career: CareerSave }) {
                         onClick={() => void openFromLeague(g)}
                       >
                         <td>
-                          {g.awayTeamName} <strong>{g.awayScore}</strong>
+                          <TeamLink saveId={career.id} teamId={g.awayTeamId}>
+                            {g.awayTeamName}
+                          </TeamLink>{' '}
+                          <strong>{g.awayScore}</strong>
                         </td>
                         <td>@</td>
                         <td>
-                          {g.homeTeamName} <strong>{g.homeScore}</strong>
+                          <TeamLink saveId={career.id} teamId={g.homeTeamId}>
+                            {g.homeTeamName}
+                          </TeamLink>{' '}
+                          <strong>{g.homeScore}</strong>
                         </td>
                         <td>{g.stage}</td>
                       </tr>

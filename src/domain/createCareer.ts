@@ -16,6 +16,7 @@ import {
   HiddenDevelopment,
   PlayerBuild,
 } from './models';
+import { resolvePlayerPath } from './prospectPaths';
 import { Rng } from './rng';
 import { getEffectiveRatings, syncHeightRating } from './traits';
 
@@ -35,16 +36,20 @@ export function potentialBiasRange(stars: number): [number, number] {
 
 export function createHiddenDevelopment(player: PlayerBuild, seed: string): HiddenDevelopment {
   const rng = new Rng(seed + ':hidden:' + player.name);
+  const path = resolvePlayerPath(player);
   const truePotential = computeTruePotential(player, {
     age: 18,
     stars: player.intendedStars,
+    potBonus: path.potBonus,
   });
-  const [biasLo, biasHi] = potentialBiasRange(player.intendedStars);
+  const [biasLo, biasHi] = path.biasRange;
+  const peakAgeMin = Math.max(22, 24 + path.peakAgeShift + rng.int(0, 3));
+  const peakAgeMax = Math.max(peakAgeMin + 2, 28 + path.peakAgeShift + rng.int(0, 4));
   return {
     truePotential,
     potentialBias: rng.int(biasLo, biasHi),
-    peakAgeMin: 24 + rng.int(0, 3),
-    peakAgeMax: 28 + rng.int(0, 4),
+    peakAgeMin,
+    peakAgeMax,
     volatility: rng.int(20, 70),
     workEthic:
       player.personality === 'Grinder' || player.personality === 'Competitor'
@@ -99,8 +104,11 @@ export function createCareer(
   settings: import('./models').CareerSettings,
   collegeId?: string,
 ): CareerSave {
+  const path = resolvePlayerPath(player);
   const synced: PlayerBuild = {
     ...player,
+    prospectPath: path.id,
+    intendedStars: path.stars,
     ratings: syncHeightRating(player.ratings, player.heightInches),
   };
   const recruiting = generateRecruitingProfile(synced, settings.seed);

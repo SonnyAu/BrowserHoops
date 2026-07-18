@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createCareer } from '../domain/createCareer';
 import { defaultPlayer, defaultSettings } from '../domain/defaults';
 import { BracketState, CareerSave } from '../domain/models';
+import { applyProspectPath } from '../domain/starPresets';
 import { simulateNextGame } from './game';
 import { buildMarchMadnessBracket, isMadnessComplete } from './marchMadness';
 import { buildNbaPlayoffBracket } from './nbaPlayoffs';
@@ -25,7 +26,7 @@ function simUntil(
 describe('playable postseason', () => {
   it('queues an incomplete user tournament game after regular season', () => {
     let save = createCareer(
-      { ...defaultPlayer(), intendedStars: 5 },
+      applyProspectPath(defaultPlayer(), 'lotteryHigh'),
       { ...defaultSettings(), seed: 'po-queue', collegeSeasonLength: 3 },
       'duke',
     );
@@ -50,7 +51,7 @@ describe('playable postseason', () => {
 
   it('user tournament game grants XP and uses real box scores', () => {
     let save = createCareer(
-      { ...defaultPlayer(), intendedStars: 5 },
+      applyProspectPath(defaultPlayer(), 'lotteryHigh'),
       { ...defaultSettings(), seed: 'po-xp', collegeSeasonLength: 2 },
       'duke',
     );

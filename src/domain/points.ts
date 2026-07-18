@@ -1,5 +1,5 @@
 import { AttrKey, PlayerBuild, Position, Ratings, spendableAttrKeys } from './models';
-import { STAR_PRESETS } from './starPresets';
+import { resolvePlayerPath, softCapForAttr } from './prospectPaths';
 import { heightToHgt, traitPointCost } from './traits';
 
 export function costForValue(value: number, floor: number): number {
@@ -12,7 +12,7 @@ export function costForValue(value: number, floor: number): number {
 }
 
 export function totalSpent(player: PlayerBuild): number {
-  const floor = STAR_PRESETS[player.intendedStars].floor;
+  const floor = resolvePlayerPath(player).floor;
   let spent = 0;
   for (const key of spendableAttrKeys) {
     const v = player.ratings[key];
@@ -71,7 +71,7 @@ export function positionCaps(position: Position, height: number, wingspan: numbe
 }
 
 export function pointPool(player: PlayerBuild): number {
-  return STAR_PRESETS[player.intendedStars].pointPool;
+  return resolvePlayerPath(player).pointPool;
 }
 
 export function remainingPoints(player: PlayerBuild): number {
@@ -80,17 +80,17 @@ export function remainingPoints(player: PlayerBuild): number {
 
 export function canIncrease(player: PlayerBuild, key: AttrKey): boolean {
   if (key === 'hgt') return false;
+  const path = resolvePlayerPath(player);
   const caps = positionCaps(player.position, player.heightInches, player.wingspanInches);
-  const soft = STAR_PRESETS[player.intendedStars].softCap;
+  const soft = softCapForAttr(player, key);
   const next = player.ratings[key] + 1;
   if (next > Math.min(caps[key], soft)) return false;
-  const floor = STAR_PRESETS[player.intendedStars].floor;
-  return remainingPoints(player) >= costForValue(next, floor);
+  return remainingPoints(player) >= costForValue(next, path.floor);
 }
 
 export function adjustRating(player: PlayerBuild, key: AttrKey, delta: 1 | -1): PlayerBuild {
   if (key === 'hgt') return player;
-  const floor = STAR_PRESETS[player.intendedStars].floor;
+  const floor = resolvePlayerPath(player).floor;
   const current = player.ratings[key];
   if (delta === -1 && current <= floor) return player;
   if (delta === 1 && !canIncrease(player, key)) return player;
@@ -102,5 +102,5 @@ export function adjustRating(player: PlayerBuild, key: AttrKey, delta: 1 | -1): 
   return { ...player, ratings };
 }
 
-export const POINT_POOL = 200; // nominal; actual pool is star-tier based
+export const POINT_POOL = 200; // nominal; actual pool is prospect-path based
 export { spendableAttrKeys as ratingKeys };

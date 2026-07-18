@@ -39,9 +39,8 @@ export function overallFromRatings(r: Ratings, position: PlayerBuild['position']
   let ovr = sum / w;
   if (position === 'PG' && r.pss > 80) ovr += 1;
   if ((position === 'C' || position === 'PF') && r.reb > 80) ovr += 1;
-  // Scale BGM-ish mid-50s/60s attribute means into familiar 70–95 overalls
-  ovr = 20 + (ovr - 20) * 1.35;
-  return Math.round(Math.min(99, Math.max(35, ovr)));
+  // BBGM-native: weighted attribute mean (no fantasy inflate into the 70–95 band).
+  return Math.round(Math.min(99, Math.max(20, ovr)));
 }
 
 export function overall(p: PlayerBuild): number {
@@ -51,15 +50,19 @@ export function overall(p: PlayerBuild): number {
 /** Hidden development ceiling (training target). Always ≤ 99. */
 export function computeTruePotential(
   p: PlayerBuild,
-  opts?: { age?: number; stars?: number },
+  opts?: { age?: number; stars?: number; potBonus?: number },
 ): number {
   const o = overall(p);
   const r = getEffectiveRatings(p);
   const upside = Math.floor((r.spd + r.oiq + r.jmp + r.tp) / 40);
   const starRoom = opts?.stars != null ? Math.max(0, 6 - (5 - opts.stars)) : 4;
+  const pathBonus = opts?.potBonus ?? 0;
   const age = opts?.age ?? 18;
   const ageRoom = age <= 19 ? 10 : age <= 22 ? 8 : age <= 26 ? 4 : age <= 30 ? 1 : 0;
-  return Math.min(99, Math.max(o, o + upside + Math.floor(starRoom / 2) + Math.floor(ageRoom / 2)));
+  return Math.min(
+    99,
+    Math.max(o, o + upside + Math.floor(starRoom / 2) + Math.floor(ageRoom / 2) + pathBonus),
+  );
 }
 
 /** Scouted / displayed potential with sticky bias. Always ≤ 99. */
@@ -182,44 +185,45 @@ export function roleFromContext(args: {
   let role: RoleLabel = 'Deep Reserve';
   let minutes = 8;
   let usage = 0.12;
-  if (readiness > 92 && prestige < 88) {
+  // Thresholds tuned for BBGM-scale OVRs (lottery ~38–48, consensus ~57, generational ~65).
+  if (readiness > 78 && prestige < 88) {
     role = 'Program Star';
     minutes = 36;
     usage = 0.36;
-  } else if (readiness > 88) {
+  } else if (readiness > 74) {
     role = 'Primary Option';
     minutes = 34;
     usage = 0.34;
-  } else if (readiness > 84) {
+  } else if (readiness > 70) {
     role = 'Featured Starter';
     minutes = 32;
     usage = 0.28;
-  } else if (readiness > 78) {
+  } else if (readiness > 64) {
     role = 'Starter';
     minutes = 28;
     usage = 0.24;
-  } else if (readiness > 72) {
+  } else if (readiness > 58) {
     role = 'Spot Starter';
     minutes = 24;
     usage = 0.2;
-  } else if (readiness > 66) {
+  } else if (readiness > 52) {
     role = 'Sixth Man';
     minutes = 20;
     usage = 0.18;
-  } else if (readiness > 60) {
+  } else if (readiness > 46) {
     role = 'Rotation Player';
     minutes = 16;
     usage = 0.14;
-  } else if (readiness > 52) {
+  } else if (readiness > 40) {
     role = 'Developmental Reserve';
     minutes = 10;
     usage = 0.1;
   }
   // Elite raw talent pushes ceiling even at blue-bloods (still cut below).
-  if (ovr >= 92 && minutes < 34) {
+  if (ovr >= 62 && minutes < 34) {
     minutes = Math.max(minutes, 34);
     usage = Math.max(usage, 0.32);
-  } else if (ovr >= 88 && minutes < 30) {
+  } else if (ovr >= 56 && minutes < 30) {
     minutes = Math.max(minutes, 30);
     usage = Math.max(usage, 0.28);
   }

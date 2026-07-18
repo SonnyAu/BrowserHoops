@@ -3,6 +3,7 @@ import { createCareer } from '../domain/createCareer';
 import { defaultPlayer, defaultSettings } from '../domain/defaults';
 import { DraftPoolProspect, DraftPositionCounts, Position } from '../domain/models';
 import { Rng } from '../domain/rng';
+import { applyProspectPath } from '../domain/starPresets';
 import {
   advanceDraftPick,
   beginDraft,
@@ -151,7 +152,7 @@ describe('dynamic BPA + need draft', () => {
 
   it('user can be selected mid-board via BPA + need (not a pre-locked slot)', () => {
     let save = createCareer(
-      { ...defaultPlayer(), intendedStars: 5 },
+      applyProspectPath(defaultPlayer(), 'lotteryHigh'),
       { ...defaultSettings(), seed: 'user-dynamic' },
       'duke',
     );

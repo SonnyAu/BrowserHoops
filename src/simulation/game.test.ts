@@ -5,6 +5,7 @@ import { computeTruePotential, scoutedPotential } from '../domain/derived';
 import { applyGodModeCommand, isAllowedGodModeCommand } from '../domain/godMode';
 import { PlayerBuild } from '../domain/models';
 import { remainingPoints } from '../domain/points';
+import { applyProspectPath } from '../domain/starPresets';
 import { colleges } from '../data/colleges';
 import { getDraftClass } from '../data/draftProspects';
 import { nbaPlayers } from '../data/nbaPlayers';
@@ -148,15 +149,16 @@ describe('BrowserHoops career systems', () => {
   });
 
   it('locks recruiting stars to the creator tier', () => {
-    const five = { ...defaultPlayer(), intendedStars: 5 as const };
+    const five = applyProspectPath(defaultPlayer(), 'lotteryHigh');
     const save = createCareer(five, { ...defaultSettings(), seed: 'stars' }, 'duke');
     expect(save.recruiting.stars).toBe(5);
     expect(save.player.intendedStars).toBe(5);
+    expect(save.player.prospectPath).toBe('lotteryHigh');
   });
 
   it('never requires rerolls: star tier locks and offer floors hold across seeds', () => {
     for (const seed of ['a', 'b', 'c', 'd', 'e']) {
-      const five = { ...defaultPlayer(), intendedStars: 5 as const, name: `P-${seed}` };
+      const five = { ...applyProspectPath(defaultPlayer(), 'lotteryHigh'), name: `P-${seed}` };
       const profile5 = generateRecruitingProfile(five, seed);
       expect(profile5.stars).toBe(5);
       const offers5 = generateOffers(five, profile5, seed);
@@ -165,7 +167,7 @@ describe('BrowserHoops career systems', () => {
       const eliteSchool = colleges.find((c) => c.id === elite.collegeId)!;
       expect(eliteSchool.prestige).toBeGreaterThanOrEqual(88);
 
-      const two = { ...defaultPlayer(), intendedStars: 2 as const, name: `U-${seed}` };
+      const two = { ...applyProspectPath(defaultPlayer(), 'sleeper'), name: `U-${seed}` };
       const profile2 = generateRecruitingProfile(two, seed);
       expect(profile2.stars).toBe(2);
       const offers2 = generateOffers(two, profile2, seed);
@@ -177,7 +179,7 @@ describe('BrowserHoops career systems', () => {
   it('clamps scout potential bias by star tier', () => {
     expect(potentialBiasRange(5)).toEqual([-3, 3]);
     expect(potentialBiasRange(2)).toEqual([-6, 6]);
-    const five = { ...defaultPlayer(), intendedStars: 5 as const };
+    const five = applyProspectPath(defaultPlayer(), 'lotteryHigh');
     for (const seed of ['bias1', 'bias2', 'bias3', 'bias4', 'bias5']) {
       const save = createCareer(five, { ...defaultSettings(), seed }, 'duke');
       expect(Math.abs(save.hidden.potentialBias)).toBeLessThanOrEqual(3);
@@ -238,7 +240,7 @@ describe('BrowserHoops career systems', () => {
 
   it('updates roster status and can grant college awards', () => {
     let save = createCareer(
-      { ...defaultPlayer(), intendedStars: 5 },
+      applyProspectPath(defaultPlayer(), 'lotteryHigh'),
       { ...defaultSettings(), seed: 'awards', collegeSeasonLength: 4 },
       'duke',
     );
@@ -300,7 +302,7 @@ describe('BrowserHoops career systems', () => {
       ),
     ) as PlayerBuild['ratings'];
     let save = createCareer(
-      { ...defaultPlayer(), ratings, intendedStars: 5, traitIds: [] },
+      { ...applyProspectPath(defaultPlayer(), 'lotteryHigh'), ratings, traitIds: [] },
       { ...defaultSettings(), seed: 'elite-ppg', collegeSeasonLength: 12 },
       'wichita-state',
     );
@@ -359,7 +361,7 @@ describe('BrowserHoops career systems', () => {
       ),
     ) as PlayerBuild['ratings'];
     let save = createCareer(
-      { ...defaultPlayer(), ratings, intendedStars: 5 },
+      { ...applyProspectPath(defaultPlayer(), 'lotteryHigh'), ratings },
       { ...defaultSettings(), seed: 'events-big' },
       'wichita-state',
     );

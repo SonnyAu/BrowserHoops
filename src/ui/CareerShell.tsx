@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getCollege } from '../data/colleges';
-import { getProTeam, getProTeamByTid } from '../data/nbaTeams';
+import { getProTeam } from '../data/nbaTeams';
 import { nbaPlayers } from '../data/nbaPlayers';
 import {
   archetype,
@@ -37,7 +37,10 @@ import {
 } from '../simulation/schedule';
 import { BracketPage } from './BracketPage';
 import { DraftNight } from './DraftNight';
+import { PlayerLink, TeamLink, teamIdFromTid } from './EntityLinks';
+import { PlayerPage } from './PlayerPage';
 import { ScheduleView } from './ScheduleView';
+import { TeamPage } from './TeamPage';
 import { simTargetsForCareer, useSimController } from './useSimController';
 
 const NAV = [
@@ -123,9 +126,23 @@ export function CareerShell() {
     <div className="career-shell" style={{ ['--team-accent' as string]: teamAccent }}>
       <aside className="sidebar">
         <div className="player-chip">
-          <strong>{career.player.name}</strong>
+          <strong>
+            <PlayerLink saveId={career.id} playerId="user">
+              {career.player.name}
+            </PlayerLink>
+          </strong>
           <span>
-            {teamName} · {career.phase} · S{career.season}
+            {(career.proTeamId || career.collegeId) ? (
+              <TeamLink
+                saveId={career.id}
+                teamId={(career.proTeamId || career.collegeId)!}
+              >
+                {teamName}
+              </TeamLink>
+            ) : (
+              teamName
+            )}{' '}
+            · {career.phase} · S{career.season}
           </span>
           <span>
             {overall(career.player)} OVR · {career.role}
@@ -230,6 +247,8 @@ export function CareerShell() {
             />
             <Route path="schedule" element={<ScheduleView career={career} />} />
             <Route path="bracket" element={<BracketPage career={career} />} />
+            <Route path="team/:teamId" element={<TeamPage career={career} />} />
+            <Route path="player/:playerId" element={<PlayerPage career={career} />} />
             <Route path="history" element={<HistoryView career={career} logs={logs} />} />
             <Route path="leaderboards" element={<LeaderboardsView career={career} logs={logs} />} />
             <Route
@@ -469,7 +488,11 @@ function HomeView({
                       className={row.teamId === selfId ? 'standings-self' : undefined}
                     >
                       <td>{i + 1}</td>
-                      <td>{row.teamName}</td>
+                      <td>
+                        <TeamLink saveId={career.id} teamId={row.teamId}>
+                          {row.teamName}
+                        </TeamLink>
+                      </td>
                       <td>{row.wins}</td>
                       <td>{row.losses}</td>
                       <td>{gb}</td>
@@ -486,10 +509,28 @@ function HomeView({
         <section className="panel panel-pad">
           <h2 className="card-title">Home</h2>
           <p style={{ margin: '0 0 8px' }}>
-            <strong>{career.player.name}</strong> · {archetype(career.player)} · {career.role}
+            <strong>
+              <PlayerLink saveId={career.id} playerId="user">
+                {career.player.name}
+              </PlayerLink>
+            </strong>{' '}
+            · {archetype(career.player)} · {career.role}
           </p>
           <div className="meta-row">
-            <span><strong>{teamName}</strong></span>
+            <span>
+              <strong>
+                {(career.proTeamId || career.collegeId) ? (
+                  <TeamLink
+                    saveId={career.id}
+                    teamId={(career.proTeamId || career.collegeId)!}
+                  >
+                    {teamName}
+                  </TeamLink>
+                ) : (
+                  teamName
+                )}
+              </strong>
+            </span>
             <span>Age {career.age}</span>
             <span>{career.rosterStatus}</span>
             {career.injury.gamesRemaining > 0 ? (
@@ -503,17 +544,30 @@ function HomeView({
           </div>
           <p className="muted" style={{ margin: '0 0 8px', fontSize: 13 }}>
             Next:{' '}
-            {nextGame
-              ? `${nextGame.round ? `${nextGame.round} · ` : ''}${nextGame.home ? 'vs' : '@'} ${nextGame.opponentName}`
-              : 'No games scheduled'}
+            {nextGame ? (
+              <>
+                {nextGame.round ? `${nextGame.round} · ` : ''}
+                {nextGame.home ? 'vs' : '@'}{' '}
+                <TeamLink saveId={career.id} teamId={nextGame.opponentId}>
+                  {nextGame.opponentName}
+                </TeamLink>
+              </>
+            ) : (
+              'No games scheduled'
+            )}
           </p>
           {career.collegeRoster.length > 0 ? (
             <p style={{ fontSize: 13, margin: '0 0 6px' }}>
               Teammates:{' '}
-              {career.collegeRoster
-                .slice(0, 4)
-                .map((m) => `${m.name} (${m.overall})`)
-                .join(', ')}
+              {career.collegeRoster.slice(0, 4).map((m, i) => (
+                <span key={m.id}>
+                  {i > 0 ? ', ' : ''}
+                  <PlayerLink saveId={career.id} playerId={m.id}>
+                    {m.name}
+                  </PlayerLink>{' '}
+                  ({m.overall})
+                </span>
+              ))}
             </p>
           ) : null}
           {career.player.traitIds.length > 0 ? (
@@ -828,15 +882,28 @@ function LeaderboardsView({ career, logs }: { career: CareerSave; logs: GameLog[
         <table className="data">
           <thead><tr><th>#</th><th>Player</th><th>Pos</th><th>OVR</th><th>Team</th></tr></thead>
           <tbody>
-            {leagueLeaders.map((p, i) => (
-              <tr key={p.id}>
-                <td>{i + 1}</td>
-                <td>{p.name}</td>
-                <td>{p.position}</td>
-                <td>{p.overall}</td>
-                <td>{typeof p.tid === 'number' ? getProTeamByTid(p.tid)?.abbrev ?? p.tid : 'FA'}</td>
-              </tr>
-            ))}
+            {leagueLeaders.map((p, i) => {
+              const tid = teamIdFromTid(p.tid);
+              return (
+                <tr key={p.id}>
+                  <td>{i + 1}</td>
+                  <td>
+                    <PlayerLink saveId={career.id} playerId={p.id}>
+                      {p.name}
+                    </PlayerLink>
+                  </td>
+                  <td>{p.position}</td>
+                  <td>{p.overall}</td>
+                  <td>
+                    {tid ? (
+                      <TeamLink saveId={career.id} teamId={tid} abbrev />
+                    ) : (
+                      'FA'
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </section>

@@ -1,7 +1,7 @@
 import { colleges } from '../data/colleges';
 import { overall, strengthsWeaknesses } from '../domain/derived';
-import { STAR_PRESETS } from '../domain/starPresets';
 import { College, CollegeOffer, PlayerBuild, RecruitingProfile, RoleLabel, StarTier } from '../domain/models';
+import { resolvePlayerPath } from '../domain/prospectPaths';
 import { Rng } from '../domain/rng';
 import { getEffectiveRatings } from '../domain/traits';
 
@@ -43,8 +43,9 @@ function minutesForOffer(
 
 export function generateRecruitingProfile(player: PlayerBuild, seed: string): RecruitingProfile {
   const rng = new Rng(seed + ':recruit:' + player.name);
-  const stars = player.intendedStars as StarTier;
-  const band = STAR_PRESETS[stars].rankBand;
+  const path = resolvePlayerPath(player);
+  const stars = path.stars;
+  const band = path.rankBand;
   const nationalRank = rng.int(band[0], band[1]);
   const positionalRank = Math.max(1, Math.round(nationalRank / 5 + rng.int(-5, 8)));
   const stateRank = Math.max(1, Math.round(nationalRank / 12 + rng.int(-3, 6)));
@@ -52,12 +53,7 @@ export function generateRecruitingProfile(player: PlayerBuild, seed: string): Re
   const sw = strengthsWeaknesses(player);
   const o = overall(player);
   const ppg = Math.round(10 + o / 9 + r.tp / 25 + r.fg / 30 + rng.int(-2, 4));
-  const accolades: string[] = [];
-  if (stars >= 5) accolades.push("McDonald's All-American");
-  if (stars >= 4) accolades.push('All-State first team');
-  if (stars >= 3) accolades.push('Conference player of the year');
-  if (stars === 1) accolades.push('Under-the-radar prospect');
-  if (stars === 2) accolades.push('Regional honorable mention');
+  const accolades = [...path.accolades];
 
   return {
     nationalRank,
@@ -75,7 +71,7 @@ export function generateRecruitingProfile(player: PlayerBuild, seed: string): Re
     scoutConfidence: rng.int(58, 94),
     strengths: sw.strengths,
     weaknesses: sw.weaknesses,
-    summary: `${player.name} is a ${stars}-star ${player.position} from ${player.highSchool}. Scouts cite ${sw.strengths.join(' and ')} with questions about ${sw.weaknesses.join(' and ')}. National rank ~#${nationalRank}.`,
+    summary: `${player.name} is a ${stars}-star ${path.label.toLowerCase()} ${player.position} from ${player.highSchool}. Scouts cite ${sw.strengths.join(' and ')} with questions about ${sw.weaknesses.join(' and ')}. National rank ~#${nationalRank}.`,
   };
 }
 

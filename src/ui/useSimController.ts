@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { CareerSave, GameLog } from '../domain/models';
 import { persistSimulationStep, pruneLeagueGames } from '../persistence/db';
 import { simulateNextGame } from '../simulation/game';
+import { archiveSeasonHistory } from '../simulation/seasonArchive';
 
 export type SimTarget =
   | 'one game'
@@ -140,6 +141,11 @@ export function useSimController(
       steps += 1;
 
       if (next.phase === 'seasonReview') {
+        try {
+          await archiveSeasonHistory(next);
+        } catch {
+          /* archive best-effort */
+        }
         const years = next.settings.boxScoreRetentionYears ?? 3;
         await pruneLeagueGames(next.id, next.season, years);
         break;

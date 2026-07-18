@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react';
 import { BracketMatchup, BracketState, MadnessRegion } from '../domain/models';
 import { REGIONS } from '../simulation/marchMadness';
+import { TeamLink } from './EntityLinks';
 
 export function MadnessBracket({
+  saveId,
   bracket,
   userTeamId,
 }: {
+  saveId: string;
   bracket: BracketState;
   userTeamId?: string | null;
 }) {
@@ -71,7 +74,7 @@ export function MadnessBracket({
           <h3>First Four</h3>
           <div className="madness-matchup-grid">
             {firstFour.map((m) => (
-              <MatchupCard key={m.id} m={m} userTeamId={userTeamId} />
+              <MatchupCard key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
             ))}
           </div>
         </section>
@@ -108,7 +111,7 @@ export function MadnessBracket({
 
       <div className="madness-matchup-grid pane-scroll">
         {(shown.length ? shown : roundsInRegion).map((m) => (
-          <MatchupCard key={m.id} m={m} userTeamId={userTeamId} />
+          <MatchupCard key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
         ))}
       </div>
     </div>
@@ -116,9 +119,11 @@ export function MadnessBracket({
 }
 
 function MatchupCard({
+  saveId,
   m,
   userTeamId,
 }: {
+  saveId: string;
   m: BracketMatchup;
   userTeamId?: string | null;
 }) {
@@ -130,14 +135,18 @@ function MatchupCard({
     >
       <p className="madness-round-label">{m.round}</p>
       <SlotRow
+        saveId={saveId}
         seed={m.slotA.seed}
+        teamId={m.slotA.teamId}
         name={m.slotA.teamName}
         score={m.completed ? m.homeScore : undefined}
         winner={m.winnerId === m.slotA.teamId}
         user={m.slotA.teamId === userTeamId}
       />
       <SlotRow
+        saveId={saveId}
         seed={m.slotB.seed}
+        teamId={m.slotB.teamId}
         name={m.slotB.teamName}
         score={m.completed ? m.awayScore : undefined}
         winner={m.winnerId === m.slotB.teamId}
@@ -148,13 +157,17 @@ function MatchupCard({
 }
 
 function SlotRow({
+  saveId,
   seed,
+  teamId,
   name,
   score,
   winner,
   user,
 }: {
+  saveId: string;
   seed: number | null;
+  teamId: string | null;
   name: string;
   score?: number;
   winner?: boolean;
@@ -163,7 +176,15 @@ function SlotRow({
   return (
     <div className={`madness-slot ${winner ? 'winner' : ''} ${user ? 'user' : ''}`}>
       <span className="seed">{seed ?? '—'}</span>
-      <span className="name">{name}</span>
+      <span className="name">
+        {teamId && !teamId.startsWith('ff-winner') && !teamId.startsWith('tbd-') ? (
+          <TeamLink saveId={saveId} teamId={teamId}>
+            {name}
+          </TeamLink>
+        ) : (
+          name
+        )}
+      </span>
       <span className="score">{score != null ? score : ''}</span>
     </div>
   );

@@ -13,6 +13,7 @@ import {
   initialCollegeStandings,
   initialProStandings,
 } from './schedule';
+import { applyProOffseasonMarket, persistLeagueTransactions } from './transactions';
 
 function resetSeasonFields(save: CareerSave): Pick<
   CareerSave,
@@ -85,27 +86,30 @@ export function startNextCollegeSeason(save: CareerSave): CareerSave {
 }
 
 export function startNextProSeason(save: CareerSave): CareerSave {
-  const teamId = save.proTeamId!;
+  const { save: afterMarket, transactions } = applyProOffseasonMarket(save);
+  void persistLeagueTransactions(transactions);
+
+  const teamId = afterMarket.proTeamId!;
   const team = getProTeam(teamId)!;
   const schedule = buildProSchedule(
     teamId,
-    Math.min(82, save.settings.proSeasonLength),
-    `${save.settings.seed}:pro${save.season + 1}`,
+    Math.min(82, afterMarket.settings.proSeasonLength),
+    `${afterMarket.settings.seed}:pro${afterMarket.season + 1}`,
   );
   const teamName = `${team.region} ${team.name}`;
   // Age already applied in offseason development.
   let next: CareerSave = {
-    ...save,
+    ...afterMarket,
     phase: 'professional',
-    season: save.season + 1,
+    season: afterMarket.season + 1,
     schedule,
     standings: initialProStandings(teamId),
     draftBoard: null,
     collegeRoster: [],
     pendingDecisions: [],
-    history: [...save.history, `Pro season ${save.season + 1} with ${teamName}`],
+    history: [...afterMarket.history, `Pro season ${afterMarket.season + 1} with ${teamName}`],
     updatedAt: new Date().toISOString(),
-    ...resetSeasonFields(save),
+    ...resetSeasonFields(afterMarket),
   };
   return clearAllSeasonXp(next);
 }

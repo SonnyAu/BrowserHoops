@@ -74,6 +74,17 @@ export const ratingKeys = allAttrKeys;
 export type Personality = 'Leader' | 'Grinder' | 'Showman' | 'Technician' | 'Competitor';
 export type StarTier = 1 | 2 | 3 | 4 | 5;
 
+/** Named create-path dial; public recruiting stars still come from `intendedStars`. */
+export type ProspectPathId =
+  | 'underdog'
+  | 'sleeper'
+  | 'standard'
+  | 'blueBlood'
+  | 'lotteryLow'
+  | 'lotteryHigh'
+  | 'consensusOne'
+  | 'generational';
+
 export type CareerPhase =
   | 'recruiting'
   | 'college'
@@ -131,6 +142,8 @@ export interface PlayerBuild {
   personality: Personality;
   careerPriorities: string[];
   intendedStars: StarTier;
+  /** Named prospect path; defaults from intendedStars when missing on old templates. */
+  prospectPath: ProspectPathId;
   traitIds: string[];
   ratings: Ratings;
 }
@@ -259,6 +272,10 @@ export interface LeaguePlayer {
   draftRound: number;
   draftPick: number;
   draftTid: number;
+  /** Jersey number (0–99). */
+  jerseyNumber?: number;
+  /** Optional per-team jersey overrides. */
+  jerseyByTeamId?: Record<string, number>;
   /** Mutable development fields (filled when cloned onto a career save). */
   age?: number;
   seasonXp?: number;
@@ -406,6 +423,73 @@ export interface SeasonStats {
   awards: string[];
 }
 
+/** Archived BBGM-shaped season totals (per-game derived in UI). */
+export interface PlayerSeasonLine {
+  id: string;
+  saveId: string;
+  playerId: string;
+  season: number;
+  level: 'college' | 'pro';
+  phase: 'regular' | 'playoffs';
+  teamId: string;
+  teamAbbrev: string;
+  age: number;
+  gp: number;
+  gs: number;
+  min: number;
+  fg: number;
+  fga: number;
+  tp: number;
+  tpa: number;
+  ft: number;
+  fta: number;
+  orb: number;
+  drb: number;
+  trb: number;
+  ast: number;
+  tov: number;
+  stl: number;
+  blk: number;
+  pf: number;
+  pts: number;
+}
+
+export type LeagueTransactionType =
+  | 'trade'
+  | 'signing'
+  | 'release'
+  | 'draft'
+  | 'commitment'
+  | 'extension';
+
+export interface LeagueTransaction {
+  id: string;
+  saveId: string;
+  season: number;
+  dateKey: string;
+  type: LeagueTransactionType;
+  teamIds: string[];
+  playerIds: string[];
+  summary: string;
+  assets?: {
+    fromTeamId: string;
+    toTeamId: string;
+    playerIds: string[];
+  }[];
+  contract?: { playerId: string; amount: number; exp: number };
+}
+
+export interface TeamSeasonRecord {
+  id: string;
+  saveId: string;
+  teamId: string;
+  season: number;
+  level: 'college' | 'pro';
+  wins: number;
+  losses: number;
+  conference?: string;
+}
+
 export type SeasonStage = 'regular' | 'playIn' | 'playoffs' | 'tournament' | 'complete';
 
 export interface ScheduledGame {
@@ -442,6 +526,9 @@ export interface BoxLine {
   tpa: number;
   ftm: number;
   fta: number;
+  orb?: number;
+  drb?: number;
+  pf?: number;
   isUser?: boolean;
 }
 
@@ -740,6 +827,18 @@ export const playerBuildSchema = z.object({
   personality: z.enum(['Leader', 'Grinder', 'Showman', 'Technician', 'Competitor']),
   careerPriorities: z.array(z.string()),
   intendedStars: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5)]),
+  prospectPath: z
+    .enum([
+      'underdog',
+      'sleeper',
+      'standard',
+      'blueBlood',
+      'lotteryLow',
+      'lotteryHigh',
+      'consensusOne',
+      'generational',
+    ])
+    .default('standard'),
   traitIds: z.array(z.string()),
   ratings: ratingsSchema,
 });

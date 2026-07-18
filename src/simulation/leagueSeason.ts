@@ -55,13 +55,15 @@ function synthBoxLines(
     ptsLeft -= pts;
     const fga = Math.max(1, Math.round(pts * 0.85 + rng.int(1, 6)));
     const fgm = Math.min(fga, Math.round(pts * 0.4 + rng.int(0, 3)));
+    const reb = Math.max(0, rng.int(1, 9) + (i < 2 ? 2 : 0));
+    const orb = Math.min(reb, rng.int(0, Math.ceil(reb * 0.4)));
     lines.push({
       playerId: p?.id ?? `${teamId}-p${i}`,
       playerName: p?.name ?? `Player ${i + 1}`,
       teamId,
       minutes: Math.max(8, 32 - i * 3 + rng.int(-2, 2)),
       points: Math.max(0, pts),
-      rebounds: Math.max(0, rng.int(1, 9) + (i < 2 ? 2 : 0)),
+      rebounds: reb,
       assists: Math.max(0, rng.int(0, 7) + (i === 0 ? 2 : 0)),
       steals: rng.int(0, 3),
       blocks: rng.int(0, 2),
@@ -72,6 +74,9 @@ function synthBoxLines(
       tpa: rng.int(1, 8),
       ftm: Math.max(0, Math.round(pts * 0.15)),
       fta: Math.max(0, Math.round(pts * 0.2)),
+      orb,
+      drb: Math.max(0, reb - orb),
+      pf: rng.int(0, 5),
     });
   }
   return lines;

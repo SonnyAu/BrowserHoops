@@ -1,5 +1,5 @@
 import { CareerSettings, PlayerBuild, Ratings } from './models';
-import { applyStarPreset } from './starPresets';
+import { applyProspectPath } from './starPresets';
 import { heightToHgt } from './traits';
 
 export const defaultRatings = (): Ratings => ({
@@ -38,10 +38,11 @@ export const defaultPlayer = (): PlayerBuild => {
     personality: 'Grinder',
     careerPriorities: ['Winning', 'Development'],
     intendedStars: 3,
+    prospectPath: 'standard',
     traitIds: [],
     ratings: defaultRatings(),
   };
-  return applyStarPreset(base, 3);
+  return applyProspectPath(base, 'standard');
 };
 
 export const defaultSettings = (): CareerSettings => ({
