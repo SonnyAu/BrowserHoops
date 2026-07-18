@@ -83,8 +83,10 @@ function scoreGame(
   phase: CareerPhase,
   leagueRoster: LeaguePlayer[],
   rng: Rng,
+  neutral = false,
 ): { homeScore: number; awayScore: number } {
-  const hs = teamStrength(homeId, phase, leagueRoster) + 3 + rng.int(-8, 8);
+  const homeCourt = neutral ? 0 : 3;
+  const hs = teamStrength(homeId, phase, leagueRoster) + homeCourt + rng.int(-8, 8);
   const as = teamStrength(awayId, phase, leagueRoster) + rng.int(-8, 8);
   const homeScore = Math.round(62 + (hs - 70) / 2.2 + rng.int(0, 18));
   const awayScore = Math.round(60 + (as - 70) / 2.5 + rng.int(0, 18));
@@ -233,6 +235,7 @@ export function simulateNeutralGame(
   day: number,
   stage: SeasonStage,
   meta?: LeagueGameRecord['playoffMeta'],
+  opts?: { neutral?: boolean },
 ): { homeScore: number; awayScore: number; game: LeagueGameRecord; homeWon: boolean } {
   const level: 'college' | 'pro' =
     save.phase === 'professional' || !!save.proTeamId ? 'pro' : 'college';
@@ -245,6 +248,7 @@ export function simulateNeutralGame(
     save.phase,
     save.leagueRoster ?? [],
     rng,
+    opts?.neutral ?? stage === 'tournament',
   );
   const homeWon = homeScore > awayScore;
   const game: LeagueGameRecord = {

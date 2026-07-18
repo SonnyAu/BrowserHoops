@@ -84,7 +84,7 @@ export function NbaBracket({
 
       <div className="nba-series-grid pane-scroll">
         {series.length === 0 ? (
-          <p className="muted">Series appear after the Play-In (or when the field locks).</p>
+          <p className="muted">First-round series will appear when the conference field is set.</p>
         ) : (
           series.map((s) => <SeriesCard key={s.id} s={s} userTeamId={userTeamId} />)
         )}

@@ -111,9 +111,7 @@ export function CareerShell() {
   if (!career) return <div className="dashboard">Loading career…</div>;
 
   const role = assignRole(career);
-  const nextGame = career.schedule.find(
-    (g) => !g.completed && (g.stage ?? 'regular') === 'regular',
-  );
+  const nextGame = career.schedule.find((g) => !g.completed);
   const simTargets = simTargetsForCareer(career);
   const simBlocked =
     career.retired ||
@@ -162,10 +160,14 @@ export function CareerShell() {
               ? ' · Season review'
               : career.phase === 'draft'
                 ? ' · Draft night'
-                : career.seasonStage && career.seasonStage !== 'regular'
-                  ? ` · ${career.seasonStage}${career.bracket?.championName ? ` · ${career.bracket.championName}` : ''}`
-                  : nextGame
-                    ? ` · Next: ${nextGame.opponentName}`
+                : nextGame
+                  ? ` · Next: ${nextGame.round ? `${nextGame.round} vs ` : ''}${nextGame.opponentName}${
+                      career.seasonStage && career.seasonStage !== 'regular'
+                        ? ` (${career.seasonStage})`
+                        : ''
+                    }`
+                  : career.seasonStage && career.seasonStage !== 'regular'
+                    ? ` · ${career.seasonStage}${career.bracket?.championName ? ` · ${career.bracket.championName}` : ''}`
                     : ' · Season break'}
             {isSim ? ' · Simulating…' : ''}
           </span>
@@ -500,7 +502,10 @@ function HomeView({
             <span>Training {career.trainingFocus}</span>
           </div>
           <p className="muted" style={{ margin: '0 0 8px', fontSize: 13 }}>
-            Next: {nextGame ? `${nextGame.home ? 'vs' : '@'} ${nextGame.opponentName}` : 'No games scheduled'}
+            Next:{' '}
+            {nextGame
+              ? `${nextGame.round ? `${nextGame.round} · ` : ''}${nextGame.home ? 'vs' : '@'} ${nextGame.opponentName}`
+              : 'No games scheduled'}
           </p>
           {career.collegeRoster.length > 0 ? (
             <p style={{ fontSize: 13, margin: '0 0 6px' }}>

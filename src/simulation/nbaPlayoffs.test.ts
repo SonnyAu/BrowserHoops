@@ -32,7 +32,9 @@ describe('nbaPlayoffs', () => {
   it('creates play-in when enabled', () => {
     const b = buildNbaPlayoffBracket(proStandings(), 1, true);
     expect(b.playIn!.length).toBeGreaterThan(0);
-    expect(b.series?.length ?? 0).toBe(0);
+    // Tentative 1–8 first-round series with Play-In TBD slots
+    expect(b.series?.length ?? 0).toBe(8);
+    expect(b.series!.some((s) => s.teamBId.startsWith('tbd-'))).toBe(true);
     const projected = projectNbaPlayoffs(proStandings(), 1, true);
     expect(projected.status).toBe('projected');
   });

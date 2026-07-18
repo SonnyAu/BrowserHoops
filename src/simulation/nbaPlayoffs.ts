@@ -133,16 +133,51 @@ export function buildNbaPlayoffBracket(
   }
 
   const series: NbaSeriesState[] = [];
-  if (!playIn || (eastSeeds.length >= 8 && westSeeds.length >= 8)) {
-    const pairs: [number, number][] = [
-      [0, 7],
-      [3, 4],
-      [2, 5],
-      [1, 6],
-    ];
+  const pairs: [number, number][] = [
+    [0, 7],
+    [3, 4],
+    [2, 5],
+    [1, 6],
+  ];
+
+  if (playIn && playInMatchups.length > 0) {
+    // Tentative 1–8 tree: 7/8 slots are TBD until Play-In resolves.
+    for (const conf of ['East', 'West'] as const) {
+      const top6 = conf === 'East' ? east.slice(0, 6) : west.slice(0, 6);
+      if (top6.length < 6) continue;
+      const tbd7: StandingRow = {
+        teamId: `tbd-7-${conf}`,
+        teamName: 'Play-In 7 Seed',
+        wins: 0,
+        losses: 0,
+        conference: conf,
+      };
+      const tbd8: StandingRow = {
+        teamId: `tbd-8-${conf}`,
+        teamName: 'Play-In 8 Seed',
+        wins: 0,
+        losses: 0,
+        conference: conf,
+      };
+      const seeds = [...top6, tbd7, tbd8];
+      for (let i = 0; i < 4; i++) {
+        const [ai, bi] = pairs[i];
+        series.push(
+          makeSeries(
+            `r1-${season}-${conf}-${i}`,
+            'First Round',
+            conf,
+            seeds[ai],
+            ai + 1,
+            seeds[bi],
+            bi + 1,
+          ),
+        );
+      }
+    }
+  } else if (eastSeeds.length >= 8 && westSeeds.length >= 8) {
     for (const conf of ['East', 'West'] as const) {
       const seeds = conf === 'East' ? eastSeeds : westSeeds;
-      if (seeds.length < 8) continue;
       for (let i = 0; i < 4; i++) {
         const [ai, bi] = pairs[i];
         series.push(
@@ -162,7 +197,7 @@ export function buildNbaPlayoffBracket(
 
   return {
     kind: 'nbaPlayoffs',
-    status: playIn && playInMatchups.length ? 'active' : 'active',
+    status: 'active',
     season,
     playIn: playInMatchups.length ? playInMatchups : undefined,
     series,
@@ -441,4 +476,8 @@ export function startNbaPostseason(save: CareerSave): CareerSave {
         : `NBA playoffs set for season ${save.season}`,
     ],
   };
+}
+
+export function isTentativeSeries(s: NbaSeriesState): boolean {
+  return s.teamAId.startsWith('tbd-') || s.teamBId.startsWith('tbd-');
 }

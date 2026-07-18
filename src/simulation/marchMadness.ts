@@ -374,9 +374,9 @@ export function pendingUserMadnessGame(
 }
 
 export function isMadnessComplete(bracket: BracketState): boolean {
-  return bracket.status === 'complete' || Boolean(
-    (bracket.rounds ?? []).find((m) => m.round === 'Championship')?.completed,
-  );
+  if (bracket.championId) return true;
+  const champ = (bracket.rounds ?? []).find((m) => m.round === 'Championship');
+  return Boolean(champ?.completed && champ.winnerId);
 }
 
 export function startCollegeTournament(save: CareerSave): CareerSave {

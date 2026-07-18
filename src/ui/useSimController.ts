@@ -10,6 +10,7 @@ export type SimTarget =
   | 'all-star break'
   | 'trade deadline'
   | 'playoffs'
+  | 'tournament'
   | 'season';
 
 /** NBA milestones — college has no All-Star break or trade deadline. */
@@ -28,7 +29,7 @@ export const COLLEGE_SIM_TARGETS: SimTarget[] = [
   'one game',
   'week',
   'month',
-  'playoffs',
+  'tournament',
   'season',
 ];
 
@@ -39,7 +40,7 @@ export function simTargetsForCareer(career: CareerSave): SimTarget[] {
 type SimPlan =
   | { mode: 'batch'; count: number }
   | { mode: 'until'; completedGames: number }
-  | { mode: 'untilPlayoffs' }
+  | { mode: 'untilPostseasonEnd' }
   | { mode: 'untilSeasonEnd' };
 
 function regularCompleted(save: CareerSave): number {
@@ -71,15 +72,12 @@ function planSim(career: CareerSave, target: SimTarget): SimPlan {
     case 'trade deadline':
       return { mode: 'until', completedGames: Math.min(55, Math.floor(seasonLen * 0.67)) };
     case 'playoffs':
-      return { mode: 'untilPlayoffs' };
+    case 'tournament':
+      // Sim through the entire postseason into season review.
+      return { mode: 'untilPostseasonEnd' };
     case 'season':
       return { mode: 'untilSeasonEnd' };
   }
-}
-
-function inPostseason(save: CareerSave): boolean {
-  const stage = save.seasonStage ?? 'regular';
-  return stage === 'playIn' || stage === 'playoffs' || stage === 'tournament' || stage === 'complete';
 }
 
 export function useSimController(
@@ -112,26 +110,31 @@ export function useSimController(
     if (plan.mode === 'until' && regularCompleted(career) >= plan.completedGames) {
       return;
     }
-    if (plan.mode === 'untilPlayoffs' && inPostseason(career)) {
-      return;
-    }
 
     pauseRef.current = false;
     setIsSim(true);
     let next = career;
     let steps = 0;
 
-    while (!pauseRef.current) {
+    while (!pauseRef.current && steps < 500) {
       if (plan.mode === 'batch' && steps >= plan.count) break;
       if (plan.mode === 'until' && regularCompleted(next) >= plan.completedGames) break;
-      if (plan.mode === 'untilPlayoffs' && inPostseason(next)) break;
-      if (plan.mode === 'untilSeasonEnd' && next.phase === 'seasonReview') break;
+      if (
+        (plan.mode === 'untilPostseasonEnd' || plan.mode === 'untilSeasonEnd') &&
+        next.phase === 'seasonReview'
+      ) {
+        break;
+      }
 
       const result = simulateNextGame(next);
       await persistSimulationStep(result.save, result.log, result.leagueGames);
       next = result.save;
       setCareer(next);
-      if (result.log.minutes > 0 || result.log.opponent === 'Season Complete' || result.log.playoffs) {
+      if (
+        result.log.minutes > 0 ||
+        result.log.opponent === 'Season Complete' ||
+        result.log.opponent === 'Season Review'
+      ) {
         setLogs((l) => [result.log, ...l]);
       }
       steps += 1;
