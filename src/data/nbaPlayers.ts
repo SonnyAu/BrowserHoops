@@ -39,7 +39,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "atl": 1
+    }
   },
   {
     "id": "p190",
@@ -80,7 +84,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "gsw": 0
+    }
   },
   {
     "id": "p152",
@@ -121,7 +129,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "atl": 17
+    }
   },
   {
     "id": "p226",
@@ -162,7 +174,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "nop": 6,
+      "uta": 6,
+      "min": 9
+    }
   },
   {
     "id": "p41",
@@ -203,7 +221,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "por": 3,
+      "nop": 3
+    }
   },
   {
     "id": "p196",
@@ -244,7 +267,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "nop": 24,
+      "sac": 24,
+      "ind": 7,
+      "phi": 17,
+      "gsw": 7
+    }
   },
   {
     "id": "p153",
@@ -285,7 +316,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "nop": 11,
+      "atl": 5
+    }
   },
   {
     "id": "p233",
@@ -326,7 +362,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "was": 24
+    }
   },
   {
     "id": "p104",
@@ -367,7 +407,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "atl": 10
+    }
   },
   {
     "id": "p305",
@@ -408,7 +452,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "sas": 34,
+      "phx": 11,
+      "hou": 2
+    }
   },
   {
     "id": "p183",
@@ -449,7 +499,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "mia": 2,
+      "lal": 7
+    }
   },
   {
     "id": "p445",
@@ -490,7 +545,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "atl": 2
+    }
   },
   {
     "id": "p453",
@@ -531,7 +590,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "atl": 18
+    }
   },
   {
     "id": "p511",
@@ -572,7 +635,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "uta": 13,
+      "phi": 11,
+      "okc": 13,
+      "chi": 13,
+      "ind": 13
+    }
   },
   {
     "id": "p554",
@@ -613,7 +684,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "atl": 14
+    }
   },
   {
     "id": "p646",
@@ -654,7 +729,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 51,
+    "jerseyByTeamId": {
+      "atl": 51
+    }
   },
   {
     "id": "p657",
@@ -695,7 +774,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "ind": 10
+    }
   },
   {
     "id": "p661",
@@ -736,7 +819,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 3,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "tor": 35,
+      "lal": 10
+    }
   },
   {
     "id": "p14",
@@ -777,7 +865,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "bos": 0
+    }
   },
   {
     "id": "p87",
@@ -818,7 +910,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "bos": 7
+    }
   },
   {
     "id": "p93",
@@ -859,7 +955,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "sas": 4,
+      "bos": 9
+    }
   },
   {
     "id": "p48",
@@ -902,7 +1003,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "bos": 11
+    }
   },
   {
     "id": "p224",
@@ -943,7 +1048,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "phi": 8,
+      "orl": 9,
+      "chi": 9
+    }
   },
   {
     "id": "p141",
@@ -984,7 +1095,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 88,
+    "jerseyByTeamId": {
+      "sac": 88,
+      "bos": 88
+    }
   },
   {
     "id": "p276",
@@ -1025,7 +1141,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "bos": 30
+    }
   },
   {
     "id": "p406",
@@ -1066,7 +1186,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 22,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "det": 55,
+      "min": 55
+    }
   },
   {
     "id": "p520",
@@ -1107,7 +1232,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "tor": 45,
+      "bos": 45,
+      "por": 5
+    }
   },
   {
     "id": "p610",
@@ -1148,7 +1279,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "tor": 8,
+      "det": 13
+    }
   },
   {
     "id": "p413",
@@ -1189,7 +1325,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "bos": 28
+    }
   },
   {
     "id": "p481",
@@ -1230,7 +1370,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 8,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "bos": 27
+    }
   },
   {
     "id": "p510",
@@ -1271,7 +1415,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "bos": 55
+    }
   },
   {
     "id": "p720",
@@ -1312,7 +1460,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 23,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "bos": 8
+    }
   },
   {
     "id": "p599",
@@ -1353,7 +1505,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 27,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "bos": 44
+    }
   },
   {
     "id": "p585",
@@ -1394,7 +1550,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "bos": 77
+    }
   },
   {
     "id": "p22",
@@ -1435,7 +1595,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "den": 1
+    }
   },
   {
     "id": "p15",
@@ -1476,7 +1640,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 2,
     "draftPick": 1,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "bkn": 33
+    }
   },
   {
     "id": "p373",
@@ -1517,7 +1685,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "mem": 8,
+      "bkn": 8
+    }
   },
   {
     "id": "p390",
@@ -1558,7 +1731,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "bkn": 20
+    }
   },
   {
     "id": "p126",
@@ -1599,7 +1776,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 2,
     "draftPick": 18,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "lac": 14,
+      "atl": 14
+    }
   },
   {
     "id": "p278",
@@ -1640,7 +1822,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "bkn": 21
+    }
   },
   {
     "id": "p344",
@@ -1681,7 +1867,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "uta": 30,
+      "tor": 30
+    }
   },
   {
     "id": "p389",
@@ -1722,7 +1913,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "min": 8
+    }
   },
   {
     "id": "p401",
@@ -1763,7 +1958,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 88,
+    "jerseyByTeamId": {
+      "bkn": 88
+    }
   },
   {
     "id": "p328",
@@ -1804,7 +2003,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 21,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "bkn": 22
+    }
   },
   {
     "id": "p342",
@@ -1845,7 +2048,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "bkn": 8
+    }
   },
   {
     "id": "p678",
@@ -1886,7 +2093,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "nop": 32,
+      "chi": 32
+    }
   },
   {
     "id": "p191",
@@ -1927,7 +2139,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "bkn": 77
+    }
   },
   {
     "id": "p485",
@@ -1968,7 +2184,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "bkn": 2
+    }
   },
   {
     "id": "p625",
@@ -2009,7 +2229,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "bkn": 18
+    }
   },
   {
     "id": "p353",
@@ -2050,7 +2274,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "bkn": 4
+    }
   },
   {
     "id": "p710",
@@ -2091,7 +2319,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "bkn": 10
+    }
   },
   {
     "id": "p644",
@@ -2132,7 +2364,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 31,
+    "jerseyByTeamId": {
+      "bkn": 31
+    }
   },
   {
     "id": "p59",
@@ -2173,7 +2409,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "cha": 1
+    }
   },
   {
     "id": "p229",
@@ -2214,7 +2454,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "chi": 0
+    }
   },
   {
     "id": "p119",
@@ -2255,7 +2499,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "cha": 0
+    }
   },
   {
     "id": "p44",
@@ -2296,7 +2544,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "cha": 7
+    }
   },
   {
     "id": "p56",
@@ -2337,7 +2589,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "cha": 24
+    }
   },
   {
     "id": "p282",
@@ -2378,7 +2634,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "okc": 23,
+      "cha": 23
+    }
   },
   {
     "id": "p238",
@@ -2419,7 +2680,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "bos": 12,
+      "dal": 3,
+      "cha": 2
+    }
   },
   {
     "id": "p375",
@@ -2460,7 +2727,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 13,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "lac": 25,
+      "cha": 14
+    }
   },
   {
     "id": "p521",
@@ -2501,7 +2773,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 4,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "cha": 11
+    }
   },
   {
     "id": "p283",
@@ -2542,7 +2818,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 3,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "cha": 4
+    }
   },
   {
     "id": "p246",
@@ -2583,7 +2863,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "por": 5,
+      "mil": 24
+    }
   },
   {
     "id": "p180",
@@ -2624,7 +2909,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "dal": 8,
+      "cha": 10
+    }
   },
   {
     "id": "p473",
@@ -2665,7 +2955,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "cha": 33
+    }
   },
   {
     "id": "p576",
@@ -2706,7 +3000,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 17,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "nop": 12
+    }
   },
   {
     "id": "p679",
@@ -2747,7 +3045,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "mem": 18,
+      "det": 18,
+      "bkn": 12
+    }
   },
   {
     "id": "p365",
@@ -2788,7 +3092,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 31,
+    "jerseyByTeamId": {
+      "cha": 31
+    }
   },
   {
     "id": "p427",
@@ -2829,7 +3137,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 26,
+    "jerseyByTeamId": {
+      "mem": 2,
+      "bos": 26
+    }
   },
   {
     "id": "p541",
@@ -2870,7 +3183,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "den": 13
+    }
   },
   {
     "id": "p102",
@@ -2911,7 +3228,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "okc": 3,
+      "chi": 3
+    }
   },
   {
     "id": "p240",
@@ -2952,7 +3274,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "por": 1
+    }
   },
   {
     "id": "p259",
@@ -2993,7 +3319,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "cle": 2,
+      "uta": 2
+    }
   },
   {
     "id": "p257",
@@ -3034,7 +3365,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "sas": 33,
+      "chi": 30
+    }
   },
   {
     "id": "p36",
@@ -3075,7 +3411,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "chi": 14
+    }
   },
   {
     "id": "p228",
@@ -3116,7 +3456,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "phx": 10,
+      "ind": 25,
+      "chi": 7
+    }
   },
   {
     "id": "p227",
@@ -3157,7 +3503,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "cha": 4,
+      "phx": 2
+    }
   },
   {
     "id": "p381",
@@ -3198,7 +3549,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "min": 4
+    }
   },
   {
     "id": "p317",
@@ -3239,7 +3594,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "por": 33,
+      "sas": 23,
+      "chi": 12
+    }
   },
   {
     "id": "p7",
@@ -3280,7 +3641,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "chi": 44
+    }
   },
   {
     "id": "p131",
@@ -3321,7 +3686,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "cle": 35
+    }
   },
   {
     "id": "p600",
@@ -3362,7 +3731,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "chi": 0,
+      "lal": 37,
+      "phi": 9,
+      "orl": 8
+    }
   },
   {
     "id": "p359",
@@ -3403,7 +3779,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "bos": 30,
+      "phi": 28
+    }
   },
   {
     "id": "p627",
@@ -3444,7 +3825,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "mem": 17
+    }
   },
   {
     "id": "p443",
@@ -3485,7 +3870,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 3,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "min": 33
+    }
   },
   {
     "id": "p581",
@@ -3526,7 +3915,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "tor": 16
+    }
   },
   {
     "id": "p258",
@@ -3567,7 +3960,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "chi": 24
+    }
   },
   {
     "id": "p723",
@@ -3608,7 +4005,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 25,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 47,
+    "jerseyByTeamId": {
+      "chi": 47
+    }
   },
   {
     "id": "p88",
@@ -3649,7 +4050,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 45,
+    "jerseyByTeamId": {
+      "uta": 45,
+      "cle": 45
+    }
   },
   {
     "id": "p30",
@@ -3690,7 +4096,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "okc": 13,
+      "hou": 13,
+      "bkn": 13,
+      "phi": 1,
+      "lac": 1
+    }
   },
   {
     "id": "p1",
@@ -3731,7 +4145,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "cle": 4
+    }
   },
   {
     "id": "p333",
@@ -3772,7 +4190,19 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "atl": 17,
+      "okc": 17,
+      "lal": 17,
+      "bos": 71,
+      "hou": 17,
+      "tor": 17,
+      "bkn": 17,
+      "gsw": 71,
+      "det": 17
+    }
   },
   {
     "id": "p76",
@@ -3813,7 +4243,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 31,
+    "jerseyByTeamId": {
+      "bkn": 31,
+      "cle": 31
+    }
   },
   {
     "id": "p181",
@@ -3854,7 +4289,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "chi": 28,
+      "mia": 31,
+      "cle": 1
+    }
   },
   {
     "id": "p405",
@@ -3895,7 +4336,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 30,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "mil": 15,
+      "mem": 25,
+      "cle": 5
+    }
   },
   {
     "id": "p296",
@@ -3936,7 +4383,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "cle": 9
+    }
   },
   {
     "id": "p100",
@@ -3977,7 +4428,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "cle": 24
+    }
   },
   {
     "id": "p301",
@@ -4018,7 +4473,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "sac": 23
+    }
   },
   {
     "id": "p121",
@@ -4059,7 +4518,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "cle": 32
+    }
   },
   {
     "id": "p293",
@@ -4100,7 +4563,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "cle": 30
+    }
   },
   {
     "id": "p434",
@@ -4141,7 +4608,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "lal": 31,
+      "was": 13,
+      "den": 13,
+      "mia": 31,
+      "ind": 3
+    }
   },
   {
     "id": "p318",
@@ -4182,7 +4657,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "lal": 7,
+      "cle": 22,
+      "por": 11,
+      "nop": 22,
+      "atl": 22
+    }
   },
   {
     "id": "p436",
@@ -4223,7 +4706,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 19,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "cle": 24
+    }
   },
   {
     "id": "p560",
@@ -4264,7 +4751,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "sas": 27
+    }
   },
   {
     "id": "p492",
@@ -4305,7 +4796,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "okc": 30
+    }
   },
   {
     "id": "p496",
@@ -4346,7 +4841,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "cle": 21
+    }
   },
   {
     "id": "p50",
@@ -4387,7 +4886,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "cle": 2,
+      "bos": 11,
+      "bkn": 11,
+      "dal": 11
+    }
   },
   {
     "id": "p38",
@@ -4428,7 +4934,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "dal": 32
+    }
   },
   {
     "id": "p60",
@@ -4469,7 +4979,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "cha": 25,
+      "dal": 25
+    }
   },
   {
     "id": "p84",
@@ -4510,7 +5025,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 2,
     "draftPick": 8,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "chi": 12,
+      "was": 21,
+      "dal": 21
+    }
   },
   {
     "id": "p211",
@@ -4551,7 +5072,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "nop": 8,
+      "dal": 13
+    }
   },
   {
     "id": "p487",
@@ -4592,7 +5118,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "por": 8,
+      "dal": 10
+    }
   },
   {
     "id": "p24",
@@ -4633,7 +5164,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "lal": 12,
+      "dal": 0
+    }
   },
   {
     "id": "p248",
@@ -4674,7 +5210,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 31,
+    "jerseyByTeamId": {
+      "gsw": 11,
+      "dal": 31
+    }
   },
   {
     "id": "p34",
@@ -4715,7 +5256,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "dal": 2
+    }
   },
   {
     "id": "p106",
@@ -4756,7 +5301,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "det": 32,
+      "mil": 22,
+      "was": 32
+    }
   },
   {
     "id": "p154",
@@ -4797,7 +5348,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "cha": 10,
+      "mia": 16,
+      "phi": 16,
+      "dal": 16
+    }
   },
   {
     "id": "p429",
@@ -4838,7 +5396,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "dal": 9
+    }
   },
   {
     "id": "p234",
@@ -4879,7 +5441,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "sac": 35,
+      "det": 35,
+      "was": 35,
+      "mem": 35
+    }
   },
   {
     "id": "p271",
@@ -4920,7 +5489,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "bos": 12,
+      "dal": 7
+    }
   },
   {
     "id": "p366",
@@ -4961,7 +5535,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "mil": 77,
+      "was": 5
+    }
   },
   {
     "id": "p544",
@@ -5002,7 +5581,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 3,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "mil": 21
+    }
   },
   {
     "id": "p562",
@@ -5043,7 +5626,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "dal": 1
+    }
   },
   {
     "id": "p691",
@@ -5084,7 +5671,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "dal": 30
+    }
   },
   {
     "id": "p55",
@@ -5125,7 +5716,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "den": 15
+    }
   },
   {
     "id": "p13",
@@ -5166,7 +5761,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "den": 27
+    }
   },
   {
     "id": "p78",
@@ -5207,7 +5806,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "orl": 0,
+      "den": 32
+    }
   },
   {
     "id": "p109",
@@ -5248,7 +5852,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "den": 0
+    }
   },
   {
     "id": "p213",
@@ -5289,7 +5897,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "tor": 17,
+      "mem": 17,
+      "nop": 17,
+      "was": 17,
+      "sac": 17
+    }
   },
   {
     "id": "p45",
@@ -5330,7 +5946,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "phx": 23,
+      "bkn": 2
+    }
   },
   {
     "id": "p116",
@@ -5371,7 +5992,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "den": 8
+    }
   },
   {
     "id": "p175",
@@ -5412,7 +6037,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "det": 6,
+      "bkn": 1,
+      "den": 11,
+      "ind": 11,
+      "tor": 11,
+      "nop": 0
+    }
   },
   {
     "id": "p184",
@@ -5453,7 +6087,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "nyk": 3,
+      "atl": 10,
+      "dal": 10,
+      "det": 8
+    }
   },
   {
     "id": "p127",
@@ -5494,7 +6135,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "min": 1,
+      "mem": 21,
+      "was": 5,
+      "phx": 21
+    }
   },
   {
     "id": "p186",
@@ -5535,7 +6183,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "den": 3
+    }
   },
   {
     "id": "p444",
@@ -5576,7 +6228,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 2,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "den": 24
+    }
   },
   {
     "id": "p420",
@@ -5617,7 +6273,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "den": 22
+    }
   },
   {
     "id": "p699",
@@ -5658,7 +6318,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "cha": 25
+    }
   },
   {
     "id": "p658",
@@ -5699,7 +6363,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "mem": 21,
+      "phx": 21,
+      "atl": 8,
+      "phi": 45,
+      "hou": 21
+    }
   },
   {
     "id": "p469",
@@ -5740,7 +6412,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "den": 21
+    }
   },
   {
     "id": "p385",
@@ -5781,7 +6457,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "den": 14
+    }
   },
   {
     "id": "p680",
@@ -5822,7 +6502,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "den": 1
+    }
   },
   {
     "id": "p32",
@@ -5863,7 +6547,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "det": 2
+    }
   },
   {
     "id": "p8",
@@ -5904,7 +6592,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "det": 0
+    }
   },
   {
     "id": "p53",
@@ -5945,7 +6637,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "mil": 15,
+      "orl": 12,
+      "det": 12,
+      "lac": 34,
+      "phi": 12
+    }
   },
   {
     "id": "p124",
@@ -5986,7 +6686,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "det": 9
+    }
   },
   {
     "id": "p134",
@@ -6027,7 +6731,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "mia": 55
+    }
   },
   {
     "id": "p168",
@@ -6068,7 +6776,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "bkn": 22,
+      "ind": 22,
+      "cle": 3,
+      "atl": 3
+    }
   },
   {
     "id": "p193",
@@ -6109,7 +6824,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "atl": 3,
+      "sac": 9,
+      "chi": 13
+    }
   },
   {
     "id": "p209",
@@ -6150,7 +6871,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "det": 0
+    }
   },
   {
     "id": "p136",
@@ -6191,7 +6916,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "det": 28
+    }
   },
   {
     "id": "p486",
@@ -6232,7 +6961,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "det": 24
+    }
   },
   {
     "id": "p354",
@@ -6273,7 +7006,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "bos": 43,
+      "chi": 24,
+      "nop": 4,
+      "cle": 8
+    }
   },
   {
     "id": "p357",
@@ -6314,7 +7054,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "det": 25
+    }
   },
   {
     "id": "p251",
@@ -6355,7 +7099,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 28,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "phi": 44,
+      "det": 7
+    }
   },
   {
     "id": "p663",
@@ -6396,7 +7145,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "min": 7,
+      "det": 14,
+      "cha": 9
+    }
   },
   {
     "id": "p716",
@@ -6437,7 +7192,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "sac": 3
+    }
   },
   {
     "id": "p448",
@@ -6478,7 +7237,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 7,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "det": 20
+    }
   },
   {
     "id": "p611",
@@ -6519,7 +7282,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "det": 35
+    }
   },
   {
     "id": "p25",
@@ -6562,7 +7329,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "gsw": 30
+    }
   },
   {
     "id": "p37",
@@ -6603,7 +7374,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "chi": 21,
+      "min": 23,
+      "phi": 23,
+      "mia": 22,
+      "gsw": 10
+    }
   },
   {
     "id": "p67",
@@ -6644,7 +7423,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "nyk": 6,
+      "dal": 6,
+      "was": 6,
+      "bos": 8
+    }
   },
   {
     "id": "p200",
@@ -6685,7 +7471,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "gsw": 2
+    }
   },
   {
     "id": "p320",
@@ -6726,7 +7516,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "phx": 14,
+      "mem": 0,
+      "phi": 8,
+      "gsw": 8
+    }
   },
   {
     "id": "p232",
@@ -6767,7 +7564,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "gsw": 4
+    }
   },
   {
     "id": "p5",
@@ -6808,7 +7609,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "gsw": 23
+    }
   },
   {
     "id": "p96",
@@ -6849,7 +7654,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2007,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 42,
+    "jerseyByTeamId": {
+      "atl": 15,
+      "bos": 42,
+      "phi": 42,
+      "okc": 42
+    }
   },
   {
     "id": "p340",
@@ -6890,7 +7702,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 61,
+    "jerseyByTeamId": {
+      "gsw": 61
+    }
   },
   {
     "id": "p376",
@@ -6931,7 +7747,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 22,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "gsw": 21
+    }
   },
   {
     "id": "p399",
@@ -6972,7 +7792,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 26,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "gsw": 3
+    }
   },
   {
     "id": "p645",
@@ -7013,7 +7837,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "gsw": 18
+    }
   },
   {
     "id": "p309",
@@ -7054,7 +7882,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "mil": 0,
+      "lal": 23,
+      "was": 20,
+      "gsw": 0,
+      "por": 0
+    }
   },
   {
     "id": "p325",
@@ -7095,7 +7931,19 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "mem": 1,
+      "cle": 31,
+      "phx": 10,
+      "sac": 30,
+      "dal": 30,
+      "por": 31,
+      "phi": 31,
+      "bkn": 30,
+      "cha": 30
+    }
   },
   {
     "id": "p363",
@@ -7136,7 +7984,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 23,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "phi": 23,
+      "sas": 28
+    }
   },
   {
     "id": "p409",
@@ -7177,7 +8030,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 25,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "gsw": 15
+    }
   },
   {
     "id": "p412",
@@ -7218,7 +8075,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "por": 23,
+      "hou": 19
+    }
   },
   {
     "id": "p454",
@@ -7259,7 +8121,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "okc": 17
+    }
   },
   {
     "id": "p11",
@@ -7300,7 +8166,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "hou": 28
+    }
   },
   {
     "id": "p35",
@@ -7341,7 +8211,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2007,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "sea": 35,
+      "okc": 35,
+      "gsw": 35,
+      "bkn": 7,
+      "phx": 35
+    }
   },
   {
     "id": "p70",
@@ -7382,7 +8260,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "hou": 1
+    }
   },
   {
     "id": "p97",
@@ -7423,7 +8305,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "tor": 23,
+      "hou": 5
+    }
   },
   {
     "id": "p107",
@@ -7464,7 +8351,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "hou": 10
+    }
   },
   {
     "id": "p174",
@@ -7505,7 +8396,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "hou": 17
+    }
   },
   {
     "id": "p247",
@@ -7546,7 +8441,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "hou": 15
+    }
   },
   {
     "id": "p115",
@@ -7587,7 +8486,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "hou": 15,
+      "atl": 15
+    }
   },
   {
     "id": "p185",
@@ -7628,7 +8532,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "okc": 12,
+      "nop": 12,
+      "mem": 4,
+      "hou": 12
+    }
   },
   {
     "id": "p264",
@@ -7669,7 +8580,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "ind": 3,
+      "was": 4,
+      "phx": 4,
+      "atl": 3,
+      "hou": 0
+    }
   },
   {
     "id": "p273",
@@ -7710,7 +8629,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "min": 20,
+      "phx": 2,
+      "cha": 12
+    }
   },
   {
     "id": "p89",
@@ -7751,7 +8676,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "dal": 10,
+      "bkn": 28,
+      "lal": 17
+    }
   },
   {
     "id": "p256",
@@ -7792,7 +8723,22 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2007,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "sea": 22,
+      "okc": 22,
+      "bos": 8,
+      "mem": 32,
+      "lac": 8,
+      "orl": 34,
+      "cle": 32,
+      "was": 32,
+      "uta": 22,
+      "hou": 32,
+      "bkn": 8,
+      "den": 32
+    }
   },
   {
     "id": "p255",
@@ -7833,7 +8779,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "hou": 8
+    }
   },
   {
     "id": "p705",
@@ -7874,7 +8824,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 19,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "ind": 4,
+      "min": 13
+    }
   },
   {
     "id": "p713",
@@ -7915,7 +8870,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "sac": 24
+    }
   },
   {
     "id": "p609",
@@ -7956,7 +8915,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 23,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "bos": 20
+    }
   },
   {
     "id": "p57",
@@ -7997,7 +8960,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "sac": 0,
+      "ind": 0
+    }
   },
   {
     "id": "p65",
@@ -8038,7 +9006,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 43,
+    "jerseyByTeamId": {
+      "tor": 43,
+      "ind": 43
+    }
   },
   {
     "id": "p62",
@@ -8079,7 +9052,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 2,
     "draftPick": 2,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 40,
+    "jerseyByTeamId": {
+      "lal": 40,
+      "lac": 40
+    }
   },
   {
     "id": "p201",
@@ -8120,7 +9098,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 1,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "ind": 2
+    }
   },
   {
     "id": "p314",
@@ -8161,7 +9143,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "phi": 12,
+      "ind": 9
+    }
   },
   {
     "id": "p176",
@@ -8202,7 +9189,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "bos": 26,
+      "ind": 23
+    }
   },
   {
     "id": "p263",
@@ -8243,7 +9235,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "nyk": 1,
+      "ind": 1
+    }
   },
   {
     "id": "p261",
@@ -8284,7 +9281,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 26,
+    "jerseyByTeamId": {
+      "ind": 26
+    }
   },
   {
     "id": "p268",
@@ -8325,7 +9326,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "ind": 5
+    }
   },
   {
     "id": "p482",
@@ -8366,7 +9371,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "lal": 30,
+      "was": 34,
+      "den": 30,
+      "mem": 30
+    }
   },
   {
     "id": "p603",
@@ -8407,7 +9419,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 29,
+    "jerseyByTeamId": {
+      "was": 29,
+      "ind": 29
+    }
   },
   {
     "id": "p182",
@@ -8448,7 +9465,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "lac": 21
+    }
   },
   {
     "id": "p210",
@@ -8489,7 +9510,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 8,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "ind": 7
+    }
   },
   {
     "id": "p682",
@@ -8530,7 +9555,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 24,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "sac": 18
+    }
   },
   {
     "id": "p348",
@@ -8571,7 +9600,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "ind": 12
+    }
   },
   {
     "id": "p561",
@@ -8612,7 +9645,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "det": 19,
+      "uta": 25
+    }
   },
   {
     "id": "p639",
@@ -8653,7 +9691,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 24,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "ind": 4
+    }
   },
   {
     "id": "p620",
@@ -8694,7 +9736,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "ind": 55
+    }
   },
   {
     "id": "p66",
@@ -8735,7 +9781,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "cle": 10
+    }
   },
   {
     "id": "p21",
@@ -8776,7 +9826,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "sas": 2,
+      "tor": 2,
+      "lac": 2
+    }
   },
   {
     "id": "p18",
@@ -8817,7 +9873,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "ind": 0
+    }
   },
   {
     "id": "p51",
@@ -8858,7 +9918,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "was": 3,
+      "phx": 3
+    }
   },
   {
     "id": "p9",
@@ -8899,7 +9964,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "atl": 20,
+      "uta": 20
+    }
   },
   {
     "id": "p157",
@@ -8940,7 +10010,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "sac": 8,
+      "atl": 13,
+      "lac": 10
+    }
   },
   {
     "id": "p113",
@@ -8981,7 +10057,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2008,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "bkn": 11,
+      "lal": 11,
+      "mil": 11
+    }
   },
   {
     "id": "p110",
@@ -9022,7 +10104,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "phx": 10,
+      "mia": 5,
+      "por": 5,
+      "chi": 5,
+      "dal": 55,
+      "lac": 55
+    }
   },
   {
     "id": "p351",
@@ -9063,7 +10154,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "min": 3,
+      "chi": 32,
+      "atl": 32,
+      "por": 18,
+      "uta": 11,
+      "lac": 8
+    }
   },
   {
     "id": "p583",
@@ -9104,7 +10204,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 18,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "lac": 11
+    }
   },
   {
     "id": "p337",
@@ -9145,7 +10249,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "ind": 22
+    }
   },
   {
     "id": "p437",
@@ -9186,7 +10294,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 20,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "lac": 4
+    }
   },
   {
     "id": "p631",
@@ -9227,7 +10339,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "lac": 55
+    }
   },
   {
     "id": "p81",
@@ -9268,7 +10384,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2008,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "por": 88,
+      "cha": 5,
+      "lac": 33,
+      "phi": 40
+    }
   },
   {
     "id": "p367",
@@ -9309,7 +10432,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "lac": 12
+    }
   },
   {
     "id": "p637",
@@ -9350,7 +10477,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "lac": 0
+    }
   },
   {
     "id": "p315",
@@ -9391,7 +10522,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "lac": 14
+    }
   },
   {
     "id": "p722",
@@ -9432,7 +10567,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "hou": 0,
+      "mil": 23,
+      "phx": 14
+    }
   },
   {
     "id": "p10",
@@ -9473,7 +10614,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "dal": 77,
+      "lal": 77
+    }
   },
   {
     "id": "p47",
@@ -9514,7 +10660,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2003,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "cle": 23,
+      "mia": 6,
+      "lal": 23
+    }
   },
   {
     "id": "p31",
@@ -9555,7 +10707,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "lal": 15
+    }
   },
   {
     "id": "p122",
@@ -9596,7 +10752,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "phx": 22,
+      "por": 2
+    }
   },
   {
     "id": "p128",
@@ -9637,7 +10798,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "was": 8,
+      "lal": 28
+    }
   },
   {
     "id": "p266",
@@ -9678,7 +10844,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 36,
+    "jerseyByTeamId": {
+      "bos": 36,
+      "mem": 36,
+      "was": 36
+    }
   },
   {
     "id": "p319",
@@ -9719,7 +10891,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "mem": 3,
+      "sac": 33
+    }
   },
   {
     "id": "p158",
@@ -9760,7 +10937,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "lal": 4
+    }
   },
   {
     "id": "p352",
@@ -9801,7 +10982,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "det": 5,
+      "lac": 5,
+      "mem": 10
+    }
   },
   {
     "id": "p202",
@@ -9842,7 +11029,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "den": 6,
+      "min": 8,
+      "uta": 8,
+      "lal": 2
+    }
   },
   {
     "id": "p208",
@@ -9883,7 +11077,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "nop": 10,
+      "lal": 11
+    }
   },
   {
     "id": "p539",
@@ -9924,7 +11123,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "cha": 8
+    }
   },
   {
     "id": "p163",
@@ -9965,7 +11168,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "dal": 42,
+      "lal": 14
+    }
   },
   {
     "id": "p393",
@@ -10006,7 +11214,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 25,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "lal": 9
+    }
   },
   {
     "id": "p341",
@@ -10047,7 +11259,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 6,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "lal": 1
+    }
   },
   {
     "id": "p542",
@@ -10088,7 +11304,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 26,
+    "jerseyByTeamId": {
+      "bkn": 26
+    }
   },
   {
     "id": "p584",
@@ -10129,7 +11349,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "lal": 30
+    }
   },
   {
     "id": "p140",
@@ -10170,7 +11394,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "mem": 12
+    }
   },
   {
     "id": "p417",
@@ -10211,7 +11439,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "phx": 10,
+      "okc": 16,
+      "gsw": 10,
+      "cle": 2
+    }
   },
   {
     "id": "p461",
@@ -10252,7 +11487,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "mem": 23
+    }
   },
   {
     "id": "p79",
@@ -10293,7 +11532,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "mem": 0
+    }
   },
   {
     "id": "p356",
@@ -10334,7 +11577,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "lal": 14,
+      "mem": 1
+    }
   },
   {
     "id": "p286",
@@ -10375,7 +11623,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "mem": 7
+    }
   },
   {
     "id": "p428",
@@ -10416,7 +11668,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 23,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "mem": 24
+    }
   },
   {
     "id": "p46",
@@ -10457,7 +11713,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "det": 5,
+      "lal": 1,
+      "was": 1,
+      "den": 5,
+      "orl": 3
+    }
   },
   {
     "id": "p425",
@@ -10498,7 +11762,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "mem": 4
+    }
   },
   {
     "id": "p98",
@@ -10539,7 +11807,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "mem": 14
+    }
   },
   {
     "id": "p706",
@@ -10580,7 +11852,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 18,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "mem": 10
+    }
   },
   {
     "id": "p306",
@@ -10621,7 +11897,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "mem": 15
+    }
   },
   {
     "id": "p396",
@@ -10662,7 +11942,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 45,
+    "jerseyByTeamId": {
+      "mem": 45
+    }
   },
   {
     "id": "p334",
@@ -10703,7 +11987,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "uta": 0
+    }
   },
   {
     "id": "p505",
@@ -10744,7 +12032,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "dal": 8
+    }
   },
   {
     "id": "p538",
@@ -10785,7 +12077,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 13,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "por": 21
+    }
   },
   {
     "id": "p294",
@@ -10826,7 +12122,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 67,
+    "jerseyByTeamId": {
+      "chi": 22,
+      "okc": 22,
+      "min": 67,
+      "nyk": 67,
+      "was": 67,
+      "det": 67,
+      "cha": 67
+    }
   },
   {
     "id": "p533",
@@ -10867,7 +12173,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 29,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "mem": 21
+    }
   },
   {
     "id": "p58",
@@ -10908,7 +12218,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "mia": 14
+    }
   },
   {
     "id": "p26",
@@ -10949,7 +12263,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "tor": 24,
+      "por": 24,
+      "lac": 24
+    }
   },
   {
     "id": "p39",
@@ -10990,7 +12310,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "mia": 13
+    }
   },
   {
     "id": "p85",
@@ -11031,7 +12355,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 5
+    "draftTid": 5,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "min": 22,
+      "gsw": 22,
+      "mia": 22
+    }
   },
   {
     "id": "p145",
@@ -11072,7 +12402,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "mia": 11
+    }
   },
   {
     "id": "p218",
@@ -11113,7 +12447,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 45,
+    "jerseyByTeamId": {
+      "sac": 15,
+      "tor": 45,
+      "mia": 45
+    }
   },
   {
     "id": "p160",
@@ -11154,7 +12494,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "uta": 16,
+      "det": 19
+    }
   },
   {
     "id": "p360",
@@ -11195,7 +12540,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "mia": 7
+    }
   },
   {
     "id": "p99",
@@ -11236,7 +12585,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "mia": 5
+    }
   },
   {
     "id": "p323",
@@ -11277,7 +12630,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 14,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "mia": 9
+    }
   },
   {
     "id": "p475",
@@ -11318,7 +12675,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "mia": 12,
+      "bkn": 9
+    }
   },
   {
     "id": "p407",
@@ -11359,7 +12721,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "mia": 16
+    }
   },
   {
     "id": "p241",
@@ -11400,7 +12766,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "mia": 25
+    }
   },
   {
     "id": "p615",
@@ -11441,7 +12811,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "chi": 17
+    }
   },
   {
     "id": "p525",
@@ -11482,7 +12856,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "mia": 15
+    }
   },
   {
     "id": "p670",
@@ -11523,7 +12901,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 50,
+    "jerseyByTeamId": {
+      "mia": 50
+    }
   },
   {
     "id": "p626",
@@ -11564,7 +12946,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "nyk": 0
+    }
   },
   {
     "id": "p111",
@@ -11605,7 +12991,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 34,
+    "jerseyByTeamId": {
+      "mil": 34
+    }
   },
   {
     "id": "p458",
@@ -11646,7 +13036,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 14,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "gsw": 2,
+      "was": 9,
+      "mil": 13
+    }
   },
   {
     "id": "p326",
@@ -11687,7 +13083,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "cle": 4,
+      "hou": 3,
+      "lac": 77,
+      "mil": 3
+    }
   },
   {
     "id": "p4",
@@ -11728,7 +13131,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "ind": 33
+    }
   },
   {
     "id": "p173",
@@ -11769,7 +13176,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "chi": 5,
+      "was": 5,
+      "nyk": 1,
+      "mil": 9
+    }
   },
   {
     "id": "p188",
@@ -11810,7 +13224,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "lal": 0,
+      "was": 33,
+      "mil": 18
+    }
   },
   {
     "id": "p254",
@@ -11851,7 +13271,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "mil": 20
+    }
   },
   {
     "id": "p178",
@@ -11892,7 +13316,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 7,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "por": 2,
+      "tor": 33,
+      "mil": 5
+    }
   },
   {
     "id": "p40",
@@ -11933,7 +13363,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "atl": 12,
+      "bkn": 2,
+      "cle": 12,
+      "min": 12,
+      "lal": 12,
+      "mil": 12
+    }
   },
   {
     "id": "p377",
@@ -11974,7 +13413,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "okc": 13
+    }
   },
   {
     "id": "p297",
@@ -12015,7 +13458,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 28,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "nyk": 20,
+      "mil": 0
+    }
   },
   {
     "id": "p335",
@@ -12056,7 +13504,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "den": 14,
+      "orl": 14
+    }
   },
   {
     "id": "p484",
@@ -12097,7 +13550,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 6,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "mil": 44
+    }
   },
   {
     "id": "p494",
@@ -12138,7 +13595,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 2,
     "draftPick": 21,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 43,
+    "jerseyByTeamId": {
+      "nyk": 43,
+      "mil": 43
+    }
   },
   {
     "id": "p702",
@@ -12179,7 +13641,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "mil": 30
+    }
   },
   {
     "id": "p518",
@@ -12220,7 +13686,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "cle": 8,
+      "phi": 22,
+      "mil": 35
+    }
   },
   {
     "id": "p676",
@@ -12261,7 +13733,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 29,
+    "jerseyByTeamId": {
+      "mil": 29
+    }
   },
   {
     "id": "p103",
@@ -12304,7 +13780,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "min": 5
+    }
   },
   {
     "id": "p2",
@@ -12345,7 +13825,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "lal": 30,
+      "nop": 30,
+      "nyk": 30,
+      "min": 30
+    }
   },
   {
     "id": "p146",
@@ -12386,7 +13873,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "min": 11
+    }
   },
   {
     "id": "p249",
@@ -12427,7 +13918,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "mil": 0,
+      "sac": 0,
+      "gsw": 0,
+      "nyk": 0,
+      "min": 0
+    }
   },
   {
     "id": "p72",
@@ -12468,7 +13967,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "min": 3
+    }
   },
   {
     "id": "p3",
@@ -12509,7 +14012,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "uta": 27,
+      "min": 27
+    }
   },
   {
     "id": "p215",
@@ -12550,7 +14058,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 8,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "chi": 11
+    }
   },
   {
     "id": "p43",
@@ -12591,7 +14103,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2007,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "mem": 11,
+      "uta": 11,
+      "min": 10
+    }
   },
   {
     "id": "p321",
@@ -12632,7 +14150,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "den": 3,
+      "lac": 5,
+      "min": 77
+    }
   },
   {
     "id": "p415",
@@ -12673,7 +14197,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "min": 0
+    }
   },
   {
     "id": "p287",
@@ -12714,7 +14242,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "chi": 15
+    }
   },
   {
     "id": "p300",
@@ -12755,7 +14287,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "sas": 1,
+      "mem": 1,
+      "min": 1,
+      "gsw": 1,
+      "mia": 20
+    }
   },
   {
     "id": "p580",
@@ -12796,7 +14336,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 23,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "min": 22
+    }
   },
   {
     "id": "p714",
@@ -12837,7 +14381,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 20,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "ind": 8
+    }
   },
   {
     "id": "p391",
@@ -12878,7 +14426,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "uta": 2,
+      "mil": 7,
+      "orl": 7,
+      "min": 7
+    }
   },
   {
     "id": "p717",
@@ -12919,7 +14474,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "mem": 2
+    }
   },
   {
     "id": "p502",
@@ -12960,7 +14519,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "min": 19
+    }
   },
   {
     "id": "p677",
@@ -13001,7 +14564,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "min": 44
+    }
   },
   {
     "id": "p28",
@@ -13042,7 +14609,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "nop": 1
+    }
   },
   {
     "id": "p214",
@@ -13083,7 +14654,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "nop": 25
+    }
   },
   {
     "id": "p189",
@@ -13124,7 +14699,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "gsw": 3,
+      "was": 13
+    }
   },
   {
     "id": "p29",
@@ -13165,7 +14745,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "sas": 5,
+      "atl": 5,
+      "nop": 5
+    }
   },
   {
     "id": "p205",
@@ -13206,7 +14792,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 41,
+    "jerseyByTeamId": {
+      "det": 41,
+      "atl": 41
+    }
   },
   {
     "id": "p506",
@@ -13247,7 +14838,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "nop": 22
+    }
   },
   {
     "id": "p509",
@@ -13288,7 +14883,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "nop": 0
+    }
   },
   {
     "id": "p195",
@@ -13329,7 +14928,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "nop": 2
+    }
   },
   {
     "id": "p149",
@@ -13370,7 +14973,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "nop": 21
+    }
   },
   {
     "id": "p398",
@@ -13411,7 +15018,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 22,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "nop": 17
+    }
   },
   {
     "id": "p327",
@@ -13452,7 +15063,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "nop": 24
+    }
   },
   {
     "id": "p245",
@@ -13493,7 +15108,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "gsw": 5
+    }
   },
   {
     "id": "p457",
@@ -13534,7 +15153,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2008,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 6,
+    "jerseyByTeamId": {
+      "lac": 6,
+      "dal": 6,
+      "nyk": 6,
+      "bkn": 6,
+      "lal": 10,
+      "phi": 9,
+      "den": 6
+    }
   },
   {
     "id": "p463",
@@ -13575,7 +15204,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 10,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "cha": 7,
+      "por": 11
+    }
   },
   {
     "id": "p628",
@@ -13616,7 +15250,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 10,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "nop": 14
+    }
   },
   {
     "id": "p638",
@@ -13657,7 +15295,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "nop": 13
+    }
   },
   {
     "id": "p664",
@@ -13698,7 +15340,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "nop": 4
+    }
   },
   {
     "id": "p675",
@@ -13739,7 +15385,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "den": 23
+    }
   },
   {
     "id": "p123",
@@ -13780,7 +15430,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 3,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "dal": 13,
+      "nyk": 11
+    }
   },
   {
     "id": "p54",
@@ -13821,7 +15476,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "min": 32,
+      "nyk": 32
+    }
   },
   {
     "id": "p82",
@@ -13862,7 +15522,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "lal": 3,
+      "nop": 3,
+      "por": 11,
+      "nyk": 3
+    }
   },
   {
     "id": "p77",
@@ -13903,7 +15570,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "phx": 25,
+      "bkn": 1,
+      "nyk": 25
+    }
   },
   {
     "id": "p118",
@@ -13944,7 +15617,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "tor": 3,
+      "nyk": 8
+    }
   },
   {
     "id": "p192",
@@ -13985,7 +15663,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 6,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "nyk": 2
+    }
   },
   {
     "id": "p204",
@@ -14026,7 +15708,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 2,
     "draftPick": 16,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "lal": 6,
+      "cle": 8,
+      "uta": 0
+    }
   },
   {
     "id": "p332",
@@ -14067,7 +15755,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "nop": 15
+    }
   },
   {
     "id": "p151",
@@ -14108,7 +15800,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 6,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "nyk": 23
+    }
   },
   {
     "id": "p308",
@@ -14149,7 +15845,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "phi": 1,
+      "lac": 20,
+      "bkn": 20,
+      "phx": 14,
+      "was": 20,
+      "nyk": 44
+    }
   },
   {
     "id": "p105",
@@ -14190,7 +15895,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "sas": 10
+    }
   },
   {
     "id": "p349",
@@ -14231,7 +15940,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 4,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "nyk": 13
+    }
   },
   {
     "id": "p430",
@@ -14272,7 +15985,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 26,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "okc": 3
+    }
   },
   {
     "id": "p395",
@@ -14313,7 +16030,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 28,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "nyk": 55
+    }
   },
   {
     "id": "p674",
@@ -14354,7 +16075,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 26,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "nyk": 9
+    }
   },
   {
     "id": "p660",
@@ -14395,7 +16120,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "was": 50,
+      "mem": 55,
+      "nop": 55,
+      "lal": 55
+    }
   },
   {
     "id": "p410",
@@ -14436,7 +16168,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "nyk": 4
+    }
   },
   {
     "id": "p371",
@@ -14477,7 +16213,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 21,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 51,
+    "jerseyByTeamId": {
+      "nyk": 51
+    }
   },
   {
     "id": "p27",
@@ -14518,7 +16258,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "lac": 2,
+      "okc": 2
+    }
   },
   {
     "id": "p172",
@@ -14559,7 +16304,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "okc": 8
+    }
   },
   {
     "id": "p91",
@@ -14600,7 +16349,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "okc": 7
+    }
   },
   {
     "id": "p197",
@@ -14641,7 +16394,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 2,
     "draftPick": 13,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "hou": 55,
+      "den": 25,
+      "cle": 55,
+      "lac": 55,
+      "nyk": 55,
+      "okc": 55
+    }
   },
   {
     "id": "p537",
@@ -14682,7 +16444,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 8,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "okc": 25
+    }
   },
   {
     "id": "p86",
@@ -14723,7 +16489,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "okc": 5
+    }
   },
   {
     "id": "p272",
@@ -14764,7 +16534,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 25,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "okc": 21
+    }
   },
   {
     "id": "p230",
@@ -14805,7 +16579,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 19,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "phi": 7,
+      "okc": 11
+    }
   },
   {
     "id": "p117",
@@ -14846,7 +16625,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "okc": 22
+    }
   },
   {
     "id": "p225",
@@ -14887,7 +16670,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "lal": 4,
+      "chi": 6,
+      "okc": 9
+    }
   },
   {
     "id": "p206",
@@ -14928,7 +16717,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "phi": 20
+    }
   },
   {
     "id": "p267",
@@ -14969,7 +16762,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 34,
+    "jerseyByTeamId": {
+      "nop": 34,
+      "okc": 34
+    }
   },
   {
     "id": "p392",
@@ -15010,7 +16808,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 4,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 6,
+    "jerseyByTeamId": {
+      "okc": 6
+    }
   },
   {
     "id": "p460",
@@ -15051,7 +16853,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 12,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 44,
+    "jerseyByTeamId": {
+      "okc": 44
+    }
   },
   {
     "id": "p643",
@@ -15092,7 +16898,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "okc": 15
+    }
   },
   {
     "id": "p608",
@@ -15133,7 +16943,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 14,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "okc": 23
+    }
   },
   {
     "id": "p704",
@@ -15174,7 +16988,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "okc": 14
+    }
   },
   {
     "id": "p446",
@@ -15215,7 +17033,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "okc": 12
+    }
   },
   {
     "id": "p71",
@@ -15256,7 +17078,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 30,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "mem": 22
+    }
   },
   {
     "id": "p74",
@@ -15297,7 +17123,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "orl": 4
+    }
   },
   {
     "id": "p270",
@@ -15338,7 +17168,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 8,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "orl": 22
+    }
   },
   {
     "id": "p144",
@@ -15379,7 +17213,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "orl": 5
+    }
   },
   {
     "id": "p280",
@@ -15420,7 +17258,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "orl": 0
+    }
   },
   {
     "id": "p265",
@@ -15461,7 +17303,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 34,
+    "jerseyByTeamId": {
+      "chi": 34,
+      "orl": 34
+    }
   },
   {
     "id": "p338",
@@ -15502,7 +17349,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "lal": 15,
+      "was": 21,
+      "bos": 20,
+      "orl": 21
+    }
   },
   {
     "id": "p295",
@@ -15543,7 +17397,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "orl": 23
+    }
   },
   {
     "id": "p298",
@@ -15584,7 +17442,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "ind": 88,
+      "orl": 35
+    }
   },
   {
     "id": "p374",
@@ -15625,7 +17488,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 2,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "mem": 3,
+      "phx": 4,
+      "bkn": 0,
+      "mil": 5,
+      "chi": 5
+    }
   },
   {
     "id": "p380",
@@ -15666,7 +17537,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "orl": 1
+    }
   },
   {
     "id": "p466",
@@ -15707,7 +17582,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "orl": 13
+    }
   },
   {
     "id": "p503",
@@ -15748,7 +17627,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "mia": 8,
+      "nop": 8
+    }
   },
   {
     "id": "p330",
@@ -15789,7 +17673,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "orl": 11
+    }
   },
   {
     "id": "p462",
@@ -15830,7 +17718,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 2,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 93,
+    "jerseyByTeamId": {
+      "orl": 93
+    }
   },
   {
     "id": "p700",
@@ -15871,7 +17763,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "lal": 14,
+      "mem": 8,
+      "tor": 11,
+      "phi": 18
+    }
   },
   {
     "id": "p548",
@@ -15912,7 +17811,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "orl": 30
+    }
   },
   {
     "id": "p68",
@@ -15953,7 +17856,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "phi": 0
+    }
   },
   {
     "id": "p83",
@@ -15994,7 +17901,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "phi": 21
+    }
   },
   {
     "id": "p438",
@@ -16035,7 +17946,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "phi": 77
+    }
   },
   {
     "id": "p52",
@@ -16076,7 +17991,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2010,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "ind": 13,
+      "okc": 13,
+      "lac": 13,
+      "phi": 8
+    }
   },
   {
     "id": "p236",
@@ -16117,7 +18039,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 12
+    "draftTid": 12,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "nyk": 6,
+      "det": 24,
+      "dal": 5,
+      "phi": 5
+    }
   },
   {
     "id": "p156",
@@ -16158,7 +18087,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "was": 12,
+      "phx": 3,
+      "gsw": 12,
+      "cha": 12,
+      "phi": 9
+    }
   },
   {
     "id": "p441",
@@ -16199,7 +18136,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "por": 2,
+      "bkn": 9
+    }
   },
   {
     "id": "p285",
@@ -16240,7 +18182,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "sas": 26,
+      "atl": 0
+    }
   },
   {
     "id": "p618",
@@ -16281,7 +18228,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 21,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "atl": 22,
+      "bkn": 13
+    }
   },
   {
     "id": "p383",
@@ -16322,7 +18274,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 27,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 34,
+    "jerseyByTeamId": {
+      "por": 34
+    }
   },
   {
     "id": "p165",
@@ -16363,7 +18319,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2006,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "mem": 1,
+      "hou": 7,
+      "tor": 7,
+      "mia": 7,
+      "phi": 7
+    }
   },
   {
     "id": "p237",
@@ -16404,7 +18368,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "det": 0,
+      "cle": 3,
+      "lal": 2,
+      "phi": 1,
+      "bkn": 0,
+      "chi": 3
+    }
   },
   {
     "id": "p378",
@@ -16445,7 +18418,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "phi": 30
+    }
   },
   {
     "id": "p449",
@@ -16486,7 +18463,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "phi": 19
+    }
   },
   {
     "id": "p468",
@@ -16527,7 +18508,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 18,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "chi": 25
+    }
   },
   {
     "id": "p654",
@@ -16568,7 +18553,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 16
+    "draftTid": 16,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "mil": 3,
+      "lac": 0,
+      "nyk": 14
+    }
   },
   {
     "id": "p253",
@@ -16609,7 +18600,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 5,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "phi": 22
+    }
   },
   {
     "id": "p75",
@@ -16650,7 +18645,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "phx": 1
+    }
   },
   {
     "id": "p112",
@@ -16691,7 +18690,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "hou": 4
+    }
   },
   {
     "id": "p199",
@@ -16732,7 +18735,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "uta": 24,
+      "mem": 3,
+      "mil": 12,
+      "phx": 8
+    }
   },
   {
     "id": "p108",
@@ -16773,7 +18783,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "mem": 24,
+      "hou": 9
+    }
   },
   {
     "id": "p95",
@@ -16814,7 +18829,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 15,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "cha": 5
+    }
   },
   {
     "id": "p442",
@@ -16855,7 +18874,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "den": 21,
+      "phx": 12
+    }
   },
   {
     "id": "p159",
@@ -16896,7 +18920,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "uta": 23,
+      "bkn": 0,
+      "phx": 0
+    }
   },
   {
     "id": "p435",
@@ -16937,7 +18967,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "was": 7,
+      "phx": 0,
+      "mem": 4,
+      "lal": 30
+    }
   },
   {
     "id": "p171",
@@ -16978,7 +19015,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "phx": 0
+    }
   },
   {
     "id": "p524",
@@ -17019,7 +19060,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "mia": 11,
+      "was": 4,
+      "por": 21,
+      "sas": 15,
+      "mil": 15
+    }
   },
   {
     "id": "p370",
@@ -17060,7 +19109,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 10,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "phx": 4
+    }
   },
   {
     "id": "p132",
@@ -17101,7 +19154,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "phi": 7,
+      "mia": 24
+    }
   },
   {
     "id": "p262",
@@ -17142,7 +19200,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "lac": 7
+    }
   },
   {
     "id": "p605",
@@ -17183,7 +19245,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "det": 12
+    }
   },
   {
     "id": "p543",
@@ -17224,7 +19290,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 11,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "phx": 14
+    }
   },
   {
     "id": "p316",
@@ -17265,7 +19335,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "phx": 10
+    }
   },
   {
     "id": "p552",
@@ -17306,7 +19380,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "phx": 22
+    }
   },
   {
     "id": "p519",
@@ -17347,7 +19425,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 1,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "phx": 20
+    }
   },
   {
     "id": "p120",
@@ -17388,7 +19470,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "por": 0,
+      "mil": 0
+    }
   },
   {
     "id": "p222",
@@ -17429,7 +19516,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "was": 8,
+      "por": 8
+    }
   },
   {
     "id": "p19",
@@ -17470,7 +19562,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 1,
     "draftPick": 17,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "phi": 11,
+      "nop": 11,
+      "mil": 21,
+      "bos": 4
+    }
   },
   {
     "id": "p114",
@@ -17511,7 +19610,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "por": 17
+    }
   },
   {
     "id": "p69",
@@ -17552,7 +19655,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 22
+    "draftTid": 22,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "phi": 39,
+      "okc": 9,
+      "den": 9,
+      "det": 9,
+      "por": 9
+    }
   },
   {
     "id": "p216",
@@ -17593,7 +19704,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "por": 0
+    }
   },
   {
     "id": "p73",
@@ -17634,7 +19749,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 22,
-    "draftTid": 23
+    "draftTid": 23,
+    "jerseyNumber": 33,
+    "jerseyByTeamId": {
+      "por": 33
+    }
   },
   {
     "id": "p725",
@@ -17675,7 +19794,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "por": 2
+    }
   },
   {
     "id": "p322",
@@ -17716,7 +19839,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "por": 23
+    }
   },
   {
     "id": "p440",
@@ -17757,7 +19884,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 2,
     "draftPick": 7,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "okc": 27,
+      "atl": 27
+    }
   },
   {
     "id": "p388",
@@ -17798,7 +19930,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 27,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 35,
+    "jerseyByTeamId": {
+      "bos": 44,
+      "por": 35
+    }
   },
   {
     "id": "p419",
@@ -17839,7 +19976,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "sas": 14
+    }
   },
   {
     "id": "p358",
@@ -17880,7 +20021,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 14,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 91,
+    "jerseyByTeamId": {
+      "sas": 25,
+      "por": 91
+    }
   },
   {
     "id": "p219",
@@ -17921,7 +20067,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 1
+    "draftTid": 1,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "phi": 22,
+      "por": 4
+    }
   },
   {
     "id": "p244",
@@ -17962,7 +20113,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 23,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "por": 24
+    }
   },
   {
     "id": "p597",
@@ -18003,7 +20158,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "por": 11
+    }
   },
   {
     "id": "p166",
@@ -18044,7 +20203,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "por": 16
+    }
   },
   {
     "id": "p523",
@@ -18085,7 +20248,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 29,
+    "jerseyByTeamId": {
+      "por": 29
+    }
   },
   {
     "id": "p61",
@@ -18126,7 +20293,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "min": 8,
+      "chi": 8,
+      "sac": 8
+    }
   },
   {
     "id": "p162",
@@ -18167,7 +20340,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 21
+    "draftTid": 21,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "okc": 3,
+      "ind": 11,
+      "sac": 11
+    }
   },
   {
     "id": "p169",
@@ -18208,7 +20387,16 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2008,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "okc": 0,
+      "hou": 0,
+      "was": 4,
+      "lal": 0,
+      "lac": 0,
+      "den": 4
+    }
   },
   {
     "id": "p16",
@@ -18249,7 +20437,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 10,
+    "jerseyByTeamId": {
+      "tor": 10,
+      "sas": 10,
+      "chi": 11,
+      "sac": 10
+    }
   },
   {
     "id": "p164",
@@ -18290,7 +20485,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 3
+    "draftTid": 3,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "cha": 1,
+      "lal": 11,
+      "sac": 0
+    }
   },
   {
     "id": "p187",
@@ -18331,7 +20532,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "atl": 12,
+      "cle": 12
+    }
   },
   {
     "id": "p161",
@@ -18372,7 +20578,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "sac": 13
+    }
   },
   {
     "id": "p602",
@@ -18413,7 +20623,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "sac": 22
+    }
   },
   {
     "id": "p269",
@@ -18454,7 +20668,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 42,
+    "jerseyByTeamId": {
+      "sac": 42
+    }
   },
   {
     "id": "p281",
@@ -18495,7 +20713,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 15
+    "draftTid": 15,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "mia": 5,
+      "tor": 5,
+      "nyk": 5
+    }
   },
   {
     "id": "p574",
@@ -18536,7 +20760,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "sac": 5
+    }
   },
   {
     "id": "p339",
@@ -18577,7 +20805,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "sas": 14,
+      "por": 24,
+      "phx": 14,
+      "uta": 15,
+      "lac": 15
+    }
   },
   {
     "id": "p394",
@@ -18618,7 +20854,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 7
+    "draftTid": 7,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "chi": 11,
+      "okc": 25,
+      "nyk": 20,
+      "dal": 20,
+      "ind": 20,
+      "sas": 17,
+      "sac": 7
+    }
   },
   {
     "id": "p545",
@@ -18659,7 +20905,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 8
+    "draftTid": 8,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "det": 7,
+      "bkn": 7
+    }
   },
   {
     "id": "p553",
@@ -18700,7 +20951,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "sac": 32
+    }
   },
   {
     "id": "p709",
@@ -18741,7 +20996,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "mia": 4
+    }
   },
   {
     "id": "p669",
@@ -18782,7 +21041,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 29,
+    "jerseyByTeamId": {
+      "atl": 29
+    }
   },
   {
     "id": "p718",
@@ -18823,7 +21086,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "gsw": 7,
+      "was": 7,
+      "lac": 23
+    }
   },
   {
     "id": "p23",
@@ -18864,7 +21133,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "sas": 1
+    }
   },
   {
     "id": "p20",
@@ -18905,7 +21178,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "sac": 5,
+      "sas": 4
+    }
   },
   {
     "id": "p94",
@@ -18946,7 +21224,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "sas": 5
+    }
   },
   {
     "id": "p284",
@@ -18987,7 +21269,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 11,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "sas": 24
+    }
   },
   {
     "id": "p179",
@@ -19028,7 +21314,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "sas": 0
+    }
   },
   {
     "id": "p133",
@@ -19069,7 +21359,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 9
+    "draftTid": 9,
+    "jerseyNumber": 40,
+    "jerseyByTeamId": {
+      "gsw": 40,
+      "dal": 40,
+      "sac": 40,
+      "sas": 40
+    }
   },
   {
     "id": "p147",
@@ -19110,7 +21407,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 30,
+    "jerseyByTeamId": {
+      "phi": 55,
+      "sas": 30
+    }
   },
   {
     "id": "p252",
@@ -19151,7 +21453,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "sas": 2
+    }
   },
   {
     "id": "p292",
@@ -19192,7 +21498,15 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 40,
+    "jerseyByTeamId": {
+      "nyk": 2,
+      "chi": 2,
+      "bos": 40,
+      "cle": 12,
+      "mil": 35
+    }
   },
   {
     "id": "p291",
@@ -19233,7 +21547,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "bos": 41,
+      "mia": 9,
+      "hou": 41,
+      "det": 13,
+      "uta": 41,
+      "tor": 41,
+      "nop": 13
+    }
   },
   {
     "id": "p324",
@@ -19274,7 +21598,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 43,
+    "jerseyByTeamId": {
+      "okc": 12,
+      "gsw": 43,
+      "det": 43
+    }
   },
   {
     "id": "p369",
@@ -19315,7 +21645,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "min": 6,
+      "sac": 3,
+      "sas": 11
+    }
   },
   {
     "id": "p129",
@@ -19356,7 +21692,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2013,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 2
+    "draftTid": 2,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "bkn": 1,
+      "por": 24,
+      "den": 7,
+      "det": 24,
+      "cha": 24,
+      "lac": 44,
+      "phx": 22
+    }
   },
   {
     "id": "p526",
@@ -19397,7 +21743,17 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2011,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "cha": 8,
+      "tor": 8,
+      "orl": 11,
+      "phx": 18,
+      "mem": 18,
+      "okc": 15,
+      "sas": 18
+    }
   },
   {
     "id": "p362",
@@ -19438,7 +21794,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "sas": 11
+    }
   },
   {
     "id": "p535",
@@ -19479,7 +21839,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "chi": 20
+    }
   },
   {
     "id": "p715",
@@ -19520,7 +21884,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 25,
+    "jerseyByTeamId": {
+      "sas": 25
+    }
   },
   {
     "id": "p577",
@@ -19561,7 +21929,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 18,
-    "draftTid": 26
+    "draftTid": 26,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "sas": 55
+    }
   },
   {
     "id": "p139",
@@ -19602,7 +21974,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 4,
+    "jerseyByTeamId": {
+      "tor": 4
+    }
   },
   {
     "id": "p64",
@@ -19643,7 +22019,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 1,
     "draftPick": 3,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "nyk": 9,
+      "tor": 9
+    }
   },
   {
     "id": "p92",
@@ -19684,7 +22065,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2020,
     "draftRound": 1,
     "draftPick": 25,
-    "draftTid": 20
+    "draftTid": 20,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "nyk": 5,
+      "tor": 5
+    }
   },
   {
     "id": "p42",
@@ -19725,7 +22111,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "lal": 14,
+      "nop": 14
+    }
   },
   {
     "id": "p467",
@@ -19766,7 +22157,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 15,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "tor": 23
+    }
   },
   {
     "id": "p508",
@@ -19807,7 +22202,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 24,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 54,
+    "jerseyByTeamId": {
+      "mil": 54,
+      "sas": 54
+    }
   },
   {
     "id": "p143",
@@ -19848,7 +22248,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "tor": 19,
+      "sas": 25
+    }
   },
   {
     "id": "p63",
@@ -19889,7 +22294,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 27,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 32,
+    "jerseyByTeamId": {
+      "gsw": 32
+    }
   },
   {
     "id": "p170",
@@ -19930,7 +22339,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 9,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "tor": 12
+    }
   },
   {
     "id": "p231",
@@ -19971,7 +22384,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 13,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "tor": 1
+    }
   },
   {
     "id": "p307",
@@ -20012,7 +22429,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 19,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 14,
+    "jerseyByTeamId": {
+      "tor": 14
+    }
   },
   {
     "id": "p532",
@@ -20053,7 +22474,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 77,
+    "jerseyByTeamId": {
+      "tor": 77
+    }
   },
   {
     "id": "p422",
@@ -20094,7 +22519,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 1,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "tor": 2
+    }
   },
   {
     "id": "p650",
@@ -20135,7 +22564,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "min": 0,
+      "dal": 9,
+      "tor": 0
+    }
   },
   {
     "id": "p471",
@@ -20176,7 +22611,22 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2009,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 17,
+    "jerseyByTeamId": {
+      "hou": 2,
+      "sac": 17,
+      "sas": 2,
+      "mil": 41,
+      "cha": 41,
+      "was": 17,
+      "mem": 17,
+      "lac": 17,
+      "bkn": 17,
+      "chi": 17,
+      "nop": 41,
+      "tor": 17
+    }
   },
   {
     "id": "p708",
@@ -20217,7 +22667,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "tor": 24
+    }
   },
   {
     "id": "p721",
@@ -20258,7 +22712,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 9,
-    "draftTid": 27
+    "draftTid": 27,
+    "jerseyNumber": 55,
+    "jerseyByTeamId": {
+      "tor": 55
+    }
   },
   {
     "id": "p6",
@@ -20299,7 +22757,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2017,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 17
+    "draftTid": 17,
+    "jerseyNumber": 23,
+    "jerseyByTeamId": {
+      "chi": 24,
+      "cle": 24,
+      "uta": 23
+    }
   },
   {
     "id": "p137",
@@ -20340,7 +22804,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 4,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "mem": 13
+    }
   },
   {
     "id": "p148",
@@ -20381,7 +22849,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "uta": 3
+    }
   },
   {
     "id": "p125",
@@ -20422,7 +22894,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 1,
     "draftPick": 22,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 24,
+    "jerseyByTeamId": {
+      "uta": 24
+    }
   },
   {
     "id": "p433",
@@ -20463,7 +22939,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2008,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 14
+    "draftTid": 14,
+    "jerseyNumber": 42,
+    "jerseyByTeamId": {
+      "min": 42,
+      "cle": 0,
+      "mia": 42
+    }
   },
   {
     "id": "p135",
@@ -20504,7 +22986,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2014,
     "draftRound": 1,
     "draftPick": 16,
-    "draftTid": 4
+    "draftTid": 4,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "den": 23,
+      "por": 27,
+      "phx": 20,
+      "cha": 11
+    }
   },
   {
     "id": "p426",
@@ -20545,7 +23034,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2019,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 46,
+    "jerseyByTeamId": {
+      "mem": 46
+    }
   },
   {
     "id": "p586",
@@ -20586,7 +23079,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 29,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 13,
+    "jerseyByTeamId": {
+      "uta": 13
+    }
   },
   {
     "id": "p606",
@@ -20627,7 +23124,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 28,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 28,
+    "jerseyByTeamId": {
+      "uta": 28
+    }
   },
   {
     "id": "p598",
@@ -20668,7 +23169,18 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 2,
     "draftPick": 17,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "lal": 10,
+      "det": 19,
+      "okc": 14,
+      "tor": 14,
+      "nyk": 17,
+      "cha": 10,
+      "bos": 50,
+      "uta": 19
+    }
   },
   {
     "id": "p350",
@@ -20709,7 +23221,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 2,
     "draftPick": 2,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 22,
+    "jerseyByTeamId": {
+      "uta": 22
+    }
   },
   {
     "id": "p194",
@@ -20750,7 +23266,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 19,
+    "jerseyByTeamId": {
+      "uta": 19
+    }
   },
   {
     "id": "p684",
@@ -20791,7 +23311,12 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 34,
+    "jerseyByTeamId": {
+      "ind": 44,
+      "uta": 34
+    }
   },
   {
     "id": "p652",
@@ -20832,7 +23357,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "uta": 16
+    }
   },
   {
     "id": "p593",
@@ -20873,7 +23402,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 21,
+    "jerseyByTeamId": {
+      "uta": 21
+    }
   },
   {
     "id": "p556",
@@ -20914,7 +23447,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 10,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "uta": 5
+    }
   },
   {
     "id": "p719",
@@ -20955,7 +23492,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "uta": 2
+    }
   },
   {
     "id": "p33",
@@ -20996,7 +23537,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2012,
     "draftRound": 1,
     "draftPick": 1,
-    "draftTid": 18
+    "draftTid": 18,
+    "jerseyNumber": 3,
+    "jerseyByTeamId": {
+      "nop": 23,
+      "lal": 3,
+      "dal": 3
+    }
   },
   {
     "id": "p138",
@@ -21037,7 +23584,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2018,
     "draftRound": 1,
     "draftPick": 5,
-    "draftTid": 6
+    "draftTid": 6,
+    "jerseyNumber": 11,
+    "jerseyByTeamId": {
+      "atl": 11
+    }
   },
   {
     "id": "p17",
@@ -21078,7 +23629,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 20,
+    "jerseyByTeamId": {
+      "was": 20
+    }
   },
   {
     "id": "p223",
@@ -21119,7 +23674,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 24,
-    "draftTid": 19
+    "draftTid": 19,
+    "jerseyNumber": 18,
+    "jerseyByTeamId": {
+      "was": 18
+    }
   },
   {
     "id": "p239",
@@ -21160,7 +23719,14 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2015,
     "draftRound": 1,
     "draftPick": 2,
-    "draftTid": 13
+    "draftTid": 13,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "lal": 1,
+      "bkn": 1,
+      "gsw": 0,
+      "min": 0
+    }
   },
   {
     "id": "p203",
@@ -21201,7 +23767,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 20,
-    "draftTid": 10
+    "draftTid": 10,
+    "jerseyNumber": 7,
+    "jerseyByTeamId": {
+      "hou": 7
+    }
   },
   {
     "id": "p455",
@@ -21242,7 +23812,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 6,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "was": 12
+    }
   },
   {
     "id": "p150",
@@ -21283,7 +23857,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 1,
     "draftPick": 7,
-    "draftTid": 11
+    "draftTid": 11,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "was": 0
+    }
   },
   {
     "id": "p397",
@@ -21324,7 +23902,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2022,
     "draftRound": 2,
     "draftPick": 7,
-    "draftTid": 25
+    "draftTid": 25,
+    "jerseyNumber": 1,
+    "jerseyByTeamId": {
+      "dal": 1
+    }
   },
   {
     "id": "p198",
@@ -21365,7 +23947,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2024,
     "draftRound": 1,
     "draftPick": 14,
-    "draftTid": 24
+    "draftTid": 24,
+    "jerseyNumber": 8,
+    "jerseyByTeamId": {
+      "was": 8
+    }
   },
   {
     "id": "p629",
@@ -21406,7 +23992,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 2,
     "draftPick": 12,
-    "draftTid": 29
+    "draftTid": 29,
+    "jerseyNumber": 0,
+    "jerseyByTeamId": {
+      "was": 0
+    }
   },
   {
     "id": "p616",
@@ -21447,7 +24037,13 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 9,
+    "jerseyByTeamId": {
+      "tor": 11,
+      "bos": 99,
+      "was": 9
+    }
   },
   {
     "id": "p472",
@@ -21488,7 +24084,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2016,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 16,
+    "jerseyByTeamId": {
+      "was": 16
+    }
   },
   {
     "id": "p685",
@@ -21529,7 +24129,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2021,
     "draftRound": 2,
     "draftPick": 18,
-    "draftTid": 0
+    "draftTid": 0,
+    "jerseyNumber": 2,
+    "jerseyByTeamId": {
+      "atl": 2
+    }
   },
   {
     "id": "p450",
@@ -21570,7 +24174,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 2,
     "draftPick": 13,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 5,
+    "jerseyByTeamId": {
+      "was": 5
+    }
   },
   {
     "id": "p411",
@@ -21611,7 +24219,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 1,
     "draftPick": 21,
-    "draftTid": 28
+    "draftTid": 28,
+    "jerseyNumber": 27,
+    "jerseyByTeamId": {
+      "was": 27
+    }
   },
   {
     "id": "p683",
@@ -21652,7 +24264,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2023,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 12,
+    "jerseyByTeamId": {
+      "cha": 12
+    }
   },
   {
     "id": "p711",
@@ -21693,7 +24309,11 @@ export const nbaPlayers: LeaguePlayer[] = [
     "draftYear": 2025,
     "draftRound": 0,
     "draftPick": 0,
-    "draftTid": -1
+    "draftTid": -1,
+    "jerseyNumber": 15,
+    "jerseyByTeamId": {
+      "was": 15
+    }
   }
 ] as LeaguePlayer[];
 export function getLeaguePlayer(id: string) {

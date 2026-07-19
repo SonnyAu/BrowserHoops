@@ -30,6 +30,7 @@ export type PerGameRow = {
   blk: number;
   pf: number;
   pts: number;
+  live?: boolean;
 };
 
 function pct(made: number, att: number): number | null {
@@ -77,6 +78,7 @@ export function toPerGame(line: PlayerSeasonLine): PerGameRow {
     blk: per(line.blk, gp),
     pf: per(line.pf, gp),
     pts: per(line.pts, gp),
+    live: line.live,
   };
 }
 
@@ -106,6 +108,7 @@ export function mergeLines(lines: PlayerSeasonLine[]): PlayerSeasonLine | null {
     sum.pts += l.pts;
   }
   sum.id = `career-${base.playerId}-${base.level}`;
+  sum.live = lines.some((l) => l.live) || undefined;
   return sum;
 }
 

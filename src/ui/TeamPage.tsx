@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getCollege } from '../data/colleges';
 import { getProTeam } from '../data/nbaTeams';
+import { jerseyForTeam } from '../domain/jersey';
 import { CareerSave, LeagueTransaction, TeamSeasonRecord } from '../domain/models';
 import {
   loadTeamSeasonRecords,
@@ -105,6 +106,7 @@ export function TeamPage({ career }: { career: CareerSave }) {
           <table className="data-table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Player</th>
                 <th>Pos</th>
                 <th>OVR</th>
@@ -120,8 +122,15 @@ export function TeamPage({ career }: { career: CareerSave }) {
                   'contractAmount' in p
                     ? `$${p.contractAmount}k / exp ${p.contractExp}`
                     : '—';
+                const number = jerseyForTeam(
+                  p.id,
+                  teamId,
+                  'tid' in p ? p.jerseyNumber : undefined,
+                  'tid' in p ? p.jerseyByTeamId : undefined,
+                );
                 return (
                   <tr key={id}>
+                    <td>{number}</td>
                     <td>
                       <PlayerLink saveId={career.id} playerId={id}>
                         {p.name}

@@ -106,7 +106,7 @@ function addBox(
   line.pf += box.pf ?? 0;
 }
 
-function aggregateFromLeagueGames(
+export function aggregateFromLeagueGames(
   save: CareerSave,
   games: LeagueGameRecord[],
 ): PlayerSeasonLine[] {
@@ -144,7 +144,7 @@ function aggregateFromLeagueGames(
   return [...map.values()];
 }
 
-function aggregateUserLogs(save: CareerSave, logs: GameLog[]): PlayerSeasonLine[] {
+export function aggregateUserLogs(save: CareerSave, logs: GameLog[]): PlayerSeasonLine[] {
   const level: 'college' | 'pro' =
     save.proTeamId || save.phase === 'professional' ? 'pro' : 'college';
   const selfId =
@@ -187,6 +187,21 @@ function aggregateUserLogs(save: CareerSave, logs: GameLog[]): PlayerSeasonLine[
     );
   }
   return [...map.values()];
+}
+
+/** In-progress current-season lines for one player, viewable before the season is archived. */
+export async function liveSeasonLines(
+  save: CareerSave,
+  playerId: string,
+): Promise<PlayerSeasonLine[]> {
+  let lines: PlayerSeasonLine[];
+  if (playerId === 'user') {
+    lines = aggregateUserLogs(save, save.seasonLogBuffer ?? []);
+  } else {
+    const games = await loadLeagueGamesForSeason(save.id, save.season);
+    lines = aggregateFromLeagueGames(save, games).filter((l) => l.playerId === playerId);
+  }
+  return lines.map((l) => ({ ...l, live: true }));
 }
 
 export async function archiveSeasonHistory(save: CareerSave): Promise<void> {

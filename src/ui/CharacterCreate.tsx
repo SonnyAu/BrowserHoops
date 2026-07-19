@@ -134,7 +134,8 @@ export function CharacterCreate() {
             <section className="panel panel-pad">
               <h2 className="card-title">Prospect path</h2>
               <p className="muted" style={{ fontSize: 13, marginTop: 0 }}>
-                Named career dial calibrated to BBGM-style starting OVRs. Stars still drive recruiting; path sets the ceiling story.
+                Your origin story. The path sets your starting ability and how
+                scouts project your ceiling — stars drive recruiting interest.
               </p>
               <div className="prospect-path-list">
                 {PROSPECT_PATH_IDS.map((id) => {

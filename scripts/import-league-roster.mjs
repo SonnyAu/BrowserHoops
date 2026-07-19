@@ -142,6 +142,12 @@ function trimForRaw(data) {
       strategy: t.strategy,
     }));
 
+  // Abbrevs for every team ever referenced by historical stat rows, incl. defunct/relocated (tid >= 30).
+  const teamAbbrevs = {};
+  for (const t of data.teams || []) {
+    if (typeof t.tid === 'number' && t.abbrev) teamAbbrevs[t.tid] = String(t.abbrev);
+  }
+
   const players = (data.players || [])
     .filter((p) => {
       const tid = p.tid;
@@ -153,6 +159,33 @@ function trimForRaw(data) {
       return false;
     })
     .map((p) => {
+      const stats = Array.isArray(p.stats)
+        ? p.stats
+            .filter((s) => Number(s.gp) > 0 || s.jerseyNumber != null)
+            .map((s) => ({
+              season: s.season,
+              tid: s.tid,
+              playoffs: !!s.playoffs,
+              gp: Number(s.gp) || 0,
+              gs: Number(s.gs) || 0,
+              min: Math.round(Number(s.min) || 0),
+              fg: Number(s.fg) || 0,
+              fga: Number(s.fga) || 0,
+              tp: Number(s.tp) || 0,
+              tpa: Number(s.tpa) || 0,
+              ft: Number(s.ft) || 0,
+              fta: Number(s.fta) || 0,
+              orb: Number(s.orb) || 0,
+              drb: Number(s.drb) || 0,
+              ast: Number(s.ast) || 0,
+              tov: Number(s.tov) || 0,
+              stl: Number(s.stl) || 0,
+              blk: Number(s.blk) || 0,
+              pf: Number(s.pf) || 0,
+              pts: Number(s.pts) || 0,
+              jerseyNumber: s.jerseyNumber != null ? String(s.jerseyNumber) : undefined,
+            }))
+        : [];
       const ratings = Array.isArray(p.ratings)
         ? p.ratings.map((r) => ({
             season: r.season,
@@ -188,10 +221,11 @@ function trimForRaw(data) {
         draft: p.draft,
         jerseyNumber: p.jerseyNumber,
         ratings,
+        stats,
       };
     });
 
-  return { startingSeason, version: data.version ?? 67, teams, players };
+  return { startingSeason, version: data.version ?? 67, teams, teamAbbrevs, players };
 }
 
 function slug(abbrev) {
@@ -293,8 +327,20 @@ export function importLeagueRoster(collegeList = []) {
       division: DIVISIONS[t.did] || 'Unknown',
     }));
 
+  const tidToAbbrev = { ...(trimmed.teamAbbrevs || {}) };
+  for (const t of trimmed.teams || []) {
+    if (tidToAbbrev[t.tid] == null && t.abbrev) tidToAbbrev[t.tid] = String(t.abbrev);
+  }
+
+  const overridesPath = path.join(__dirname, 'jersey-overrides.json');
+  const jerseyOverrides = fs.existsSync(overridesPath)
+    ? JSON.parse(fs.readFileSync(overridesPath, 'utf8'))
+    : {};
+
   const nbaPlayers = [];
   const draftProspects = [];
+  const playerHistory = {};
+  const missingJerseys = [];
   let pid = 1;
 
   for (const p of trimmed.players || []) {
@@ -341,8 +387,70 @@ export function importLeagueRoster(collegeList = []) {
     if (isProspect) {
       draftProspects.push(base);
     } else if (typeof p.tid === 'number' && p.tid >= 0 && p.tid < 30) {
-      nbaPlayers.push({ ...base, tid: p.tid });
+      const stats = Array.isArray(p.stats) ? p.stats : [];
+
+      // Real jersey numbers: latest row overall + latest per team (keyed by game team id = slug of abbrev).
+      let jerseyNumber;
+      const jerseyByTeamId = {};
+      for (const s of stats) {
+        if (s.jerseyNumber == null || s.jerseyNumber === '') continue;
+        const num = Number(s.jerseyNumber);
+        if (!Number.isFinite(num)) continue;
+        jerseyNumber = num;
+        const abbrev = tidToAbbrev[s.tid];
+        if (abbrev) jerseyByTeamId[slug(abbrev)] = num;
+      }
+      const override = jerseyOverrides[p.srID] ?? jerseyOverrides[playerName(p)];
+      if (jerseyNumber == null && override != null) {
+        jerseyNumber = Number(override);
+        const abbrev = tidToAbbrev[p.tid];
+        if (abbrev) jerseyByTeamId[slug(abbrev)] = jerseyNumber;
+      }
+      if (jerseyNumber == null) {
+        missingJerseys.push(`${playerName(p)} (${p.srID ?? 'no srID'})`);
+      }
+
+      // Real prior-season lines, compact tuples decoded at runtime by src/data/packSeasonLines.ts.
+      const rows = stats
+        .filter((s) => Number(s.gp) > 0 && tidToAbbrev[s.tid])
+        .map((s) => [
+          s.season,
+          tidToAbbrev[s.tid],
+          s.playoffs ? 1 : 0,
+          s.gp,
+          s.gs,
+          s.min,
+          s.fg,
+          s.fga,
+          s.tp,
+          s.tpa,
+          s.ft,
+          s.fta,
+          s.orb,
+          s.drb,
+          s.ast,
+          s.tov,
+          s.stl,
+          s.blk,
+          s.pf,
+          s.pts,
+        ]);
+      if (rows.length) playerHistory[base.id] = rows;
+
+      nbaPlayers.push({
+        ...base,
+        tid: p.tid,
+        ...(jerseyNumber != null ? { jerseyNumber } : {}),
+        ...(Object.keys(jerseyByTeamId).length ? { jerseyByTeamId } : {}),
+      });
     }
+  }
+
+  if (missingJerseys.length) {
+    console.warn(
+      `WARNING: ${missingJerseys.length} NBA players missing jersey numbers (add to scripts/jersey-overrides.json):\n  ` +
+        missingJerseys.join('\n  '),
+    );
   }
 
   draftProspects.sort((a, b) => b.overall - a.overall || a.name.localeCompare(b.name));
@@ -357,6 +465,13 @@ export function importLeagueRoster(collegeList = []) {
     path.join(outDir, 'nbaPlayers.ts'),
     `import { LeaguePlayer } from '../domain/models';\nexport const nbaPlayers: LeaguePlayer[] = ${JSON.stringify(nbaPlayers, null, 2)} as LeaguePlayer[];\nexport function getLeaguePlayer(id: string) {\n  return nbaPlayers.find((p) => p.id === id);\n}\n`,
   );
+
+  const histRowCount = Object.values(playerHistory).reduce((n, rows) => n + rows.length, 0);
+  fs.writeFileSync(
+    path.join(outDir, 'nbaPlayerHistory.ts'),
+    `/** Real prior-season NBA statline totals for built-in pack players (seasons before the game start).\n * Row: [season, teamAbbrev, playoffs, gp, gs, min, fg, fga, tp, tpa, ft, fta, orb, drb, ast, tov, stl, blk, pf, pts]\n * Decoded by src/data/packSeasonLines.ts. Generated by scripts/import-league-roster.mjs — do not edit.\n */\nexport type PackHistRow = [\n  number, string, 0 | 1,\n  number, number, number, number, number, number, number,\n  number, number, number, number, number, number, number, number, number, number,\n];\nexport const nbaPlayerHistory: Record<string, PackHistRow[]> = ${JSON.stringify(playerHistory)} as Record<string, PackHistRow[]>;\n`,
+  );
+  console.log(`Player history: ${Object.keys(playerHistory).length} players, ${histRowCount} season rows`);
 
   fs.writeFileSync(
     path.join(outDir, 'draftProspects.ts'),

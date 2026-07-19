@@ -13,11 +13,13 @@ import {
   ATTR_LABELS,
   allAttrKeys,
 } from '../domain/models';
+import { getLeaguePlayer } from '../data/nbaPlayers';
+import { getPackSeasonLines } from '../data/packSeasonLines';
 import {
   loadPlayerSeasonLines,
   loadPlayerTransactions,
 } from '../persistence/db';
-import { jerseyStopsFromLines } from '../simulation/seasonArchive';
+import { jerseyStopsFromLines, liveSeasonLines } from '../simulation/seasonArchive';
 import { TeamLink, resolveTeam, teamIdFromTid } from './EntityLinks';
 import { JerseyHistory, JerseyStop } from './JerseyHistory';
 import { PlayerStatsTable } from './PlayerStatsTable';
@@ -107,7 +109,8 @@ function fromLeaguePlayer(lp: LeaguePlayer): ResolvedPlayer {
 export function PlayerPage({ career }: { career: CareerSave }) {
   const { playerId = '' } = useParams();
   const player = resolvePlayer(career, playerId);
-  const [lines, setLines] = useState<PlayerSeasonLine[]>([]);
+  const [archivedLines, setArchivedLines] = useState<PlayerSeasonLine[]>([]);
+  const [liveLines, setLiveLines] = useState<PlayerSeasonLine[]>([]);
   const [txs, setTxs] = useState<LeagueTransaction[]>([]);
 
   useEffect(() => {
@@ -118,13 +121,42 @@ export function PlayerPage({ career }: { career: CareerSave }) {
         loadPlayerTransactions(career.id, playerId),
       ]);
       if (!alive) return;
-      setLines(l);
+      setArchivedLines(l);
       setTxs(t.slice(0, 100));
     })();
     return () => {
       alive = false;
     };
   }, [career.id, playerId]);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const live = await liveSeasonLines(career, playerId);
+      if (alive) setLiveLines(live);
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [career, playerId]);
+
+  // Real pre-game NBA history baked into the data pack (empty for the user / college players).
+  const packLines = useMemo(() => {
+    const bornYear =
+      (career.leagueRoster ?? []).find((p) => p.id === playerId)?.bornYear ??
+      getLeaguePlayer(playerId)?.bornYear;
+    return bornYear != null ? getPackSeasonLines(playerId, bornYear) : [];
+  }, [career.leagueRoster, playerId]);
+
+  const lines = useMemo(() => {
+    const archivedKeys = new Set(
+      archivedLines.map((l) => `${l.season}|${l.phase}|${l.teamId}`),
+    );
+    const live = liveLines.filter(
+      (l) => !archivedKeys.has(`${l.season}|${l.phase}|${l.teamId}`),
+    );
+    return [...packLines, ...archivedLines, ...live];
+  }, [packLines, archivedLines, liveLines]);
 
   const collegeLines = useMemo(
     () => lines.filter((l) => l.level === 'college'),
@@ -300,7 +332,7 @@ export function PlayerPage({ career }: { career: CareerSave }) {
       {!collegeLines.length && !proLines.length ? (
         <section className="panel panel-pad">
           <p className="muted">
-            Season lines appear after a season is archived (season review).
+            No season stats yet — lines appear once this player logs minutes.
           </p>
         </section>
       ) : null}

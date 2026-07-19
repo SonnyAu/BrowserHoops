@@ -452,6 +452,10 @@ export interface PlayerSeasonLine {
   blk: number;
   pf: number;
   pts: number;
+  /** Current season still in progress (aggregated live, not archived). */
+  live?: boolean;
+  /** Real pre-game NBA history from the built-in data pack. */
+  pack?: boolean;
 }
 
 export type LeagueTransactionType =

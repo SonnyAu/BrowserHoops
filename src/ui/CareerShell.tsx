@@ -35,6 +35,11 @@ import {
   listCollegeConferences,
   listProConferences,
 } from '../simulation/schedule';
+import {
+  HonorEntry,
+  computeCollegeSeasonHonors,
+  computeProSeasonHonors,
+} from '../simulation/seasonHonors';
 import { BracketPage } from './BracketPage';
 import { DraftNight } from './DraftNight';
 import { PlayerLink, TeamLink, teamIdFromTid } from './EntityLinks';
@@ -92,6 +97,14 @@ const SIM_LABELS: Record<SimTarget, string> = {
   season: 'Season',
 };
 
+const STAGE_LABEL: Record<string, string> = {
+  regular: 'Regular season',
+  playIn: 'Play-In',
+  playoffs: 'Playoffs',
+  tournament: 'March Madness',
+  complete: 'Offseason',
+};
+
 export function CareerShell() {
   const { saveId } = useParams();
   const nav = useNavigate();
@@ -116,7 +129,12 @@ export function CareerShell() {
   useEffect(() => {
     if (!career) return;
     const base = `/career/${career.id}`;
-    if (career.phase === 'seasonReview' && !location.pathname.endsWith('/review')) {
+    // Season review only blocks sim/actions — read-only pages stay browsable.
+    const reviewViewable = ['/review', '/schedule', '/bracket', '/history', '/leaderboards', '/player/', '/team/'];
+    if (
+      career.phase === 'seasonReview' &&
+      !reviewViewable.some((p) => location.pathname.includes(p))
+    ) {
       nav(`${base}/review`, { replace: true });
     } else if (career.phase === 'draft' && !location.pathname.endsWith('/draft')) {
       nav(`${base}/draft`, { replace: true });
@@ -242,13 +260,13 @@ export function CareerShell() {
               : career.phase === 'draft'
                 ? ' · Draft night'
                 : nextGame
-                  ? ` · Next: ${nextGame.round ? `${nextGame.round} vs ` : ''}${nextGame.opponentName}${
+                  ? ` · Next: ${nextGame.round ? `${nextGame.round} ` : ''}${nextGame.home ? 'vs' : '@'} ${nextGame.opponentName}${
                       career.seasonStage && career.seasonStage !== 'regular'
-                        ? ` (${career.seasonStage})`
+                        ? ` · ${STAGE_LABEL[career.seasonStage] ?? career.seasonStage}`
                         : ''
                     }`
                   : career.seasonStage && career.seasonStage !== 'regular'
-                    ? ` · ${career.seasonStage}${career.bracket?.championName ? ` · ${career.bracket.championName}` : ''}`
+                    ? ` · ${STAGE_LABEL[career.seasonStage] ?? career.seasonStage}${career.bracket?.championName ? ` · Champs: ${career.bracket.championName}` : ''}`
                     : ' · Season break'}
             {isSim ? ' · Simulating…' : ''}
           </span>
@@ -407,7 +425,7 @@ function HomeView({
   }, [homeConference, career.season]);
 
   const conferenceOptions = isPro ? listProConferences() : listCollegeConferences();
-  const selfId = career.collegeId ?? career.proTeamId ?? '';
+  const selfId = career.proTeamId ?? career.collegeId ?? '';
   const gamesPlayed = career.wins + career.losses;
 
   const standingsBase = useMemo(() => {
@@ -436,7 +454,7 @@ function HomeView({
 
   const leader = standingsForView[0];
   const events = career.seasonEvents ?? [];
-  const recent = logs.filter((l) => l.opponent !== 'Season Complete').slice(0, 10);
+  const recent = logs.filter((l) => l.opponent !== 'Season Complete').slice(0, 7);
   const recentPpg = (() => {
     const played = logs.filter((l) => l.minutes > 0).slice(0, 8);
     if (!played.length) return 0;
@@ -463,8 +481,15 @@ function HomeView({
     }
   }
 
+  const standingsRows = (() => {
+    const top = standingsForView.slice(0, 8);
+    const selfIdx = standingsForView.findIndex((r) => r.teamId === selfId);
+    if (selfIdx >= 8) top.push(standingsForView[selfIdx]);
+    return top;
+  })();
+
   return (
-    <>
+    <div className="stack home-view">
       <div className="stat-strip">
         <div className="stat">
           <b>
@@ -485,9 +510,6 @@ function HomeView({
         <div className="stat"><b>{Math.round(career.seasonXp ?? 0)}</b><span>Season XP</span></div>
         <div className="stat"><b>{Math.round(career.draftStock)}</b><span>Draft stock</span></div>
       </div>
-      <p className="muted" style={{ margin: 0, fontSize: 12 }}>
-        Ratings stay flat in-season. Season XP for you, teammates, and the league converts in the offseason.
-      </p>
 
       {breakout ? (
         <p className="tag good" style={{ margin: 0 }}>
@@ -495,16 +517,71 @@ function HomeView({
         </p>
       ) : null}
 
-      <div className="workspace-h cols-2">
-        <section className="panel panel-pad">
+      <div className="home-grid-main">
+        <section className="panel panel-pad-sm">
+          <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+            <h2 className="card-title" style={{ margin: 0 }}>Standings</h2>
+            <select
+              className="mini-select"
+              aria-label="Conference"
+              value={viewConference}
+              onChange={(e) => onConferenceChange(e.target.value)}
+            >
+              {conferenceOptions.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          <table className="data dense">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>W</th>
+                <th>L</th>
+                <th>GB</th>
+              </tr>
+            </thead>
+            <tbody>
+              {standingsRows.map((row) => {
+                const i = standingsForView.indexOf(row);
+                const gb =
+                  !leader || row.teamId === leader.teamId
+                    ? '—'
+                    : (
+                        ((leader.wins - row.wins) + (row.losses - leader.losses)) /
+                        2
+                      ).toFixed(1);
+                return (
+                  <tr
+                    key={row.teamId}
+                    className={row.teamId === selfId ? 'standings-self' : undefined}
+                  >
+                    <td>{i + 1}</td>
+                    <td>
+                      <TeamLink saveId={career.id} teamId={row.teamId}>
+                        {row.teamName}
+                      </TeamLink>
+                    </td>
+                    <td>{row.wins}</td>
+                    <td>{row.losses}</td>
+                    <td>{gb}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+
+        <section className="panel panel-pad-sm">
           <h2 className="card-title">Season events</h2>
           {events.length === 0 ? (
-            <p className="muted" style={{ margin: 0 }}>
-              League notes and big nights will show up here as you sim.
+            <p className="muted" style={{ margin: 0, fontSize: 12 }}>
+              League notes and big nights show up here as you sim.
             </p>
           ) : (
-            <ul className="events-log">
-              {events.slice(0, 24).map((e) => (
+            <ul className="events-log dense">
+              {events.slice(0, 6).map((e) => (
                 <li key={e.id}>
                   <span className="tag">{e.kind.replace('_', ' ')}</span>
                   <strong>{e.headline}</strong>
@@ -515,65 +592,46 @@ function HomeView({
             </ul>
           )}
         </section>
-        <section className="panel panel-pad">
-          <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
-            <h2 className="card-title" style={{ margin: 0 }}>Standings</h2>
-            <label className="field" style={{ margin: 0, minWidth: 140 }}>
-              Conference
-              <select value={viewConference} onChange={(e) => onConferenceChange(e.target.value)}>
-                {conferenceOptions.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="table-wrap standings-scroll">
-            <table className="data">
+
+        <section className="panel panel-pad-sm">
+          <h2 className="card-title">Recent games</h2>
+          {recent.length === 0 ? (
+            <p className="muted" style={{ margin: 0, fontSize: 12 }}>
+              No games yet — use the sim bar to tip off.
+            </p>
+          ) : (
+            <table className="data dense">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Team</th>
-                  <th>W</th>
-                  <th>L</th>
-                  <th>GB</th>
+                  <th>G</th>
+                  <th>Opp</th>
+                  <th>Res</th>
+                  <th>PTS</th>
+                  <th>REB</th>
+                  <th>AST</th>
                 </tr>
               </thead>
               <tbody>
-                {standingsForView.map((row, i) => {
-                  const gb =
-                    !leader || row.teamId === leader.teamId
-                      ? '—'
-                      : (
-                          ((leader.wins - row.wins) + (row.losses - leader.losses)) /
-                          2
-                        ).toFixed(1);
-                  return (
-                    <tr
-                      key={row.teamId}
-                      className={row.teamId === selfId ? 'standings-self' : undefined}
-                    >
-                      <td>{i + 1}</td>
-                      <td>
-                        <TeamLink saveId={career.id} teamId={row.teamId}>
-                          {row.teamName}
-                        </TeamLink>
-                      </td>
-                      <td>{row.wins}</td>
-                      <td>{row.losses}</td>
-                      <td>{gb}</td>
-                    </tr>
-                  );
-                })}
+                {recent.map((l) => (
+                  <tr key={l.id}>
+                    <td>{l.gameNumber}</td>
+                    <td>{l.opponent}</td>
+                    <td>{l.result} {l.teamScore}-{l.opponentScore}</td>
+                    <td>{l.points}</td>
+                    <td>{l.rebounds}</td>
+                    <td>{l.assists}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
-          </div>
+          )}
         </section>
       </div>
 
-      <div className="workspace-h home-3">
-        <section className="panel panel-pad">
-          <h2 className="card-title">Home</h2>
-          <p style={{ margin: '0 0 8px' }}>
+      <div className="home-grid-sub">
+        <section className="panel panel-pad-sm">
+          <h2 className="card-title">Profile</h2>
+          <p style={{ margin: '0 0 6px', fontSize: 13 }}>
             <strong>
               <PlayerLink saveId={career.id} playerId="user">
                 {career.player.name}
@@ -603,11 +661,11 @@ function HomeView({
             ) : null}
           </div>
           <div className="meta-row">
-            <span>Coach {career.coachTrust}</span>
+            <span>Coach trust {career.coachTrust}</span>
             <span>Morale {career.morale.overall}</span>
-            <span>Training {career.trainingFocus}</span>
+            <span style={{ textTransform: 'capitalize' }}>Training: {career.trainingFocus}</span>
           </div>
-          <p className="muted" style={{ margin: '0 0 8px', fontSize: 13 }}>
+          <p className="muted" style={{ margin: '0 0 6px', fontSize: 12 }}>
             Next:{' '}
             {nextGame ? (
               <>
@@ -622,7 +680,7 @@ function HomeView({
             )}
           </p>
           {career.collegeRoster.length > 0 ? (
-            <p style={{ fontSize: 13, margin: '0 0 6px' }}>
+            <p style={{ fontSize: 12, margin: '0 0 4px' }}>
               Teammates:{' '}
               {career.collegeRoster.slice(0, 4).map((m, i) => (
                 <span key={m.id}>
@@ -636,28 +694,29 @@ function HomeView({
             </p>
           ) : null}
           {career.player.traitIds.length > 0 ? (
-            <p style={{ fontSize: 13, margin: '0 0 6px' }}>
+            <p style={{ fontSize: 12, margin: '0 0 4px' }}>
               Traits: {career.player.traitIds.map((id) => getTrait(id)?.name ?? id).join(', ')}
             </p>
           ) : null}
           {career.contract ? (
-            <p className="muted" style={{ margin: '0 0 4px', fontSize: 13 }}>
+            <p className="muted" style={{ margin: '0 0 4px', fontSize: 12 }}>
               Contract ${career.contract.amount}k through {career.contract.exp} ({career.contract.type})
             </p>
           ) : null}
           {career.draft ? (
-            <p className="muted" style={{ margin: '0 0 4px', fontSize: 13 }}>
+            <p className="muted" style={{ margin: '0 0 4px', fontSize: 12 }}>
               Draft: {career.draft.undrafted ? 'Undrafted' : `R${career.draft.round} P${career.draft.pick}`} ({career.draft.year})
             </p>
           ) : null}
           {career.customized ? <span className="tag warn">Save customized via God Mode</span> : null}
         </section>
-        <section className="panel panel-pad pane-scroll">
+
+        <section className="panel panel-pad-sm">
           <h2 className="card-title">Attributes</h2>
-          <div className="attr-sheet">
+          <div className="attr-sheet dense">
             {ATTR_GROUPS.map((group) => (
               <div key={group.id}>
-                <h3 style={{ fontSize: 11, margin: '0 0 4px', color: 'var(--muted)' }}>{group.label}</h3>
+                <h3 style={{ fontSize: 10, margin: '0 0 3px', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{group.label}</h3>
                 {group.keys.map((key) => {
                   const base = career.player.ratings[key];
                   const effective = eff[key];
@@ -678,43 +737,8 @@ function HomeView({
             ))}
           </div>
         </section>
-        <section className="panel panel-pad">
-          <h2 className="card-title">Recent games</h2>
-          {recent.length === 0 ? (
-            <p className="muted">No games yet. Use the sim bar to advance.</p>
-          ) : (
-            <div className="table-wrap recent-games-scroll">
-              <table className="data">
-                <thead>
-                  <tr>
-                    <th>G</th>
-                    <th>Opp</th>
-                    <th>Res</th>
-                    <th>PTS</th>
-                    <th>REB</th>
-                    <th>AST</th>
-                    <th>MIN</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recent.map((l) => (
-                    <tr key={l.id}>
-                      <td>{l.gameNumber}</td>
-                      <td>{l.opponent}</td>
-                      <td>{l.result} {l.teamScore}-{l.opponentScore}</td>
-                      <td>{l.points}</td>
-                      <td>{l.rebounds}</td>
-                      <td>{l.assists}</td>
-                      <td>{l.minutes}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -749,6 +773,7 @@ function TrainingView({
           <button
             key={f}
             className={`btn ${career.trainingFocus === f ? 'primary' : ''}`}
+            style={{ textTransform: 'capitalize' }}
             onClick={() => onChange({ ...career, trainingFocus: f, updatedAt: new Date().toISOString() })}
           >
             {f}
@@ -874,8 +899,8 @@ function HistoryView({ career, logs }: { career: CareerSave; logs: GameLog[] }) 
           </label>
         </div>
         <p className="muted" style={{ fontSize: 12 }}>
-          League-wide boxes: open Schedule. Retention: {career.settings.boxScoreRetentionYears ?? 3}{' '}
-          years.
+          Full league box scores live on the Schedule page. Box scores are kept for{' '}
+          {career.settings.boxScoreRetentionYears ?? 3} seasons.
         </p>
         <div className="table-wrap">
           <table className="data">
@@ -924,7 +949,7 @@ function LeaderboardsView({ career, logs }: { career: CareerSave; logs: GameLog[
         <p>Wins: {career.wins} · Seasons reviewed: {career.seasonReviews.length}</p>
       </section>
       <section className="panel panel-pad">
-        <h2 className="card-title">NBA overall leaders (league pack)</h2>
+        <h2 className="card-title">NBA Overall Leaders</h2>
         <table className="data">
           <thead><tr><th>#</th><th>Player</th><th>Pos</th><th>OVR</th><th>Team</th></tr></thead>
           <tbody>
@@ -968,6 +993,22 @@ function ReviewView({
   const needsAck = career.phase === 'seasonReview' && latest && !latest.acknowledged;
   const history = career.seasonReviews.slice().reverse();
 
+  const isPro = latest?.phase === 'professional';
+  // League panels only make sense while this review's season is still the
+  // save's current season — after that, standings/rosters have moved on.
+  const fresh =
+    latest != null &&
+    career.season === latest.season &&
+    (career.phase === 'seasonReview' || career.seasonStage === 'complete');
+  const honors = useMemo(() => {
+    if (!fresh) return null;
+    return isPro
+      ? { kind: 'pro' as const, pro: computeProSeasonHonors(career) }
+      : { kind: 'college' as const, college: computeCollegeSeasonHonors(career) };
+  }, [career, fresh, isPro]);
+  const champion =
+    fresh && career.bracket?.status === 'complete' ? career.bracket : null;
+
   if (!latest) {
     return (
       <section className="panel panel-pad">
@@ -977,79 +1018,258 @@ function ReviewView({
     );
   }
 
+  const myDev = (career.developmentLog ?? []).filter((line) =>
+    line.includes(career.player.name),
+  );
+
   return (
-    <div className="stack">
-      <div className="workspace-h cols-2">
-        <section className={`panel panel-pad pane-scroll${needsAck ? ' is-callout' : ''}`}>
-          <h2 className="card-title">Season {latest.season}</h2>
-          <h3 style={{ margin: '0 0 6px', fontSize: 16 }}>
+    <div className="stack review-page">
+      <header className={`review-hero ${isPro ? 'is-pro' : 'is-college'}`}>
+        <div>
+          <p className="review-kicker">
+            {isPro ? 'The Association' : 'College Hoops'} · Season {latest.season}
+          </p>
+          <h1>Season in Review</h1>
+          <p className="review-sub">
             {latest.teamName} · {latest.record}
-          </h3>
-          <p style={{ fontSize: 18, fontWeight: 650, margin: '8px 0' }}>
-            Overall: {latest.ovr} ({formatDelta(latest.ovrDelta) || '0'}) · Potential: {latest.pot}{' '}
+            {champion?.championName
+              ? ` · ${isPro ? 'NBA Champions' : 'National Champions'}: ${champion.championName}`
+              : ''}
+          </p>
+        </div>
+        {needsAck ? (
+          <button className="btn primary" onClick={onContinue}>
+            Continue to offseason →
+          </button>
+        ) : null}
+      </header>
+
+      <div className={`review-grid${honors ? '' : ' solo'}`}>
+        <section className={`panel panel-pad${needsAck ? ' is-callout' : ''}`}>
+          <h2 className="card-title">Your season</h2>
+          <div className="stat-strip review-stats">
+            <div className="stat"><b>{latest.ppg.toFixed(1)}</b><span>PPG</span></div>
+            <div className="stat"><b>{latest.rpg.toFixed(1)}</b><span>RPG</span></div>
+            <div className="stat"><b>{latest.apg.toFixed(1)}</b><span>APG</span></div>
+            <div className="stat"><b>{latest.gp}</b><span>GP</span></div>
+          </div>
+          <p style={{ fontSize: 15, fontWeight: 650, margin: '10px 0 6px' }}>
+            {latest.ovr} OVR ({formatDelta(latest.ovrDelta) || '0'}) · {latest.pot} POT{' '}
             ({formatDelta(latest.potDelta) || '0'})
           </p>
-          <p>
-            {latest.ppg.toFixed(1)} PPG · {latest.rpg.toFixed(1)} RPG · {latest.apg.toFixed(1)} APG ·{' '}
-            {latest.gp} GP
-          </p>
-          <p>{latest.narrative}</p>
-          <p className="muted">{latest.statsLine}</p>
-          <p className="muted">Role: {latest.roleChange}</p>
-          {latest.awards.length ? <p>Awards: {latest.awards.join(', ')}</p> : null}
-          {(() => {
-            const myDev = (career.developmentLog ?? []).filter((line) =>
-              line.includes(career.player.name),
-            );
-            if (!myDev.length) return null;
-            return (
-              <div style={{ marginTop: 12 }}>
-                <h3 className="card-title">Offseason development</h3>
-                <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
-                  {myDev.slice(0, 8).map((line, i) => (
-                    <li key={`${line}-${i}`}>{line}</li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })()}
-        </section>
-        <section className="panel panel-pad pane-scroll">
-          <h2 className="card-title">Season history</h2>
-          <div className="table-wrap">
-            <table className="data">
-              <thead>
-                <tr>
-                  <th>Season</th>
-                  <th>Team</th>
-                  <th>Record</th>
-                  <th>OVR</th>
-                  <th>Δ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.map((r) => (
-                  <tr key={`${r.season}-${r.phase}`}>
-                    <td>{r.season}</td>
-                    <td>{r.teamName}</td>
-                    <td>{r.record}</td>
-                    <td>{r.ovr}</td>
-                    <td>{formatDelta(r.ovrDelta) || '0'}</td>
-                  </tr>
+          <p style={{ margin: '0 0 6px', fontSize: 13 }}>{latest.narrative}</p>
+          <p className="muted" style={{ margin: '0 0 4px', fontSize: 12 }}>Role: {latest.roleChange}</p>
+          {latest.awards.length ? (
+            <p style={{ margin: '6px 0 0' }}>
+              {latest.awards.map((a) => (
+                <span key={a} className="tag good" style={{ marginRight: 6 }}>{a}</span>
+              ))}
+            </p>
+          ) : null}
+          {myDev.length ? (
+            <div style={{ marginTop: 12 }}>
+              <h3 className="card-title">Offseason development</h3>
+              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12 }}>
+                {myDev.slice(0, 6).map((line, i) => (
+                  <li key={`${line}-${i}`}>{line}</li>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </ul>
+            </div>
+          ) : null}
         </section>
+
+        {honors?.kind === 'pro' && honors.pro ? (
+          <>
+            <section className="panel panel-pad">
+              <h2 className="card-title">League honors</h2>
+              <HonorBoard
+                saveId={career.id}
+                title="Most Valuable Player"
+                entries={honors.pro.mvp ? [honors.pro.mvp] : []}
+              />
+              <HonorBoard
+                saveId={career.id}
+                title="Defensive Player of the Year"
+                entries={honors.pro.dpoy ? [honors.pro.dpoy] : []}
+              />
+              {honors.pro.allLeague.map((team, i) => (
+                <HonorBoard
+                  key={i}
+                  saveId={career.id}
+                  title={`All-League ${['First', 'Second', 'Third'][i]} Team`}
+                  entries={team}
+                />
+              ))}
+            </section>
+            <section className="panel panel-pad">
+              <h2 className="card-title">The playoffs</h2>
+              {champion?.championId ? (
+                <ChampionCard
+                  saveId={career.id}
+                  teamId={champion.championId}
+                  name={champion.championName ?? ''}
+                  label="NBA Champions"
+                />
+              ) : (
+                <p className="muted" style={{ fontSize: 12 }}>No champion crowned.</p>
+              )}
+              {honors.pro.finals ? (
+                <p style={{ fontSize: 13, margin: '8px 0 10px' }}>{honors.pro.finals}</p>
+              ) : null}
+              <h3 className="card-title" style={{ marginTop: 10 }}>Best records</h3>
+              {honors.pro.bestEast ? (
+                <p style={{ fontSize: 13, margin: '0 0 4px' }}>
+                  East:{' '}
+                  <TeamLink saveId={career.id} teamId={honors.pro.bestEast.teamId}>
+                    {honors.pro.bestEast.teamName}
+                  </TeamLink>{' '}
+                  ({honors.pro.bestEast.record})
+                </p>
+              ) : null}
+              {honors.pro.bestWest ? (
+                <p style={{ fontSize: 13, margin: 0 }}>
+                  West:{' '}
+                  <TeamLink saveId={career.id} teamId={honors.pro.bestWest.teamId}>
+                    {honors.pro.bestWest.teamName}
+                  </TeamLink>{' '}
+                  ({honors.pro.bestWest.record})
+                </p>
+              ) : null}
+            </section>
+          </>
+        ) : null}
+
+        {honors?.kind === 'college' && honors.college ? (
+          <>
+            <section className="panel panel-pad">
+              <h2 className="card-title">National honors</h2>
+              <HonorBoard
+                saveId={career.id}
+                title="National Player of the Year"
+                entries={honors.college.playerOfYear ? [honors.college.playerOfYear] : []}
+              />
+              {honors.college.allAmerica.map((team, i) => (
+                <HonorBoard
+                  key={i}
+                  saveId={career.id}
+                  title={`All-America ${['First', 'Second'][i]} Team`}
+                  entries={team}
+                />
+              ))}
+            </section>
+            <section className="panel panel-pad">
+              <h2 className="card-title">The tournament</h2>
+              {champion?.championId ? (
+                <ChampionCard
+                  saveId={career.id}
+                  teamId={champion.championId}
+                  name={champion.championName ?? ''}
+                  label="National Champions"
+                />
+              ) : (
+                <p className="muted" style={{ fontSize: 12 }}>No champion crowned.</p>
+              )}
+              {honors.college.userRun ? (
+                <p style={{ fontSize: 13, margin: '10px 0 0' }}>
+                  <strong>{latest.teamName}:</strong> {honors.college.userRun}
+                </p>
+              ) : null}
+              <p className="muted" style={{ fontSize: 12, margin: '10px 0 0' }}>
+                Draft stock: {Math.round(career.draftStock)} — declare from the
+                Decisions page after the review.
+              </p>
+            </section>
+          </>
+        ) : null}
       </div>
-      {needsAck ? (
-        <div className="flow-actions" style={{ borderTop: 'none', paddingTop: 0, marginTop: 0 }}>
-          <button className="btn primary" onClick={onContinue}>
-            Continue
-          </button>
+
+      <section className="panel panel-pad">
+        <h2 className="card-title">Season history</h2>
+        <div className="table-wrap">
+          <table className="data dense">
+            <thead>
+              <tr>
+                <th>Season</th>
+                <th>Team</th>
+                <th>Record</th>
+                <th>OVR</th>
+                <th>Δ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {history.map((r) => (
+                <tr key={`${r.season}-${r.phase}`}>
+                  <td>{r.season}</td>
+                  <td>{r.teamName}</td>
+                  <td>{r.record}</td>
+                  <td>{r.ovr}</td>
+                  <td>{formatDelta(r.ovrDelta) || '0'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ) : null}
+      </section>
     </div>
+  );
+}
+
+function HonorBoard({
+  saveId,
+  title,
+  entries,
+}: {
+  saveId: string;
+  title: string;
+  entries: HonorEntry[];
+}) {
+  if (!entries.length) return null;
+  return (
+    <div className="honor-board">
+      <p className="honor-title">{title}</p>
+      <ul className="honor-list">
+        {entries.map((e) => (
+          <li key={`${e.name}-${e.teamId ?? 'fa'}`} className={e.isUser ? 'is-user' : undefined}>
+            {e.playerId ? (
+              <PlayerLink saveId={saveId} playerId={e.playerId}>
+                {e.name}
+              </PlayerLink>
+            ) : (
+              e.name
+            )}
+            {e.isUser ? ' ★' : ''}
+            {e.teamId ? (
+              <>
+                {' '}
+                (<TeamLink saveId={saveId} teamId={e.teamId} abbrev />)
+              </>
+            ) : null}
+            {e.detail ? <span className="muted"> · {e.detail}</span> : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ChampionCard({
+  saveId,
+  teamId,
+  name,
+  label,
+}: {
+  saveId: string;
+  teamId: string;
+  name: string;
+  label: string;
+}) {
+  return (
+    <TeamLink saveId={saveId} teamId={teamId} className="champion-card-link">
+      <span className="champion-card">
+        <span className="champion-card-label">{label}</span>
+        <span className="champion-card-name">{name}</span>
+      </span>
+    </TeamLink>
   );
 }
 

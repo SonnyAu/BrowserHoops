@@ -4,6 +4,14 @@ import { loadLeagueGame, loadLeagueGamesForDay, loadLeagueGamesForSeason } from 
 import { BoxScoreView } from './BoxScoreView';
 import { TeamLink } from './EntityLinks';
 
+const STAGE_SHORT: Record<string, string> = {
+  regular: 'RS',
+  playIn: 'Play-In',
+  playoffs: 'Playoffs',
+  tournament: 'NCAA',
+  complete: '—',
+};
+
 export function ScheduleView({ career }: { career: CareerSave }) {
   const [day, setDay] = useState(() => {
     const next = career.schedule.find((g) => !g.completed);
@@ -49,7 +57,10 @@ export function ScheduleView({ career }: { career: CareerSave }) {
         <section className="panel panel-pad">
           <h2 className="card-title">Your schedule</h2>
           <p className="muted" style={{ fontSize: 13, marginTop: 4 }}>
-            Season {career.season} · Stage: {career.seasonStage ?? 'regular'}
+            Season {career.season} ·{' '}
+            {career.seasonStage === 'regular' || !career.seasonStage
+              ? 'Regular season'
+              : STAGE_SHORT[career.seasonStage] ?? career.seasonStage}
           </p>
           <div className="table-wrap" style={{ marginTop: 10 }}>
             <table className="data">
@@ -83,7 +94,7 @@ export function ScheduleView({ career }: { career: CareerSave }) {
                         ? `${g.result} ${g.teamScore}-${g.opponentScore}`
                         : '—'}
                     </td>
-                    <td>{g.round ?? g.stage ?? 'RS'}</td>
+                    <td>{g.round ?? STAGE_SHORT[g.stage ?? 'regular'] ?? 'RS'}</td>
                     <td>
                       {g.leagueGameId ? (
                         <button

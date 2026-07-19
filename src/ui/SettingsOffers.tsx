@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCollege } from '../data/colleges';
 import { createCareer } from '../domain/createCareer';
-import { LOCKED_AFTER_CREATE, MUTABLE_AFTER_CREATE } from '../domain/models';
 import { saveCareer } from '../persistence/db';
 import { generateOffers, generateRecruitingProfile } from '../simulation/recruiting';
 import { useNewCareer } from './NewCareerContext';
@@ -170,7 +169,9 @@ export function SettingsOffers() {
                   </select>
                 </label>
                 <p className="muted" style={{ fontSize: 12, margin: 0 }}>
-                  Locked after creation: {LOCKED_AFTER_CREATE.join(', ')}. Mutable later: {MUTABLE_AFTER_CREATE.join(', ')}.
+                  Season lengths, league rules, and the world seed lock in when you
+                  commit. Autosave, interrupts, and news frequency stay editable
+                  mid-career.
                 </p>
               </div>
             ) : null}

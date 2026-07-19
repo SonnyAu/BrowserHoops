@@ -1,7 +1,11 @@
 import { useMemo, useState } from 'react';
-import { BracketMatchup, BracketState, MadnessRegion } from '../domain/models';
-import { REGIONS } from '../simulation/marchMadness';
+import { BracketMatchup, BracketSlot, BracketState, MadnessRegion } from '../domain/models';
 import { TeamLink } from './EntityLinks';
+
+const TREE_ROUNDS = ['Round of 64', 'Round of 32', 'Sweet 16', 'Elite Eight'] as const;
+
+/** Which part of the always-visible tree is zoomed in. 'all' = even columns. */
+type Focus = 'all' | 'First Four' | (typeof TREE_ROUNDS)[number] | 'Final Four';
 
 export function MadnessBracket({
   saveId,
@@ -12,33 +16,52 @@ export function MadnessBracket({
   bracket: BracketState;
   userTeamId?: string | null;
 }) {
-  const [region, setRegion] = useState<MadnessRegion | 'FinalFour'>('East');
-  const [roundTab, setRoundTab] = useState<string>('Round of 64');
-
-  const roundsInRegion = useMemo(() => {
-    if (region === 'FinalFour') {
-      return (bracket.rounds ?? []).filter(
-        (m) => m.round === 'Final Four' || m.round === 'Championship',
-      );
-    }
-    return (bracket.rounds ?? []).filter((m) => m.region === region);
-  }, [bracket.rounds, region]);
-
-  const roundNames = useMemo(() => {
-    const names = [...new Set(roundsInRegion.map((m) => m.round))];
-    return names;
-  }, [roundsInRegion]);
-
-  const shown = roundsInRegion.filter((m) => m.round === roundTab);
+  const [focus, setFocus] = useState<Focus>('all');
+  const rounds = bracket.rounds ?? [];
   const firstFour = bracket.firstFour ?? [];
+
+  const byRegionRound = useMemo(() => {
+    const map = new Map<string, BracketMatchup[]>();
+    for (const m of rounds) {
+      const key = `${m.region}|${m.round}`;
+      const list = map.get(key) ?? [];
+      list.push(m);
+      map.set(key, list);
+    }
+    return map;
+  }, [rounds]);
+
+  const regionGames = (region: MadnessRegion, round: string): BracketMatchup[] =>
+    byRegionRound.get(`${region}|${round}`) ?? [];
+
+  const finalFour = rounds.filter((m) => m.round === 'Final Four');
+  const champGame = rounds.find((m) => m.round === 'Championship');
+
   const live =
-    [...firstFour, ...(bracket.rounds ?? [])].find(
+    [...firstFour, ...rounds].find(
       (m) =>
         !m.completed &&
         m.slotA.teamId &&
         m.slotB.teamId &&
         !String(m.slotA.teamId).startsWith('ff-winner'),
     ) ?? null;
+
+  const tabs: { id: Focus; label: string }[] = [
+    { id: 'all', label: 'Full bracket' },
+    ...(firstFour.length ? [{ id: 'First Four' as Focus, label: 'First Four' }] : []),
+    { id: 'Round of 64', label: 'Round of 64' },
+    { id: 'Round of 32', label: 'Round of 32' },
+    { id: 'Sweet 16', label: 'Sweet 16' },
+    { id: 'Elite Eight', label: 'Elite Eight' },
+    { id: 'Final Four', label: 'Final Four' },
+  ];
+
+  const colClass = (round: string) =>
+    focus === 'all' ? '' : focus === round ? ' focus' : ' dim';
+  const centerSlotClass =
+    focus === 'all' ? '' : focus === 'Final Four' ? ' focus' : ' dim';
+  const firstFourClass =
+    focus === 'all' ? '' : focus === 'First Four' ? ' focus' : ' dim';
 
   return (
     <div className="madness-stage">
@@ -50,11 +73,9 @@ export function MadnessBracket({
           </p>
           <h1>March Madness</h1>
           {bracket.championName ? (
-            <p className="madness-champ">Champion: {bracket.championName}</p>
+            <p className="madness-champ">Champions: {bracket.championName}</p>
           ) : (
-            <p className="muted">
-              68 teams · First Four · Road to the Final Four
-            </p>
+            <p className="muted">68 teams · One Shining Moment on the line</p>
           )}
         </div>
       </header>
@@ -65,127 +86,202 @@ export function MadnessBracket({
           <h2>
             ({live.slotA.seed}) {live.slotA.teamName} vs ({live.slotB.seed}) {live.slotB.teamName}
           </h2>
-          <p>{live.round}</p>
+          <p style={{ margin: 0, fontSize: 12 }}>{live.round}</p>
         </div>
       ) : null}
 
-      {firstFour.length > 0 ? (
-        <section className="madness-first-four">
-          <h3>First Four</h3>
-          <div className="madness-matchup-grid">
-            {firstFour.map((m) => (
-              <MatchupCard key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
+      <div className="madness-tabs">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className={`btn ${focus === t.id ? 'primary' : ''}`}
+            onClick={() => setFocus(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mtree bracket-zoom">
+        <div className="mtree-side">
+          <RegionTree
+            saveId={saveId}
+            region="East"
+            games={regionGames}
+            userTeamId={userTeamId}
+            colClass={colClass}
+          />
+          <RegionTree
+            saveId={saveId}
+            region="South"
+            games={regionGames}
+            userTeamId={userTeamId}
+            colClass={colClass}
+          />
+        </div>
+
+        <div className={`mtree-center${focus === 'Final Four' ? ' grow' : ''}`}>
+          <div className={`mtree-center-slot${centerSlotClass}`}>
+            <p className="mtree-round-label">Final Four</p>
+            {finalFour[0] ? (
+              <TreeBox saveId={saveId} m={finalFour[0]} userTeamId={userTeamId} featured />
+            ) : null}
+          </div>
+          <div className={`mtree-center-slot mtree-championship${centerSlotClass}`}>
+            <p className="mtree-round-label">Championship</p>
+            {champGame ? (
+              <TreeBox saveId={saveId} m={champGame} userTeamId={userTeamId} featured />
+            ) : null}
+            {bracket.status === 'complete' && bracket.championName ? (
+              <div className="mtree-champ-banner">
+                <span>{bracket.championName}</span>
+                <span className="mtree-champ-sub">National Champs · S{bracket.season}</span>
+              </div>
+            ) : null}
+          </div>
+          <div className={`mtree-center-slot${centerSlotClass}`}>
+            <p className="mtree-round-label">Final Four</p>
+            {finalFour[1] ? (
+              <TreeBox saveId={saveId} m={finalFour[1]} userTeamId={userTeamId} featured />
+            ) : null}
+          </div>
+          {firstFour.length ? (
+            <div className={`mtree-firstfour${firstFourClass}`}>
+              <p className="mtree-round-label">First Four</p>
+              {firstFour.map((m) => (
+                <TreeBox key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="mtree-side">
+          <RegionTree
+            saveId={saveId}
+            region="West"
+            games={regionGames}
+            userTeamId={userTeamId}
+            colClass={colClass}
+            mirror
+          />
+          <RegionTree
+            saveId={saveId}
+            region="Midwest"
+            games={regionGames}
+            userTeamId={userTeamId}
+            colClass={colClass}
+            mirror
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RegionTree({
+  saveId,
+  region,
+  games,
+  userTeamId,
+  colClass,
+  mirror,
+}: {
+  saveId: string;
+  region: MadnessRegion;
+  games: (region: MadnessRegion, round: string) => BracketMatchup[];
+  userTeamId?: string | null;
+  colClass: (round: string) => string;
+  mirror?: boolean;
+}) {
+  return (
+    <div className={`mtree-region${mirror ? ' mirror' : ''}`}>
+      <p className="mtree-region-label">{region}</p>
+      <div className="mtree-region-cols">
+        {TREE_ROUNDS.map((round) => (
+          <div className={`mtree-col${colClass(round)}`} key={round}>
+            {games(region, round).map((m) => (
+              <TreeBox key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
             ))}
           </div>
-        </section>
-      ) : null}
-
-      <div className="madness-tabs">
-        {[...REGIONS, 'FinalFour' as const].map((r) => (
-          <button
-            key={r}
-            type="button"
-            className={`btn ${region === r ? 'primary' : ''}`}
-            onClick={() => {
-              setRegion(r);
-              setRoundTab(r === 'FinalFour' ? 'Final Four' : 'Round of 64');
-            }}
-          >
-            {r === 'FinalFour' ? 'Final Four' : r}
-          </button>
-        ))}
-      </div>
-
-      <div className="madness-tabs round-tabs">
-        {roundNames.map((r) => (
-          <button
-            key={r}
-            type="button"
-            className={`btn ${roundTab === r ? 'primary' : ''}`}
-            onClick={() => setRoundTab(r)}
-          >
-            {r}
-          </button>
-        ))}
-      </div>
-
-      <div className="madness-matchup-grid pane-scroll">
-        {(shown.length ? shown : roundsInRegion).map((m) => (
-          <MatchupCard key={m.id} saveId={saveId} m={m} userTeamId={userTeamId} />
         ))}
       </div>
     </div>
   );
 }
 
-function MatchupCard({
+function TreeBox({
   saveId,
   m,
   userTeamId,
+  featured,
 }: {
   saveId: string;
   m: BracketMatchup;
   userTeamId?: string | null;
+  featured?: boolean;
 }) {
   const userIn =
     userTeamId && (m.slotA.teamId === userTeamId || m.slotB.teamId === userTeamId);
   return (
-    <article
-      className={`madness-matchup ${m.completed ? 'done' : ''} ${userIn ? 'is-user' : ''}`}
+    <div
+      className={[
+        'mtree-box',
+        m.completed ? 'done' : '',
+        userIn ? 'is-user' : '',
+        featured ? 'featured' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
-      <p className="madness-round-label">{m.round}</p>
-      <SlotRow
+      <TreeSlot
         saveId={saveId}
-        seed={m.slotA.seed}
-        teamId={m.slotA.teamId}
-        name={m.slotA.teamName}
+        slot={m.slotA}
+        winner={Boolean(m.completed && m.winnerId && m.winnerId === m.slotA.teamId)}
         score={m.completed ? m.homeScore : undefined}
-        winner={m.winnerId === m.slotA.teamId}
         user={m.slotA.teamId === userTeamId}
       />
-      <SlotRow
+      <TreeSlot
         saveId={saveId}
-        seed={m.slotB.seed}
-        teamId={m.slotB.teamId}
-        name={m.slotB.teamName}
+        slot={m.slotB}
+        winner={Boolean(m.completed && m.winnerId && m.winnerId === m.slotB.teamId)}
         score={m.completed ? m.awayScore : undefined}
-        winner={m.winnerId === m.slotB.teamId}
         user={m.slotB.teamId === userTeamId}
       />
-    </article>
+    </div>
   );
 }
 
-function SlotRow({
+function TreeSlot({
   saveId,
-  seed,
-  teamId,
-  name,
-  score,
+  slot,
   winner,
+  score,
   user,
 }: {
   saveId: string;
-  seed: number | null;
-  teamId: string | null;
-  name: string;
+  slot: BracketSlot;
+  winner: boolean;
   score?: number;
-  winner?: boolean;
   user?: boolean;
 }) {
+  const linkable =
+    slot.teamId &&
+    !slot.teamId.startsWith('ff-winner') &&
+    !slot.teamId.startsWith('tbd-');
   return (
-    <div className={`madness-slot ${winner ? 'winner' : ''} ${user ? 'user' : ''}`}>
-      <span className="seed">{seed ?? '—'}</span>
-      <span className="name">
-        {teamId && !teamId.startsWith('ff-winner') && !teamId.startsWith('tbd-') ? (
-          <TeamLink saveId={saveId} teamId={teamId}>
-            {name}
+    <div className={`mtree-slot${winner ? ' winner' : ''}${user ? ' user' : ''}`}>
+      <span className="mtree-seed">{slot.seed ?? ''}</span>
+      <span className="mtree-name">
+        {linkable ? (
+          <TeamLink saveId={saveId} teamId={slot.teamId!}>
+            {slot.teamName}
           </TeamLink>
         ) : (
-          name
+          slot.teamName
         )}
       </span>
-      <span className="score">{score != null ? score : ''}</span>
+      <span className="mtree-score">{score != null ? score : ''}</span>
     </div>
   );
 }

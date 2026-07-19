@@ -136,7 +136,7 @@ export function PlayerStatsTable({
           <tbody>
             {rows.map((r) => (
               <tr key={`${r.season}-${r.teamId}`}>
-                <td>{r.season}</td>
+                <td>{r.season}{r.live ? '*' : ''}</td>
                 <td>
                   <TeamLink saveId={saveId} teamId={r.teamId} abbrev />
                 </td>
@@ -202,6 +202,9 @@ export function PlayerStatsTable({
           </tbody>
         </table>
       </div>
+      {rows.some((r) => r.live) ? (
+        <p className="muted">* season in progress</p>
+      ) : null}
     </div>
   );
 }
