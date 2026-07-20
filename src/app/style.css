@@ -68,6 +68,11 @@
   --space-fluid-sm: clamp(0.5rem, 0.3rem + 0.6vh, 1rem);
   --space-fluid-md: clamp(0.75rem, 0.4rem + 1vh, 1.5rem);
   --space-fluid-lg: clamp(1rem, 0.5rem + 1.4vh, 2rem);
+
+  /* Container caps — content fills up to a generous width, then centers.
+     A small symmetric margin only appears on very large (>2000px) screens. */
+  --content-max: 1800px;   /* centered page content (dashboard, flow pages) */
+  --shell-max: 2040px;     /* career shell incl. the 216px sidebar */
 }
 
 * { box-sizing: border-box; }
@@ -118,7 +123,7 @@ h1, h2, h3 { text-wrap: balance; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  max-width: 1280px;
+  max-width: var(--content-max);
   width: 100%;
   margin: 0 auto;
   padding: var(--space-fluid-md) 20px var(--space-fluid-sm);
@@ -165,7 +170,9 @@ h1, h2, h3 { text-wrap: balance; }
   gap: 12px;
   flex: 1 1 auto;
   min-height: 0;
-  align-content: start;
+  /* Center the content row when it's shorter than the viewport; `safe`
+     falls back to top-alignment (scrollable) when it overflows. */
+  align-content: safe center;
   align-items: stretch;
 }
 .workspace-h > .stack,
@@ -456,7 +463,7 @@ tr.standings-self td {
 .dashboard {
   height: 100%;
   overflow: auto;
-  max-width: 1100px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--space-fluid-lg) 20px var(--space-fluid-lg);
 }
@@ -493,7 +500,7 @@ tr.standings-self td {
 
 .save-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 14px;
 }
 .save-card {
@@ -664,6 +671,8 @@ tr.standings-self td {
   grid-template-columns: 216px 1fr;
   height: 100dvh;
   max-height: 100dvh;
+  max-width: var(--shell-max);
+  margin-inline: auto;
   overflow: hidden;
 }
 .sidebar {
@@ -817,7 +826,9 @@ tr.standings-self td {
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
-  align-content: start;
+  /* Center the active sub-view vertically when short; `safe` falls back to
+     top-alignment (scrollable) when the content overflows the workspace. */
+  align-content: safe center;
 }
 .workspace > .workspace-h { height: auto; }
 
@@ -1372,7 +1383,7 @@ tr.standings-self td {
 .jersey-tile:hover .jersey-tile-face { transform: translateY(-2px); }
 .ratings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 8px;
 }
 .rating-cell { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
@@ -1474,7 +1485,7 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
   gap: 12px;
   align-items: start;
 }
-.review-grid.solo { grid-template-columns: minmax(280px, 680px); }
+.review-grid.solo { grid-template-columns: minmax(280px, 680px); justify-content: center; }
 .review-stats { grid-template-columns: repeat(4, 1fr); }
 .review-stats .stat { padding: 8px 10px; }
 .review-stats .stat b { font-size: 22px; }
