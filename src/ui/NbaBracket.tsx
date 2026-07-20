@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { getProTeam } from '../data/nbaTeams';
 import {
   BracketMatchup,
@@ -8,6 +9,9 @@ import {
 import { TeamLink } from './EntityLinks';
 
 type Conf = 'East' | 'West';
+
+/** Which round column is zoomed in. 'all' = every column shown (desktop default). */
+type Focus = 'all' | 'R1' | 'Semis' | 'CF' | 'Finals';
 
 export function NbaBracket({
   saveId,
@@ -20,8 +24,20 @@ export function NbaBracket({
   userTeamId?: string | null;
   standings?: StandingRow[];
 }) {
+  const [focus, setFocus] = useState<Focus>('all');
   const allSeries = bracket.series ?? [];
   const recordMap = new Map(standings.map((r) => [r.teamId, r]));
+
+  const colClass = (label: Focus) => (focus === 'all' ? '' : focus === label ? ' focus' : ' dim');
+  const finalsClass = focus === 'all' ? '' : focus === 'Finals' ? ' focus' : ' dim';
+
+  const tabs: { id: Focus; label: string }[] = [
+    { id: 'all', label: 'Full bracket' },
+    { id: 'R1', label: 'Round 1' },
+    { id: 'Semis', label: 'Conf Semis' },
+    { id: 'CF', label: 'Conf Finals' },
+    { id: 'Finals', label: 'Finals' },
+  ];
 
   const westR1 = byConfRound(allSeries, 'West', 'First Round');
   const westSemis = byConfRound(allSeries, 'West', 'Conf Semis');
@@ -70,6 +86,19 @@ export function NbaBracket({
         </div>
       ) : null}
 
+      <div className="nba-tabs">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className={`btn ${focus === t.id ? 'primary' : ''}`}
+            onClick={() => setFocus(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
       <section className="nba-main-stage" aria-label="Playoff main stage">
         <div className="nba-tree-side nba-tree-west">
           <p className="nba-conf-label">Western Conference</p>
@@ -80,6 +109,7 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('R1')}
             />
             <TreeCol
               label="Semis"
@@ -87,6 +117,7 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('Semis')}
             />
             <TreeCol
               label="CF"
@@ -94,11 +125,12 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('CF')}
             />
           </div>
         </div>
 
-        <div className="nba-tree-finals">
+        <div className={`nba-tree-finals${finalsClass}`}>
           <p className="nba-conf-label">Finals</p>
           {finals ? (
             <SeriesBox
@@ -129,6 +161,7 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('CF')}
             />
             <TreeCol
               label="Semis"
@@ -136,6 +169,7 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('Semis')}
             />
             <TreeCol
               label="R1"
@@ -143,6 +177,7 @@ export function NbaBracket({
               saveId={saveId}
               userTeamId={userTeamId}
               recordMap={recordMap}
+              focusClass={colClass('R1')}
             />
           </div>
         </div>
@@ -189,15 +224,17 @@ function TreeCol({
   saveId,
   userTeamId,
   recordMap,
+  focusClass = '',
 }: {
   label: string;
   series: NbaSeriesState[];
   saveId: string;
   userTeamId?: string | null;
   recordMap: Map<string, StandingRow>;
+  focusClass?: string;
 }) {
   return (
-    <div className="nba-tree-col">
+    <div className={`nba-tree-col${focusClass}`}>
       <span className="nba-tree-col-label">{label}</span>
       {series.length === 0 ? (
         <div className="nba-series-box nba-series-empty">

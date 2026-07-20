@@ -34,6 +34,40 @@
   --display: 'Barlow Condensed', 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 28px -14px rgba(0, 0, 0, 0.55);
+
+  /* Spacing scale (4px base — matches the 4/6/8/10/12/14/16/20/24/32/40px
+     values already reused throughout this file, so var() substitution is
+     lossless). New/edited rules should prefer these over literal px. */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.375rem;  /* 6px */
+  --space-3: 0.5rem;    /* 8px */
+  --space-4: 0.625rem;  /* 10px */
+  --space-5: 0.75rem;   /* 12px */
+  --space-6: 0.875rem;  /* 14px */
+  --space-7: 1rem;      /* 16px */
+  --space-8: 1.25rem;   /* 20px */
+  --space-9: 1.5rem;    /* 24px */
+  --space-10: 2rem;     /* 32px */
+  --space-11: 2.5rem;   /* 40px */
+
+  /* Fluid type scale — clamp(min, preferred, max), scales between a
+     320px and 1600px viewport. New/edited headings & labels should
+     prefer these over flat px font-sizes. */
+  --fs-2xs: clamp(0.6875rem, 0.66rem + 0.1vw, 0.75rem);   /* 11 -> 12px */
+  --fs-xs:  clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);  /* 12 -> 13px */
+  --fs-sm:  clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);  /* 13 -> 14px */
+  --fs-md:  clamp(0.875rem, 0.84rem + 0.2vw, 1rem);       /* 14 -> 16px */
+  --fs-lg:  clamp(1rem, 0.94rem + 0.3vw, 1.25rem);        /* 16 -> 20px */
+  --fs-xl:  clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);     /* 20 -> 26px */
+  --fs-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);        /* 24 -> 30px */
+  --fs-3xl: clamp(1.75rem, 1.4rem + 1.8vw, 2.25rem);      /* 28 -> 36px */
+  --fs-4xl: clamp(2rem, 1.5rem + 2.5vw, 3.25rem);         /* 32 -> 52px */
+
+  /* Fluid (vh-based) spacing — lets dense panels grow roomier on tall/
+     large monitors instead of leaving dead space around fixed padding. */
+  --space-fluid-sm: clamp(0.5rem, 0.3rem + 0.6vh, 1rem);
+  --space-fluid-md: clamp(0.75rem, 0.4rem + 1vh, 1.5rem);
+  --space-fluid-lg: clamp(1rem, 0.5rem + 1.4vh, 2rem);
 }
 
 * { box-sizing: border-box; }
@@ -87,7 +121,7 @@ h1, h2, h3 { text-wrap: balance; }
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 14px 20px 16px;
+  padding: var(--space-fluid-md) 20px var(--space-fluid-sm);
 }
 .flow-top {
   flex: 0 0 auto;
@@ -102,7 +136,7 @@ h1, h2, h3 { text-wrap: balance; }
   margin: 0;
   flex: 1 1 auto;
   font-family: var(--display);
-  font-size: 30px;
+  font-size: var(--fs-2xl);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.015em;
@@ -262,7 +296,7 @@ input[type='checkbox'] { accent-color: var(--accent); }
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
-.panel-pad { padding: 16px; }
+.panel-pad { padding: var(--space-fluid-md); }
 
 .card-title {
   margin: 0 0 10px;
@@ -424,7 +458,7 @@ tr.standings-self td {
   overflow: auto;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 20px 48px;
+  padding: var(--space-fluid-lg) 20px var(--space-fluid-lg);
 }
 .dashboard-header {
   display: flex;
@@ -437,7 +471,7 @@ tr.standings-self td {
 .dashboard-header h1 {
   margin: 0;
   font-family: var(--display);
-  font-size: 52px;
+  font-size: var(--fs-4xl);
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: 0.01em;
@@ -651,7 +685,7 @@ tr.standings-self td {
 .sidebar .player-chip strong {
   display: block;
   font-family: var(--display);
-  font-size: 21px;
+  font-size: var(--fs-xl);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0.01em;
@@ -713,6 +747,14 @@ tr.standings-self td {
   border-top: 1px solid var(--border-strong);
 }
 
+/* Drawer-only chrome — hidden by default, shown at the md breakpoint
+   (see Responsive section) where the sidebar becomes a slide-out drawer. */
+.nav-trigger,
+.sidebar-close,
+.sidebar-backdrop {
+  display: none;
+}
+
 .career-main {
   display: flex;
   flex-direction: column;
@@ -769,9 +811,9 @@ tr.standings-self td {
 }
 
 .workspace {
-  padding: 14px 16px;
+  padding: var(--space-fluid-md) 16px;
   display: grid;
-  gap: 12px;
+  gap: var(--space-fluid-sm);
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
@@ -788,13 +830,13 @@ tr.standings-self td {
   background: linear-gradient(175deg, var(--panel-2), var(--panel) 70%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 12px;
+  padding: var(--space-fluid-sm) var(--space-5);
   box-shadow: var(--shadow);
 }
 .stat-strip .stat b {
   display: block;
   font-family: var(--display);
-  font-size: 26px;
+  font-size: var(--fs-xl);
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -849,7 +891,7 @@ tr.standings-self td {
 .draft-stage h1 {
   margin: 0 0 4px;
   font-family: var(--display);
-  font-size: 36px;
+  font-size: var(--fs-3xl);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -982,7 +1024,7 @@ tr.standings-self td {
 .madness-stage h1 {
   margin: 0 0 4px;
   font-family: var(--display);
-  font-size: 36px;
+  font-size: var(--fs-3xl);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -1048,7 +1090,7 @@ tr.standings-self td {
 .nba-bracket-stage h1 {
   margin: 0 0 4px;
   font-family: var(--display);
-  font-size: 36px;
+  font-size: var(--fs-3xl);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
@@ -1349,18 +1391,18 @@ tr.standings-self td {
    ============================================================ */
 
 .home-view { gap: 10px; }
-.panel-pad-sm { padding: 10px 12px; }
+.panel-pad-sm { padding: var(--space-fluid-sm) 12px; }
 .home-grid-main {
   display: grid;
   grid-template-columns: 1.05fr 1.1fr 1fr;
   gap: 10px;
-  align-items: start;
+  align-items: stretch;
 }
 .home-grid-sub {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 10px;
-  align-items: start;
+  align-items: stretch;
 }
 table.data.dense th,
 table.data.dense td { padding: 4px 8px; font-size: 12px; }
@@ -1652,6 +1694,7 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 .settings-tabs,
 .round-tabs,
 .madness-tabs,
+.nba-tabs,
 .player-stats-tabs {
   display: inline-flex;
   flex-wrap: wrap;
@@ -1669,6 +1712,7 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 .settings-tabs .btn,
 .round-tabs .btn,
 .madness-tabs .btn,
+.nba-tabs .btn,
 .player-stats-tabs .btn {
   padding: 5px 12px;
   font-size: 13px;
@@ -1687,6 +1731,7 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 .settings-tabs .btn:hover,
 .round-tabs .btn:hover,
 .madness-tabs .btn:hover,
+.nba-tabs .btn:hover,
 .player-stats-tabs .btn:hover {
   background: color-mix(in srgb, var(--text) 9%, transparent);
   color: var(--text);
@@ -1695,6 +1740,7 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 .settings-tabs .btn.primary,
 .round-tabs .btn.primary,
 .madness-tabs .btn.primary,
+.nba-tabs .btn.primary,
 .player-stats-tabs .btn.primary {
   background: var(--accent);
   color: var(--accent-text);
@@ -1703,28 +1749,150 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 
 /* ============================================================
    Responsive
+   Breakpoint scale:
+     xs (small phone)   <= 480px  — final touch-ups, single-column trees
+     sm (phone)         <= 700px  — final 1-col collapse
+     md (tablet)        <= 900px  — drawer nav, tablet 2-col step, touch targets
+     lg (small desktop) <= 1100px — home-grid-main / review-grid 3->2
    ============================================================ */
 
 @media (max-width: 900px) {
   .attr-sheet { grid-template-columns: 1fr; }
   .career-shell { grid-template-columns: 1fr; }
-  .sidebar {
+
+  /* Sidebar becomes a slide-out drawer instead of a horizontal top bar. */
+  .nav-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
     position: sticky;
     top: 0;
-    z-index: 20;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
+    z-index: 30;
+    min-height: 44px;
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
     background: var(--chrome);
-    border-right: 0;
+    border: 0;
     border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
   }
-  .sidebar .player-chip { border: 0; margin: 0; padding: 4px 8px; min-width: 120px; }
-  .sidebar .player-chip strong { font-size: 16px; }
-  .nav-section { display: none; }
-  .nav-group { display: contents; }
-  .sidebar-foot { margin: 0; border: 0; padding: 0; }
+  .nav-trigger-bars,
+  .nav-trigger-bars::before,
+  .nav-trigger-bars::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .nav-trigger-bars {
+    position: relative;
+  }
+  .nav-trigger-bars::before,
+  .nav-trigger-bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+  .nav-trigger-bars::before { top: -6px; }
+  .nav-trigger-bars::after { top: 6px; }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 39;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 82vw;
+    max-width: 320px;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    box-shadow: var(--shadow);
+    border-right: 1px solid var(--border);
+    border-bottom: 0;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar .player-chip { padding: 10px 10px 14px; margin-bottom: 8px; min-width: 0; }
+  .sidebar .player-chip strong { font-size: var(--fs-lg); }
+  .sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 22px;
+    line-height: 1;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .sidebar-close:hover { color: var(--text); }
   .stat-strip { grid-template-columns: repeat(3, 1fr); }
+
+  /* Tablet step — 3-column grids go 3 -> 2 -> 1 instead of jumping
+     straight to 1 column at the sm breakpoint below. */
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .workspace-h.cols-3,
+  .workspace-h.home-3 { grid-template-columns: 1fr 1fr; }
+  .offer-grid { grid-template-columns: 1fr 1fr; }
+  .draft-boards { grid-template-columns: 1fr 1fr; }
+
+  /* Bracket rounds: once a round tab is focused, fully remove the
+     dimmed columns instead of just shrinking/fading them, so phones
+     get a true single-column reflow instead of relying on scroll. */
+  .mtree-col.dim,
+  .nba-tree-col.dim,
+  .mtree-center-slot.dim,
+  .mtree-firstfour.dim {
+    display: none;
+  }
+  .mtree,
+  .nba-main-stage {
+    overflow-x: visible;
+  }
+  .mtree-col.focus,
+  .nba-tree-col.focus,
+  .mtree-col:not(.dim):not(.focus),
+  .nba-tree-col:not(.dim):not(.focus) {
+    min-width: 0;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  /* Touch targets — bump interactive elements to ~44px on touch widths. */
+  .rating-row button { width: 44px; height: 44px; }
+  .simbar button { min-height: 44px; padding: var(--space-4) var(--space-5); }
+  .attr-tabs .btn,
+  .settings-tabs .btn,
+  .round-tabs .btn,
+  .madness-tabs .btn,
+  .nba-tabs .btn,
+  .player-stats-tabs .btn {
+    min-height: 44px;
+    padding: var(--space-4) var(--space-6);
+  }
+  .nav-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+  }
 }
 @media (max-width: 700px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
@@ -1742,5 +1910,12 @@ table.data.dense td { padding: 4px 8px; font-size: 12px; }
 }
 @media (max-width: 560px) {
   .stat-strip { grid-template-columns: 1fr 1fr; }
-  .dashboard-header h1 { font-size: 38px; }
+}
+@media (max-width: 480px) {
+  .home-grid-main, .home-grid-sub { gap: var(--space-3); }
+  .panel-pad { padding: var(--space-5); }
+  /* Full single-column tree: stack the region pairs instead of showing
+     them side by side once each is already down to one focused round. */
+  .mtree { flex-direction: column; }
+  .mtree-side { flex-direction: row; gap: var(--space-5); }
 }

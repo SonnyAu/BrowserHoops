@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  KeyboardEvent as ReactKeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getCollege } from '../data/colleges';
 import { getProTeam } from '../data/nbaTeams';
@@ -113,6 +120,57 @@ export function CareerShell() {
   const [logs, setLogs] = useState<GameLog[]>([]);
   const { isSim, sim, pause } = useSimController(career, setCareer, setLogs);
 
+  const [navOpen, setNavOpen] = useState(false);
+  const navTriggerRef = useRef<HTMLButtonElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  // Mobile drawer: close on route change, ESC, and lock body scroll while open.
+  useEffect(() => {
+    setNavOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!navOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setNavOpen(false);
+        navTriggerRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = navOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [navOpen]);
+
+  useEffect(() => {
+    if (navOpen) {
+      sidebarRef.current?.querySelector<HTMLElement>('.sidebar-close')?.focus();
+    }
+  }, [navOpen]);
+
+  const onDrawerKeyDown = useCallback((e: ReactKeyboardEvent<HTMLElement>) => {
+    if (e.key !== 'Tab') return;
+    const focusables = sidebarRef.current?.querySelectorAll<HTMLElement>(
+      'a[href], button:not(:disabled)',
+    );
+    if (!focusables || focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
   useEffect(() => {
     if (!saveId) return;
     (async () => {
@@ -177,7 +235,36 @@ export function CareerShell() {
 
   return (
     <div className="career-shell" style={{ ['--team-accent' as string]: teamAccent }}>
-      <aside className="sidebar">
+      <button
+        type="button"
+        className="nav-trigger"
+        ref={navTriggerRef}
+        aria-expanded={navOpen}
+        aria-controls="career-sidebar"
+        onClick={() => setNavOpen((v) => !v)}
+      >
+        <span className="nav-trigger-bars" aria-hidden="true" />
+        Menu
+      </button>
+
+      {navOpen ? (
+        <div className="sidebar-backdrop" aria-hidden="true" onClick={() => setNavOpen(false)} />
+      ) : null}
+
+      <aside
+        id="career-sidebar"
+        className={`sidebar${navOpen ? ' open' : ''}`}
+        ref={sidebarRef}
+        onKeyDown={onDrawerKeyDown}
+      >
+        <button
+          type="button"
+          className="sidebar-close"
+          aria-label="Close menu"
+          onClick={() => setNavOpen(false)}
+        >
+          ×
+        </button>
         <div className="player-chip">
           <strong>
             <PlayerLink saveId={career.id} playerId="user">
@@ -246,7 +333,14 @@ export function CareerShell() {
         <div className="simbar">
           <span className="label">Sim to</span>
           {simTargets.map((t) => (
-            <button key={t} disabled={isSim || simBlocked} onClick={() => sim(t)}>
+            <button
+              key={t}
+              disabled={isSim || simBlocked}
+              onClick={async () => {
+                const reachedPostseason = await sim(t);
+                if (reachedPostseason) nav(`/career/${career.id}/bracket`);
+              }}
+            >
               {SIM_LABELS[t] ?? t}
             </button>
           ))}

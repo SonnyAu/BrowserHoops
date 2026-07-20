@@ -41,6 +41,7 @@ export function simTargetsForCareer(career: CareerSave): SimTarget[] {
 type SimPlan =
   | { mode: 'batch'; count: number }
   | { mode: 'until'; completedGames: number }
+  | { mode: 'untilPostseasonStart' }
   | { mode: 'untilPostseasonEnd' }
   | { mode: 'untilSeasonEnd' };
 
@@ -74,8 +75,11 @@ function planSim(career: CareerSave, target: SimTarget): SimPlan {
       return { mode: 'until', completedGames: Math.min(55, Math.floor(seasonLen * 0.67)) };
     case 'playoffs':
     case 'tournament':
-      // Sim through the entire postseason into season review.
-      return { mode: 'untilPostseasonEnd' };
+      // Stop right as the bracket is built so the user can see the
+      // matchups; if postseason is already underway, finish it out.
+      return (career.seasonStage ?? 'regular') === 'regular'
+        ? { mode: 'untilPostseasonStart' }
+        : { mode: 'untilPostseasonEnd' };
     case 'season':
       return { mode: 'untilSeasonEnd' };
   }
@@ -89,33 +93,35 @@ export function useSimController(
   const [isSim, setIsSim] = useState(false);
   const pauseRef = useRef(false);
 
-  async function sim(target: SimTarget) {
-    if (!career || isSim || career.retired) return;
+  /** Returns true if the sim stopped because the postseason bracket just started. */
+  async function sim(target: SimTarget): Promise<boolean> {
+    if (!career || isSim || career.retired) return false;
     if (career.phase === 'seasonReview') {
       alert('Review the completed season before continuing.');
-      return;
+      return false;
     }
     if (career.phase === 'draft') {
       alert('Finish draft night before simulating.');
-      return;
+      return false;
     }
     if (career.pendingDecisions.some((d) => d.interrupt)) {
       alert('Resolve pending decisions before simulating.');
-      return;
+      return false;
     }
     if (career.phase !== 'professional' && (target === 'all-star break' || target === 'trade deadline')) {
-      return;
+      return false;
     }
 
     const plan = planSim(career, target);
     if (plan.mode === 'until' && regularCompleted(career) >= plan.completedGames) {
-      return;
+      return false;
     }
 
     pauseRef.current = false;
     setIsSim(true);
     let next = career;
     let steps = 0;
+    let reachedPostseasonStart = false;
 
     while (!pauseRef.current && steps < 500) {
       if (plan.mode === 'batch' && steps >= plan.count) break;
@@ -140,6 +146,11 @@ export function useSimController(
       }
       steps += 1;
 
+      if (plan.mode === 'untilPostseasonStart' && result.log.opponent === 'Postseason') {
+        reachedPostseasonStart = true;
+        break;
+      }
+
       if (next.phase === 'seasonReview') {
         try {
           await archiveSeasonHistory(next);
@@ -155,6 +166,7 @@ export function useSimController(
       await new Promise((r) => setTimeout(r, 40));
     }
     setIsSim(false);
+    return reachedPostseasonStart;
   }
 
   function pause() {
